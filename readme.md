@@ -27,6 +27,8 @@ This package is an adaptation of [romanbican/roles](https://github.com/romanbica
 - [More Information](#more-information)
 - [License](#license)
 
+---
+
 ## Installation
 
 This package is very easy to set up. There are only couple of steps.
@@ -134,13 +136,68 @@ class DatabaseSeeder extends Seeder
 
 `php artisan db:seed`
 
+#### Roles Seeded
+|Property|Value|
+|----|----|
+|Name| Admin|
+|Slug| admin|
+|Description| Admin Role|
+|Level| 5|
 
-##### And that's it!
+|Property|Value|
+|----|----|
+|Name| User|
+|Slug| user|
+|Description| User Role|
+|Level| 1|
+
+|Property|Value|
+|----|----|
+|Name| Unverified|
+|Slug| unverified|
+|Description| Unverified Role|
+|Level| 0|
+
+#### Permissions Seeded:
+|Property|Value|
+|----|----|
+|name|Can View Users|
+|slug|view.users|
+|description|Can view users|
+|model|Permission|
+
+|Property|Value|
+|----|----|
+|name|Can Create Users|
+|slug|create.users|
+|description|Can create new users|
+|model|Permission|
+
+|Property|Value|
+|----|----|
+|name|Can Edit Users|
+|slug|edit.users|
+|description|Can edit users|
+|model|Permission|
+
+|Property|Value|
+|----|----|
+|name|Can Delete Users|
+|slug|delete.users|
+|description|Can delete users|
+|model|Permission|
+
+
+### And that's it!
+
+---
 
 ## Migrate from bican roles
 If you migrate from bican/roles to jeremykenedy/LaravelRoles you will need to update a few things.
 - Change all calls to `can`, `canOne` and `canAll` to `hasPermission`, `hasOnePermission`, `hasAllPermissions`.
 - Change all calls to `is`, `isOne` and `isAll` to `hasRole`, `hasOneRole`, `hasAllRoles`.
+
+---
 
 ## Usage
 
@@ -466,6 +523,8 @@ public function render($request, Exception $e)
     return parent::render($request, $e);
 }
 ```
+
+---
 
 ## Config File
 
