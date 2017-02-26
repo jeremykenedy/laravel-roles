@@ -1,7 +1,6 @@
 # Roles And Permissions For Laravel 5.4
 
-A Powerful package for handling roles and permissions in Laravel 5.4
-This package is an adaptation of [romanbican/roles](https://github.com/romanbican/roles) and [ultraware/roles](https://github.com/ultraware/roles/).
+A Powerful package for handling roles and permissions in Laravel 5.4.
 
 - [Installation](#installation)
     - [Composer](#composer)
@@ -533,6 +532,9 @@ You can change connection for models, slug separator, models path and there is a
 ## More Information
 
 For more information, please have a look at [HasRoleAndPermission](https://github.com/jeremykenedy/laravel-roles/blob/master/src/Contracts/HasRoleAndPermission.php) contract.
+
+## Credit Note
+This package is an adaptation of [romanbican/roles](https://github.com/romanbican/roles) and [ultraware/roles](https://github.com/ultraware/roles/).
 
 ## License
 
