@@ -1,5 +1,9 @@
 # Roles And Permissions For Laravel 5.4
 
+[![Total Downloads](https://poser.pugx.org/jeremykenedy/laravel-roles/d/total.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
+[![Latest Stable Version](https://poser.pugx.org/jeremykenedy/laravel-roles/v/stable.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
+[![License](https://poser.pugx.org/jeremykenedy/laravel-roles/license.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
+
 A Powerful package for handling roles and permissions in Laravel 5.4.
 
 - [Installation](#installation)
