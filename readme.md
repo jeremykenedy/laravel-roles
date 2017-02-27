@@ -137,7 +137,10 @@ class DatabaseSeeder extends Seeder
 
 3. Seed an initial set of Permissions, Roles, and Users with roles.
 
-`php artisan db:seed`
+```
+composer dump-autoload
+php artisan db:seed
+```
 
 #### Roles Seeded
 |Property|Value|
