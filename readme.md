@@ -72,7 +72,7 @@ Publish the package config file and migrations to your application. Run these co
 
 1. Include `HasRoleAndPermission` trait and also implement `HasRoleAndPermission` contract inside your `User` model. See example below.
 
-2. Include `use jeremykenedy\LararvelRoles\Traits\HasRoleAndPermission;` in the top of your `User` model below the namespace and implement the `HasRoleAndPermission` trait. See example below.
+2. Include `use jeremykenedy\LaravelRoles\Traits\HasRoleAndPermission;` in the top of your `User` model below the namespace and implement the `HasRoleAndPermission` trait. See example below.
 
 Example `User` model Trait And Contract:
 
