@@ -1,10 +1,10 @@
-# Roles And Permissions For Laravel 5.4
+# Roles And Permissions For Laravel,Supports Laravel 5.3, 5.4, and 5.5.
 
 [![Total Downloads](https://poser.pugx.org/jeremykenedy/laravel-roles/d/total.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
 [![Latest Stable Version](https://poser.pugx.org/jeremykenedy/laravel-roles/v/stable.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
 [![License](https://poser.pugx.org/jeremykenedy/laravel-roles/license.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
 
-A Powerful package for handling roles and permissions in Laravel 5.4.
+A Powerful package for handling roles and permissions in Laravel.
 
 - [Installation](#installation)
     - [Composer](#composer)
@@ -44,7 +44,10 @@ composer require jeremykenedy/laravel-roles
 ```
 
 ### Service Provider
+* Laravel 5.5 and up
+Uses package auto discovery feature, no need to edit the `config/app.php` file.
 
+* Laravel 5.4 and below
 Add the package to your application service providers in `config/app.php` file.
 
 ```php
@@ -488,23 +491,26 @@ protected $routeMiddleware = [
 Now you can easily protect your routes.
 
 ```php
-$router->get('/example', [
-    'as' => 'example',
-    'middleware' => 'role:admin',
-    'uses' => 'ExampleController@index',
-]);
+Route::get('/', function () {
+    //
+})->middleware('role:admin');
 
-$router->post('/example', [
-    'as' => 'example',
-    'middleware' => 'permission:edit.articles',
-    'uses' => 'ExampleController@index',
-]);
+Route::get('/', function () {
+    //
+})->middleware('permission:edit.articles');
 
-$router->get('/example', [
-    'as' => 'example',
-    'middleware' => 'level:2', // level >= 2
-    'uses' => 'ExampleController@index',
-]);
+Route::get('/', function () {
+    //
+})->middleware('level:2'); // level >= 2
+
+Route::get('/', function () {
+    //
+})->middleware('role:admin', 'level:2'); // level >= 2 and Admin
+
+Route::group(['middleware' => ['role:admin']], function () {
+    //
+});
+
 ```
 
 It throws `\jeremykenedy\LaravelRoles\Exceptions\RoleDeniedException`, `\jeremykenedy\LaravelRoles\Exceptions\PermissionDeniedException` or `\jeremykenedy\LaravelRoles\Exceptions\LevelDeniedException` exceptions if it goes wrong.

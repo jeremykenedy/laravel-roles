@@ -1,28 +1,38 @@
 {
-  "name": "jeremykenedy/laravel-roles",
-  "description": "Powerful package for handling roles and permissions in Laravel 5.4+",
-  "keywords": ["roles","permissions","acl","levels"],
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Roman Bičan",
-      "email": "romanbican@seznam.cz"
+    "name": "jeremykenedy/laravel-roles",
+    "description": "Powerful package for handling roles and permissions in Laravel. Supports Laravel 5.3, 5.4, and 5.5",
+    "keywords": ["roles","permissions","acl","levels","laravel"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Roman Bičan",
+            "email": "romanbican@seznam.cz"
+        },
+        {
+            "name": "Ultraware"
+        },
+        {
+            "name": "Jeremy Kenedy",
+            "email": "jeremykenedy@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.4",
+        "laravel/framework": "5.3.*|5.4.*|5.5.*"
     },
-    {
-      "name": "Ultraware"
+    "autoload": {
+        "psr-4": {
+            "jeremykenedy\\LaravelRoles\\": "src/"
+        }
     },
-    {
-      "name": "Jeremy Kenedy",
-      "email": "jeremykenedy@gmail.com"
-    }
-  ],
-  "require": {
-    "php": ">=5.6.4",
-    "laravel/framework": "5.3.*|5.4.*|5.5.*"
-  },
-  "autoload": {
-    "psr-4": {
-      "jeremykenedy\\LaravelRoles\\": "src/"
-    }
-  }
+    "extra": {
+        "laravel": {
+            "providers": [
+                "jeremykenedy\\LaravelRoles\\RolesServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
 }
