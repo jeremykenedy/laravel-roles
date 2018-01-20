@@ -2,7 +2,7 @@
 
 [![Total Downloads](https://poser.pugx.org/jeremykenedy/laravel-roles/d/total.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
 [![Latest Stable Version](https://poser.pugx.org/jeremykenedy/laravel-roles/v/stable.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
-[![License](https://poser.pugx.org/jeremykenedy/laravel-roles/license.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A Powerful package for handling roles and permissions in Laravel.
 
