@@ -28,6 +28,7 @@ A Powerful package for handling roles and permissions in Laravel.
     - [Middleware](#middleware)
 - [Config File](#config-file)
 - [More Information](#more-information)
+- [Opening an Issue](#opening-an-issue)
 - [License](#license)
 
 ---
@@ -552,16 +553,23 @@ You can catch these exceptions inside `app/Exceptions/Handler.php` file and do w
 ---
 
 ## Config File
-
 You can change connection for models, slug separator, models path and there is also a handy pretend feature. Have a look at config file for more information.
 
 ## More Information
-
 For more information, please have a look at [HasRoleAndPermission](https://github.com/jeremykenedy/laravel-roles/blob/master/src/Contracts/HasRoleAndPermission.php) contract.
 
 ## Credit Note
 This package is an adaptation of [romanbican/roles](https://github.com/romanbican/roles) and [ultraware/roles](https://github.com/ultraware/roles/).
 
-## License
+### Opening an Issue
+Before opening an issue there are a couple of considerations:
+* Read the instructions and make sure all steps were followed correctly.
+* Check that the issue is not specific to your development environment setup.
+* Provide duplication steps.
+* Attempt to look into the issue, and if you have a solution, make a pull request.
+* Show that you have made an attempt to look into the issue.
+* Check to see if the issue you are reporting is a duplicate of a previous reported issue.
+* If you did not star this repo I will close your issue immediatly without consideration. My time is valuable.
 
+## License
 This package is free software distributed under the terms of the MIT license.
