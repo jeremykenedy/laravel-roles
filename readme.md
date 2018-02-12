@@ -561,7 +561,7 @@ For more information, please have a look at [HasRoleAndPermission](https://githu
 ## Credit Note
 This package is an adaptation of [romanbican/roles](https://github.com/romanbican/roles) and [ultraware/roles](https://github.com/ultraware/roles/).
 
-### Opening an Issue
+## Opening an Issue
 Before opening an issue there are a couple of considerations:
 * Read the instructions and make sure all steps were followed correctly.
 * Check that the issue is not specific to your development environment setup.
