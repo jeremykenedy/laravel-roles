@@ -1,4 +1,4 @@
-# Roles And Permissions For Laravel,Supports Laravel 5.3, 5.4, and 5.5.
+# Roles And Permissions For Laravel,Supports Laravel 5.3, 5.4, 5.5, and 5.6.
 
 [![Total Downloads](https://poser.pugx.org/jeremykenedy/laravel-roles/d/total.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
 [![Latest Stable Version](https://poser.pugx.org/jeremykenedy/laravel-roles/v/stable.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
@@ -68,9 +68,7 @@ Add the package to your application service providers in `config/app.php` file.
 
 Publish the package config file and migrations to your application. Run these commands inside your terminal.
 
-    php artisan vendor:publish --provider="jeremykenedy\LaravelRoles\RolesServiceProvider" --tag=config
-    php artisan vendor:publish --provider="jeremykenedy\LaravelRoles\RolesServiceProvider" --tag=migrations
-    php artisan vendor:publish --provider="jeremykenedy\LaravelRoles\RolesServiceProvider" --tag=seeds
+    php artisan vendor:publish --tag=laravelroles
 
 ### HasRoleAndPermission Trait And Contract
 

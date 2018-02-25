@@ -6,6 +6,15 @@ use Illuminate\Support\ServiceProvider;
 
 class RolesServiceProvider extends ServiceProvider
 {
+    private $_packageTag = 'laravelroles';
+
+    /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = false;
+
     /**
      * Bootstrap any application services.
      *
@@ -13,18 +22,6 @@ class RolesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__ . '/../config/roles.php' => config_path('roles.php'),
-        ], 'config');
-
-        $this->publishes([
-            __DIR__ . '/../migrations/' => base_path('/database/migrations'),
-        ], 'migrations');
-
-        $this->publishes([
-            __DIR__ . '/../seeds/' => base_path('/database/seeds'),
-        ], 'seeds');
-
         $this->registerBladeExtensions();
     }
 
@@ -36,6 +33,29 @@ class RolesServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/roles.php', 'roles');
+        $this->publishFiles();
+    }
+
+    /**
+     * Publish files for package.
+     *
+     * @return void
+     */
+    private function publishFiles()
+    {
+        $publishTag = $this->_packageTag;
+
+        $this->publishes([
+            __DIR__ . '/../config/roles.php' => config_path('roles.php'),
+        ], $publishTag);
+
+        $this->publishes([
+            __DIR__ . '/../migrations/' => base_path('/database/migrations'),
+        ], $publishTag);
+
+        $this->publishes([
+            __DIR__ . '/../seeds/' => base_path('/database/seeds'),
+        ], $publishTag);
     }
 
     /**
