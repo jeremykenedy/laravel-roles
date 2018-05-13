@@ -32,7 +32,7 @@ class RolesServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/roles.php', 'roles');
+        $this->mergeConfigFrom(__DIR__.'/../config/roles.php', 'roles');
         $this->publishFiles();
     }
 
@@ -46,15 +46,15 @@ class RolesServiceProvider extends ServiceProvider
         $publishTag = $this->_packageTag;
 
         $this->publishes([
-            __DIR__ . '/../config/roles.php' => config_path('roles.php'),
+            __DIR__.'/../config/roles.php' => config_path('roles.php'),
         ], $publishTag);
 
         $this->publishes([
-            __DIR__ . '/../migrations/' => base_path('/database/migrations'),
+            __DIR__.'/../migrations/' => base_path('/database/migrations'),
         ], $publishTag);
 
         $this->publishes([
-            __DIR__ . '/../seeds/' => base_path('/database/seeds'),
+            __DIR__.'/../seeds/' => base_path('/database/seeds'),
         ], $publishTag);
     }
 

@@ -27,11 +27,13 @@ class VerifyRole
     /**
      * Handle an incoming request.
      *
-     * @param Request $request
-     * @param \Closure $next
+     * @param Request    $request
+     * @param \Closure   $next
      * @param int|string $role
-     * @return mixed
+     *
      * @throws RoleDeniedException
+     *
+     * @return mixed
      */
     public function handle($request, Closure $next, $role)
     {
