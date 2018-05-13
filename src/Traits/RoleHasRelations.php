@@ -32,6 +32,7 @@ trait RoleHasRelations
      * Attach permission to a role.
      *
      * @param int|Permission $permission
+     *
      * @return int|bool
      */
     public function attachPermission($permission)
@@ -43,6 +44,7 @@ trait RoleHasRelations
      * Detach permission from a role.
      *
      * @param int|Permission $permission
+     *
      * @return int
      */
     public function detachPermission($permission)
@@ -64,6 +66,7 @@ trait RoleHasRelations
      * Sync permissions for a role.
      *
      * @param array|Permission[]|Collection $permissions
+     *
      * @return array
      */
     public function syncPermissions($permissions)

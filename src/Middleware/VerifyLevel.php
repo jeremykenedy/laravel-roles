@@ -27,11 +27,13 @@ class VerifyLevel
     /**
      * Handle an incoming request.
      *
-     * @param Request $request
+     * @param Request  $request
      * @param \Closure $next
-     * @param int $level
-     * @return mixed
+     * @param int      $level
+     *
      * @throws \jeremykenedy\LaravelRoles\Exceptions\LevelDeniedException
+     *
+     * @return mixed
      */
     public function handle($request, Closure $next, $level)
     {

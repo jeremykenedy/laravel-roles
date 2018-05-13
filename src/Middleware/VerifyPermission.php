@@ -27,11 +27,13 @@ class VerifyPermission
     /**
      * Handle an incoming request.
      *
-     * @param Request $request
-     * @param \Closure $next
+     * @param Request    $request
+     * @param \Closure   $next
      * @param int|string $permission
-     * @return mixed
+     *
      * @throws \jeremykenedy\LaravelRoles\Exceptions\PermissionDeniedException
+     *
+     * @return mixed
      */
     public function handle($request, Closure $next, $permission)
     {
