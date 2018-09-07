@@ -1,4 +1,4 @@
-# Roles And Permissions For Laravel,Supports Laravel 5.3, 5.4, 5.5, and 5.6.
+# Roles And Permissions For Laravel,Supports Laravel 5.3, 5.4, 5.5, 5.6, and 5.7.
 
 [![Total Downloads](https://poser.pugx.org/jeremykenedy/laravel-roles/d/total.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
 [![Latest Stable Version](https://poser.pugx.org/jeremykenedy/laravel-roles/v/stable.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
