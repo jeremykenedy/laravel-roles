@@ -563,7 +563,7 @@ This package is an adaptation of [romanbican/roles](https://github.com/romanbica
 
 ## Opening an Issue
 Before opening an issue there are a couple of considerations:
-* If you did not **star this repo** *I will close your issue immediatly without consideration.*
+* A **star** on this project shows support and is way to say thank you to all the contributors. If you open an issue without a star, *your issue may be closed without consideration.* Thank you for understanding and the support. You are all awesome!
 * **Read the instructions** and make sure all steps were *followed correctly*.
 * **Check** that the issue is not *specific to your development environment* setup.
 * **Provide** *duplication steps*.
