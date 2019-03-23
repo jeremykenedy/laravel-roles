@@ -661,7 +661,7 @@ ROLES_SEED_DEFAULT_USERS=false
 ## More Information
 For more information, please have a look at [HasRoleAndPermission](https://github.com/jeremykenedy/laravel-roles/blob/master/src/Contracts/HasRoleAndPermission.php) contract.
 
-###File Tree
+## File Tree
 ```bash
 ├── .env.example
 ├── .gitignore
@@ -730,7 +730,7 @@ Before opening an issue there are a couple of considerations:
 * Need some help, I can do my best on Slack: https://opensourcehelpgroup.slack.com
 * Please be considerate that this is an open source project that I provide to the community for FREE when opening an issue. 
 
-## Credit Note
+#### Credit Note
 This package is an adaptation of [romanbican/roles](https://github.com/romanbican/roles) and [ultraware/roles](https://github.com/ultraware/roles/).
 
 ## License
