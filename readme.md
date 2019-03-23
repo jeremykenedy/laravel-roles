@@ -221,16 +221,14 @@ If you migrate from bican/roles to jeremykenedy/LaravelRoles you will need to up
 ### Creating Roles
 
 ```php
-use jeremykenedy\LaravelRoles\Models\Role;
-
-$adminRole = Role::create([
+$adminRole = config('roles.models.role')::create([
     'name' => 'Admin',
     'slug' => 'admin',
     'description' => '',
     'level' => 5,
 ]);
 
-$moderatorRole = Role::create([
+$moderatorRole = config('roles.models.role')::create([
     'name' => 'Forum Moderator',
     'slug' => 'forum.moderator',
 ]);
@@ -243,9 +241,7 @@ $moderatorRole = Role::create([
 It's really simple. You fetch a user from database and call `attachRole` method. There is `BelongsToMany` relationship between `User` and `Role` model.
 
 ```php
-use App\User;
-
-$user = User::find($id);
+$user = config('roles.defaultUserModel')::find($id);
 
 $user->attachRole($adminRole); // you can pass whole object, or just an id
 $user->detachRole($adminRole); // in case you want to detach role
@@ -258,34 +254,18 @@ $user->syncRoles($roles); // you can pass Eloquent collection, or just an array 
 You can assign the user a role upon the users registration by updating the file `app\Http\Controllers\Auth\RegisterController.php`.
 You can assign a role to a user upon registration by including the needed models and modifying the `create()` method to attach a user role. See example below:
 
-* Update the top of `app\Http\Controllers\Auth\RegisterController.php`:
-
-```php
-<?php
-
-namespace App\Http\Controllers\Auth;
-
-use App\User;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use jeremykenedy\LaravelRoles\Models\Role;
-use jeremykenedy\LaravelRoles\Models\Permission;
-use Illuminate\Foundation\Auth\RegistersUsers;
-
-```
-
 * Updated `create()` method of `app\Http\Controllers\Auth\RegisterController.php`:
 
 ```php
     protected function create(array $data)
     {
-        $user = User::create([
+        $user = config('roles.defaultUserModel')::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
 
-        $role = Role::where('name', '=', 'User')->first();  //choose the default role upon user creation.
+        $role = config('roles.models.role')::where('name', '=', 'User')->first();  //choose the default role upon user creation.
         $user->attachRole($role);
 
         return $user;
@@ -351,18 +331,17 @@ if ($user->level() > 4) {
 
 ### Creating Permissions
 
-It's very simple thanks to `Permission` model.
+It's very simple thanks to `Permission` model called from `config('roles.models.permission')`.
 
 ```php
-use jeremykenedy\LaravelRoles\Models\Permission;
 
-$createUsersPermission = Permission::create([
+$createUsersPermission = config('roles.models.permission')::create([
     'name' => 'Create users',
     'slug' => 'create.users',
     'description' => '', // optional
 ]);
 
-$deleteUsersPermission = Permission::create([
+$deleteUsersPermission = config('roles.models.permission')::create([
     'name' => 'Delete users',
     'slug' => 'delete.users',
 ]);
@@ -373,13 +352,10 @@ $deleteUsersPermission = Permission::create([
 You can attach permissions to a role or directly to a specific user (and of course detach them as well).
 
 ```php
-use App\User;
-use jeremykenedy\LaravelRoles\Models\Role;
-
-$role = Role::find($roleId);
+$role = config('roles.models.role')::find($roleId);
 $role->attachPermission($createUsersPermission); // permission attached to a role
 
-$user = User::find($userId);
+$user = config('roles.defaultUserModel')::find($userId);
 $user->attachPermission($deleteUsersPermission); // permission attached to a user
 ```
 
@@ -423,9 +399,8 @@ Let's say you have an article and you want to edit it. This article belongs to a
 
 ```php
 use App\Article;
-use jeremykenedy\LaravelRoles\Models\Permission;
 
-$editArticlesPermission = Permission::create([
+$editArticlesPermission = config('roles.models.permission')::create([
     'name' => 'Edit articles',
     'slug' => 'edit.articles',
     'model' => 'App\Article',
