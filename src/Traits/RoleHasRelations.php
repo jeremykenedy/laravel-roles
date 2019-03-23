@@ -4,7 +4,6 @@ namespace jeremykenedy\LaravelRoles\Traits;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use jeremykenedy\LaravelRoles\Models\Permission;
 
 trait RoleHasRelations
 {
@@ -25,7 +24,7 @@ trait RoleHasRelations
      */
     public function users()
     {
-        return $this->belongsToMany(config('auth.providers.users.model'))->withTimestamps();
+        return $this->belongsToMany(config('roles.defaultUserModel'))->withTimestamps();
     }
 
     /**

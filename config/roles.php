@@ -67,4 +67,32 @@ return [
 
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Laravel Default User Model
+    |--------------------------------------------------------------------------
+    |
+    | This is the applications default user model.
+    |
+    */
+
+    'defaultUserModel' => env('ROLES_DEFAULT_USER_MODEL', config('auth.providers.users.model')),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Seeds
+    |--------------------------------------------------------------------------
+    |
+    | These are the default package seeds. You can seed the package built
+    | in seeds without having to seed them. These seed directly from
+    | the package. These are not the published seeds.
+    |
+    */
+
+    'defaultSeeds' => [
+        'PermissionsTableSeeder'        => env('ROLES_SEED_DEFAULT_PERMISSIONS', true),
+        'RolesTableSeeder'              => env('ROLES_SEED_DEFAULT_ROLES', true),
+        'ConnectRelationshipsSeeder'    => env('ROLES_SEED_DEFAULT_RELATIONSHIPS', true),
+        'UsersTableSeeder'              => env('ROLES_SEED_DEFAULT_USERS', false),
+    ],
 ];

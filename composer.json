@@ -1,8 +1,15 @@
 {
     "name": "jeremykenedy/laravel-roles",
-    "description": "Powerful package for handling roles and permissions in Laravel. Supports Laravel 5.3 and higher",
-    "keywords": ["roles","permissions","acl","levels","laravel"],
+    "description": "Powerful package for handling roles, permissions, and levels in Laravel. Supports Laravel 5.3 and higher",
+    "keywords": [
+        "roles",
+        "permissions",
+        "acl",
+        "levels",
+        "laravel"
+    ],
     "license": "MIT",
+    "type": "package",
     "authors": [
         {
             "name": "Roman Bičan",
@@ -18,7 +25,8 @@
     ],
     "require": {
         "php": ">=5.6.4",
-        "laravel/framework": "5.3.*|5.4.*|5.5.*|5.6.*|5.7.*|5.8.*"
+        "laravel/framework": "5.3.*|5.4.*|5.5.*|5.6.*|5.7.*|5.8.*",
+        "eklundkristoffer/seedster": "^3.0"
     },
     "autoload": {
         "psr-4": {

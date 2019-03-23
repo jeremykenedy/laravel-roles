@@ -3,6 +3,10 @@
 namespace jeremykenedy\LaravelRoles;
 
 use Illuminate\Support\ServiceProvider;
+use jeremykenedy\LaravelRoles\Database\Seeds\DefaultPermissionsTableSeeder;
+use jeremykenedy\LaravelRoles\Database\Seeds\DefaultRolesTableSeeder;
+use jeremykenedy\LaravelRoles\Database\Seeds\DefaultConnectRelationshipsSeeder;
+use jeremykenedy\LaravelRoles\Database\Seeds\DefaultUsersTableSeeder;
 
 class RolesServiceProvider extends ServiceProvider
 {
@@ -33,8 +37,41 @@ class RolesServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/roles.php', 'roles');
-        $this->loadMigrationsFrom(__DIR__.'/../migrations');
+        $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
         $this->publishFiles();
+        $this->loadSeedsFrom();
+    }
+
+    /**
+     * Loads a seeds.
+     *
+     * @return void
+     */
+    private function loadSeedsFrom()
+    {
+        if (config('roles.defaultSeeds.PermissionsTableSeeder')) {
+            $this->app['seed.handler']->register(
+                DefaultPermissionsTableSeeder::class
+            );
+        }
+
+        if (config('roles.defaultSeeds.RolesTableSeeder')) {
+            $this->app['seed.handler']->register(
+                DefaultRolesTableSeeder::class
+            );
+        }
+
+        if (config('roles.defaultSeeds.ConnectRelationshipsSeeder')) {
+            $this->app['seed.handler']->register(
+                DefaultConnectRelationshipsSeeder::class
+            );
+        }
+
+        if (config('roles.defaultSeeds.UsersTableSeeder')) {
+            $this->app['seed.handler']->register(
+                DefaultUsersTableSeeder::class
+            );
+        }
     }
 
     /**
@@ -51,17 +88,17 @@ class RolesServiceProvider extends ServiceProvider
         ], $publishTag.'-config');
 
         $this->publishes([
-            __DIR__.'/../migrations/' => base_path('/database/migrations'),
+            __DIR__.'/Database/Migrations' => database_path('migrations'),
         ], $publishTag.'-migrations');
 
         $this->publishes([
-            __DIR__.'/../seeds/' => base_path('/database/seeds'),
+            __DIR__.'/Database/Seeds/publish' => database_path('seeds'),
         ], $publishTag.'-seeds');
 
         $this->publishes([
             __DIR__.'/../config/roles.php' => config_path('roles.php'),
-            __DIR__.'/../migrations/' => base_path('/database/migrations'),
-            __DIR__.'/../seeds/' => base_path('/database/seeds'),
+            __DIR__.'/Database/Migrations' => database_path('migrations'),
+            __DIR__.'/Database/Seeds/publish' => database_path('seeds'),
         ], $publishTag);
     }
 

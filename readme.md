@@ -72,7 +72,7 @@ Add the package to your application service providers in `config/app.php` file.
     php artisan vendor:publish --tag=laravelroles
 ```
 
-#### Publish Specific Assets
+### Publish Specific Assets
 ```bash
     php artisan vendor:publish --tag=laravelroles-config
     php artisan vendor:publish --tag=laravelroles-migrations
@@ -148,7 +148,7 @@ class DatabaseSeeder extends Seeder
 
 3. Seed an initial set of Permissions, Roles, and Users with roles.
 
-```
+```bash
 composer dump-autoload
 php artisan db:seed
 ```
@@ -560,7 +560,7 @@ You can catch these exceptions inside `app/Exceptions/Handler.php` file and do w
 ---
 
 ## Config File
-You can change connection for models, slug separator, models path and there is also a handy pretend feature. Have a look at config file for more information.
+You can change connection for models, slug separator, models path and there is also a handy pretend feature. Have a look at [config file](https://github.com/jeremykenedy/laravel-roles/blob/master/config/roles.php) for more information.
 
 ## More Information
 For more information, please have a look at [HasRoleAndPermission](https://github.com/jeremykenedy/laravel-roles/blob/master/src/Contracts/HasRoleAndPermission.php) contract.

@@ -1,9 +1,8 @@
 <?php
 
-use App\User;
+namespace Database\Seeds;
+
 use Illuminate\Database\Seeder;
-use jeremykenedy\LaravelRoles\Models\Permission;
-use jeremykenedy\LaravelRoles\Models\Role;
 
 class UsersTableSeeder extends Seeder
 {
@@ -14,16 +13,16 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $userRole = Role::where('name', '=', 'User')->first();
-        $adminRole = Role::where('name', '=', 'Admin')->first();
-        $permissions = Permission::all();
+        $userRole       = config('roles.models.role')::where('name', '=', 'User')->first();
+        $adminRole      = config('roles.models.role')::where('name', '=', 'Admin')->first();
+        $permissions    = config('roles.models.permission')::all();
 
         /*
          * Add Users
          *
          */
-        if (User::where('email', '=', 'admin@admin.com')->first() === null) {
-            $newUser = User::create([
+        if (config('roles.defaultUserModel')::where('email', '=', 'admin@admin.com')->first() === null) {
+            $newUser = config('roles.defaultUserModel')::create([
                 'name'     => 'Admin',
                 'email'    => 'admin@admin.com',
                 'password' => bcrypt('password'),
@@ -35,8 +34,8 @@ class UsersTableSeeder extends Seeder
             }
         }
 
-        if (User::where('email', '=', 'user@user.com')->first() === null) {
-            $newUser = User::create([
+        if (config('roles.defaultUserModel')::where('email', '=', 'user@user.com')->first() === null) {
+            $newUser = config('roles.defaultUserModel')::create([
                 'name'     => 'User',
                 'email'    => 'user@user.com',
                 'password' => bcrypt('password'),
