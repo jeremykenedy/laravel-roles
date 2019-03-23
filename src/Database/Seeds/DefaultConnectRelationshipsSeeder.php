@@ -25,7 +25,7 @@ class DefaultConnectRelationshipsSeeder extends Seeder
         echo "\e[32mSeeding:\e[0m DefaultConnectRelationshipsSeeder\r\n";
         foreach ($permissions as $permission) {
             $roleAdmin->attachPermission($permission);
-            echo "\e[32mSeeding:\e[0m DefaultConnectRelationshipsSeeder - Role:Admin attached to Permission:" . $permission->slug . "\r\n";
+            echo "\e[32mSeeding:\e[0m DefaultConnectRelationshipsSeeder - Role:Admin attached to Permission:".$permission->slug."\r\n";
         }
     }
 }
