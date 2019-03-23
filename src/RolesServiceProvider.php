@@ -33,6 +33,7 @@ class RolesServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/roles.php', 'roles');
+        $this->loadMigrationsFrom(__DIR__.'/../migrations');
         $this->publishFiles();
     }
 
