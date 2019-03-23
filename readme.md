@@ -11,7 +11,8 @@ A Powerful package for handling roles and permissions in Laravel.
 - [Installation](#installation)
     - [Composer](#composer)
     - [Service Provider](#service-provider)
-    - [Config File And Migrations](#config-file-and-migrations)
+    - [Publish All Assets](#publish-all-assets)
+    - [Publish Specific Assets](#publish-specific-assets)
     - [HasRoleAndPermission Trait And Contract](#hasroleandpermission-trait-and-contract)
     - [Migrations and Seeds](#migrations-and-seeds)
     - [Migrate from Bican roles](#Migrate-from-bican-roles)
@@ -28,8 +29,10 @@ A Powerful package for handling roles and permissions in Laravel.
     - [Entity Check](#entity-check)
     - [Blade Extensions](#blade-extensions)
     - [Middleware](#middleware)
-- [Config File](#config-file)
+- [Configuration](#configuration)
+    - [Environment File](#environment-file)
 - [More Information](#more-information)
+- [File Tree](#file-tree)
 - [Opening an Issue](#opening-an-issue)
 - [License](#license)
 
@@ -66,11 +69,17 @@ Add the package to your application service providers in `config/app.php` file.
 ],
 ```
 
-### Config File
-
-Publish the package config file and migrations to your application. Run these commands inside your terminal.
-
+### Publish All Assets
+```bash
     php artisan vendor:publish --tag=laravelroles
+```
+
+### Publish Specific Assets
+```bash
+    php artisan vendor:publish --tag=laravelroles-config
+    php artisan vendor:publish --tag=laravelroles-migrations
+    php artisan vendor:publish --tag=laravelroles-seeds
+```
 
 ### HasRoleAndPermission Trait And Contract
 
@@ -141,7 +150,7 @@ class DatabaseSeeder extends Seeder
 
 3. Seed an initial set of Permissions, Roles, and Users with roles.
 
-```
+```bash
 composer dump-autoload
 php artisan db:seed
 ```
@@ -214,16 +223,14 @@ If you migrate from bican/roles to jeremykenedy/LaravelRoles you will need to up
 ### Creating Roles
 
 ```php
-use jeremykenedy\LaravelRoles\Models\Role;
-
-$adminRole = Role::create([
+$adminRole = config('roles.models.role')::create([
     'name' => 'Admin',
     'slug' => 'admin',
     'description' => '',
     'level' => 5,
 ]);
 
-$moderatorRole = Role::create([
+$moderatorRole = config('roles.models.role')::create([
     'name' => 'Forum Moderator',
     'slug' => 'forum.moderator',
 ]);
@@ -236,9 +243,7 @@ $moderatorRole = Role::create([
 It's really simple. You fetch a user from database and call `attachRole` method. There is `BelongsToMany` relationship between `User` and `Role` model.
 
 ```php
-use App\User;
-
-$user = User::find($id);
+$user = config('roles.defaultUserModel')::find($id);
 
 $user->attachRole($adminRole); // you can pass whole object, or just an id
 $user->detachRole($adminRole); // in case you want to detach role
@@ -251,34 +256,18 @@ $user->syncRoles($roles); // you can pass Eloquent collection, or just an array 
 You can assign the user a role upon the users registration by updating the file `app\Http\Controllers\Auth\RegisterController.php`.
 You can assign a role to a user upon registration by including the needed models and modifying the `create()` method to attach a user role. See example below:
 
-* Update the top of `app\Http\Controllers\Auth\RegisterController.php`:
-
-```php
-<?php
-
-namespace App\Http\Controllers\Auth;
-
-use App\User;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use jeremykenedy\LaravelRoles\Models\Role;
-use jeremykenedy\LaravelRoles\Models\Permission;
-use Illuminate\Foundation\Auth\RegistersUsers;
-
-```
-
 * Updated `create()` method of `app\Http\Controllers\Auth\RegisterController.php`:
 
 ```php
     protected function create(array $data)
     {
-        $user = User::create([
+        $user = config('roles.defaultUserModel')::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
 
-        $role = Role::where('name', '=', 'User')->first();  //choose the default role upon user creation.
+        $role = config('roles.models.role')::where('name', '=', 'User')->first();  //choose the default role upon user creation.
         $user->attachRole($role);
 
         return $user;
@@ -344,18 +333,17 @@ if ($user->level() > 4) {
 
 ### Creating Permissions
 
-It's very simple thanks to `Permission` model.
+It's very simple thanks to `Permission` model called from `config('roles.models.permission')`.
 
 ```php
-use jeremykenedy\LaravelRoles\Models\Permission;
 
-$createUsersPermission = Permission::create([
+$createUsersPermission = config('roles.models.permission')::create([
     'name' => 'Create users',
     'slug' => 'create.users',
     'description' => '', // optional
 ]);
 
-$deleteUsersPermission = Permission::create([
+$deleteUsersPermission = config('roles.models.permission')::create([
     'name' => 'Delete users',
     'slug' => 'delete.users',
 ]);
@@ -366,13 +354,10 @@ $deleteUsersPermission = Permission::create([
 You can attach permissions to a role or directly to a specific user (and of course detach them as well).
 
 ```php
-use App\User;
-use jeremykenedy\LaravelRoles\Models\Role;
-
-$role = Role::find($roleId);
+$role = config('roles.models.role')::find($roleId);
 $role->attachPermission($createUsersPermission); // permission attached to a role
 
-$user = User::find($userId);
+$user = config('roles.defaultUserModel')::find($userId);
 $user->attachPermission($deleteUsersPermission); // permission attached to a user
 ```
 
@@ -416,9 +401,8 @@ Let's say you have an article and you want to edit it. This article belongs to a
 
 ```php
 use App\Article;
-use jeremykenedy\LaravelRoles\Models\Permission;
 
-$editArticlesPermission = Permission::create([
+$editArticlesPermission = config('roles.models.permission')::create([
     'name' => 'Edit articles',
     'slug' => 'edit.articles',
     'model' => 'App\Article',
@@ -552,14 +536,185 @@ You can catch these exceptions inside `app/Exceptions/Handler.php` file and do w
 
 ---
 
-## Config File
-You can change connection for models, slug separator, models path and there is also a handy pretend feature. Have a look at config file for more information.
+## Configuration
+* You can change connection for models, slug separator, models path and there is also a handy pretend feature.
+* There are many configurable options which have been extended to be able to configured via `.env` file variables.
+* Editing the configuration file directly may not needed becuase of this.
+* See config file: [roles.php](https://github.com/jeremykenedy/laravel-roles/blob/master/config/roles.php).
+
+```php
+
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Package Connection
+    |--------------------------------------------------------------------------
+    |
+    | You can set a different database connection for this package. It will set
+    | new connection for models Role and Permission. When this option is null,
+    | it will connect to the main database, which is set up in database.php
+    |
+    */
+
+    'connection' => null,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Slug Separator
+    |--------------------------------------------------------------------------
+    |
+    | Here you can change the slug separator. This is very important in matter
+    | of magic method __call() and also a `Slugable` trait. The default value
+    | is a dot.
+    |
+    */
+
+    'separator' => '.',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Models
+    |--------------------------------------------------------------------------
+    |
+    | If you want, you can replace default models from this package by models
+    | you created. Have a look at `jeremykenedy\LaravelRoles\Models\Role` model and
+    | `jeremykenedy\LaravelRoles\Models\Permission` model.
+    |
+    */
+
+    'models' => [
+        'role'       => jeremykenedy\LaravelRoles\Models\Role::class,
+        'permission' => jeremykenedy\LaravelRoles\Models\Permission::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Roles, Permissions and Allowed "Pretend"
+    |--------------------------------------------------------------------------
+    |
+    | You can pretend or simulate package behavior no matter what is in your
+    | database. It is really useful when you are testing you application.
+    | Set up what will methods hasRole(), hasPermission() and allowed() return.
+    |
+    */
+
+    'pretend' => [
+
+        'enabled' => false,
+
+        'options' => [
+            'hasRole'       => true,
+            'hasPermission' => true,
+            'allowed'       => true,
+        ],
+
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Laravel Default User Model
+    |--------------------------------------------------------------------------
+    |
+    | This is the applications default user model.
+    |
+    */
+
+    'defaultUserModel' => env('ROLES_DEFAULT_USER_MODEL', config('auth.providers.users.model')),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Seeds
+    |--------------------------------------------------------------------------
+    |
+    | These are the default package seeds. You can seed the package built
+    | in seeds without having to seed them. These seed directly from
+    | the package. These are not the published seeds.
+    |
+    */
+
+    'defaultSeeds' => [
+        'PermissionsTableSeeder'        => env('ROLES_SEED_DEFAULT_PERMISSIONS', true),
+        'RolesTableSeeder'              => env('ROLES_SEED_DEFAULT_ROLES', true),
+        'ConnectRelationshipsSeeder'    => env('ROLES_SEED_DEFAULT_RELATIONSHIPS', true),
+        'UsersTableSeeder'              => env('ROLES_SEED_DEFAULT_USERS', false),
+    ],
+];
+
+
+```
+
+### Environment File
+```
+# Default User Model
+ROLES_DEFAULT_USER_MODEL=App\User
+
+# Roles Database Seeder Settings
+ROLES_SEED_DEFAULT_PERMISSIONS=true
+ROLES_SEED_DEFAULT_ROLES=true
+ROLES_SEED_DEFAULT_RELATIONSHIPS=true
+ROLES_SEED_DEFAULT_USERS=false
+```
 
 ## More Information
 For more information, please have a look at [HasRoleAndPermission](https://github.com/jeremykenedy/laravel-roles/blob/master/src/Contracts/HasRoleAndPermission.php) contract.
 
-## Credit Note
-This package is an adaptation of [romanbican/roles](https://github.com/romanbican/roles) and [ultraware/roles](https://github.com/ultraware/roles/).
+## File Tree
+```bash
+├── .env.example
+├── .gitignore
+├── LICENSE
+├── composer.json
+├── config
+│   └── roles.php
+├── readme.md
+└── src
+    ├── Contracts
+    │   ├── HasRoleAndPermission.php
+    │   ├── PermissionHasRelations.php
+    │   └── RoleHasRelations.php
+    ├── Database
+    │   ├── Migrations
+    │   │   ├── 2016_01_15_105324_create_roles_table.php
+    │   │   ├── 2016_01_15_114412_create_role_user_table.php
+    │   │   ├── 2016_01_26_115212_create_permissions_table.php
+    │   │   ├── 2016_01_26_115523_create_permission_role_table.php
+    │   │   └── 2016_02_09_132439_create_permission_user_table.php
+    │   └── Seeds
+    │       ├── DefaultConnectRelationshipsSeeder.php
+    │       ├── DefaultPermissionsTableSeeder.php
+    │       ├── DefaultRolesTableSeeder.php
+    │       ├── DefaultUsersTableSeeder.php
+    │       └── publish
+    │           ├── ConnectRelationshipsSeeder.php
+    │           ├── PermissionsTableSeeder.php
+    │           ├── RolesTableSeeder.php
+    │           └── UsersTableSeeder.php
+    ├── Exceptions
+    │   ├── AccessDeniedException.php
+    │   ├── LevelDeniedException.php
+    │   ├── PermissionDeniedException.php
+    │   └── RoleDeniedException.php
+    ├── Middleware
+    │   ├── VerifyLevel.php
+    │   ├── VerifyPermission.php
+    │   └── VerifyRole.php
+    ├── Models
+    │   ├── Permission.php
+    │   └── Role.php
+    ├── RolesFacade.php
+    ├── RolesServiceProvider.php
+    └── Traits
+        ├── HasRoleAndPermission.php
+        ├── PermissionHasRelations.php
+        ├── RoleHasRelations.php
+        └── Slugable.php
+```
+
+* Tree command can be installed using brew: `brew install tree`
+* File tree generated using command `tree -a -I '.git|node_modules|vendor|storage|tests'`
 
 ## Opening an Issue
 Before opening an issue there are a couple of considerations:
@@ -575,5 +730,8 @@ Before opening an issue there are a couple of considerations:
 * Need some help, I can do my best on Slack: https://opensourcehelpgroup.slack.com
 * Please be considerate that this is an open source project that I provide to the community for FREE when opening an issue. 
 
+#### Credit Note
+This package is an adaptation of [romanbican/roles](https://github.com/romanbican/roles) and [ultraware/roles](https://github.com/ultraware/roles/).
+
 ## License
-This package is free software distributed under the terms of the MIT license.
+This package is free software distributed under the terms of the [MIT license](https://opensource.org/licenses/MIT). Enjoy!

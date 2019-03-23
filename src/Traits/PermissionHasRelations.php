@@ -23,6 +23,6 @@ trait PermissionHasRelations
      */
     public function users()
     {
-        return $this->belongsToMany(config('auth.providers.users.model'))->withTimestamps();
+        return $this->belongsToMany(config('roles.defaultUserModel'))->withTimestamps();
     }
 }
