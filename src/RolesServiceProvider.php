@@ -48,13 +48,19 @@ class RolesServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/../config/roles.php' => config_path('roles.php'),
-        ], $publishTag);
+        ], $publishTag.'-config');
 
         $this->publishes([
             __DIR__.'/../migrations/' => base_path('/database/migrations'),
-        ], $publishTag);
+        ], $publishTag.'-migrations');
 
         $this->publishes([
+            __DIR__.'/../seeds/' => base_path('/database/seeds'),
+        ], $publishTag.'-seeds');
+
+        $this->publishes([
+            __DIR__.'/../config/roles.php' => config_path('roles.php'),
+            __DIR__.'/../migrations/' => base_path('/database/migrations'),
             __DIR__.'/../seeds/' => base_path('/database/seeds'),
         ], $publishTag);
     }

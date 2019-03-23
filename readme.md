@@ -11,7 +11,8 @@ A Powerful package for handling roles and permissions in Laravel.
 - [Installation](#installation)
     - [Composer](#composer)
     - [Service Provider](#service-provider)
-    - [Config File And Migrations](#config-file-and-migrations)
+    - [Publish All Assets](#publish-all-assets)
+    - [Publish Specific Assets](#publish-specific-assets)
     - [HasRoleAndPermission Trait And Contract](#hasroleandpermission-trait-and-contract)
     - [Migrations and Seeds](#migrations-and-seeds)
     - [Migrate from Bican roles](#Migrate-from-bican-roles)
@@ -66,11 +67,17 @@ Add the package to your application service providers in `config/app.php` file.
 ],
 ```
 
-### Config File
-
-Publish the package config file and migrations to your application. Run these commands inside your terminal.
-
+### Publish All Assets
+```bash
     php artisan vendor:publish --tag=laravelroles
+```
+
+#### Publish Specific Assets
+```bash
+    php artisan vendor:publish --tag=laravelroles-config
+    php artisan vendor:publish --tag=laravelroles-migrations
+    php artisan vendor:publish --tag=laravelroles-seeds
+```
 
 ### HasRoleAndPermission Trait And Contract
 
