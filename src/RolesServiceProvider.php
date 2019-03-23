@@ -3,9 +3,9 @@
 namespace jeremykenedy\LaravelRoles;
 
 use Illuminate\Support\ServiceProvider;
+use jeremykenedy\LaravelRoles\Database\Seeds\DefaultConnectRelationshipsSeeder;
 use jeremykenedy\LaravelRoles\Database\Seeds\DefaultPermissionsTableSeeder;
 use jeremykenedy\LaravelRoles\Database\Seeds\DefaultRolesTableSeeder;
-use jeremykenedy\LaravelRoles\Database\Seeds\DefaultConnectRelationshipsSeeder;
 use jeremykenedy\LaravelRoles\Database\Seeds\DefaultUsersTableSeeder;
 
 class RolesServiceProvider extends ServiceProvider
@@ -96,8 +96,8 @@ class RolesServiceProvider extends ServiceProvider
         ], $publishTag.'-seeds');
 
         $this->publishes([
-            __DIR__.'/../config/roles.php' => config_path('roles.php'),
-            __DIR__.'/Database/Migrations' => database_path('migrations'),
+            __DIR__.'/../config/roles.php'    => config_path('roles.php'),
+            __DIR__.'/Database/Migrations'    => database_path('migrations'),
             __DIR__.'/Database/Seeds/publish' => database_path('seeds'),
         ], $publishTag);
     }

@@ -59,7 +59,7 @@ class DefaultPermissionsTableSeeder extends Seeder
                     'description'   => $Permissionitem['description'],
                     'model'         => $Permissionitem['model'],
                 ]);
-                echo "\e[32mSeeding:\e[0m DefaultPermissionitemsTableSeeder - Permission:" . $Permissionitem['slug'] . "\r\n";
+                echo "\e[32mSeeding:\e[0m DefaultPermissionitemsTableSeeder - Permission:".$Permissionitem['slug']."\r\n";
             }
         }
     }

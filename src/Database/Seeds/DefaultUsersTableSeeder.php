@@ -13,9 +13,9 @@ class DefaultUsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $userRole       = config('roles.models.role')::where('name', '=', 'User')->first();
-        $adminRole      = config('roles.models.role')::where('name', '=', 'Admin')->first();
-        $permissions    = config('roles.models.permission')::all();
+        $userRole = config('roles.models.role')::where('name', '=', 'User')->first();
+        $adminRole = config('roles.models.role')::where('name', '=', 'Admin')->first();
+        $permissions = config('roles.models.permission')::all();
 
         /*
          * Add Users
