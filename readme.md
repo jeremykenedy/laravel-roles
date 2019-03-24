@@ -1,13 +1,16 @@
-# Roles And Permissions For Laravel,Supports Laravel 5.3, 5.4, 5.5, 5.6, 5.7 and 5.8.
+# Laravel Roles
 
 [![Total Downloads](https://poser.pugx.org/jeremykenedy/laravel-roles/d/total.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
 [![Latest Stable Version](https://poser.pugx.org/jeremykenedy/laravel-roles/v/stable.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/?branch=master)
 [![StyleCI](https://github.styleci.io/repos/82768379/shield?branch=master)](https://github.styleci.io/repos/82768379)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<a href="https://www.patreon.com/bePatron?u=10119959" title="Become a Patreon">
+    <img src="https://c5.patreon.com/external/logo/become_a_patron_button.png" alt="Become a Patreon" width="85px" > 
+</a>
 
-A Powerful package for handling roles and permissions in Laravel.
-
+#### Table of contents
+- [About](#about)
 - [Installation](#installation)
     - [Composer](#composer)
     - [Service Provider](#service-provider)
@@ -36,10 +39,11 @@ A Powerful package for handling roles and permissions in Laravel.
 - [Opening an Issue](#opening-an-issue)
 - [License](#license)
 
----
+### About
+A Powerful package for handling roles and permissions in Laravel.
+Supports Laravel 5.3, 5.4, 5.5, 5.6, 5.7 and 5.8.
 
 ## Installation
-
 This package is very easy to set up. There are only couple of steps.
 
 ### Composer
