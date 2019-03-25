@@ -1,0 +1,37 @@
+language: php
+sudo: required
+dist: trusty
+group: edge
+
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+
+sudo: false
+
+services:
+  - mysql
+
+before_script:
+  - mysql -u root -e 'create database laravelroles;'
+  - curl -s http://getcomposer.org/installer | php
+  - php composer.phar install
+  - composer create-project --prefer-dist laravel/laravel laravelroles
+  - cp .env.travis laravelroles/.env
+  - cd laravelroles
+  - composer self-update
+  - composer install --prefer-source --no-interaction
+  - composer dump-autoload
+  - composer require jeremykenedy/laravel-roles
+  - php artisan key:generate
+  - php artisan vendor:publish --tag=laravelroles
+  - php artisan make:auth
+  - composer dump-autoload
+  - php artisan clear-compiled
+
+before_install:
+  - travis_retry composer self-update
+
+install:
+  - travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest

@@ -1,4 +1,4 @@
-### OSX BOOGERS ###
+### OSX Vendor Configs ###
 .DS_Store
 *._DS_Store
 ._.DS_Store
@@ -6,23 +6,48 @@
 ._*
 ._.*
 
-### WINDOWS BOOGERS ###
+### Windows Vendor Configs ###
 Thumbs.db
 
 ### Sass ###
+#bower_components/*
 /.sass-cache/*
 .sass-cache
 
-### SUBLIMETEXT BOOGERS ###
+### Sublimt Text Vendor Configs ###
 *.sublime-workspace
 
-### PHPSTORM BOOGERS ###
+### PHP Storm Vendor Configs ###
 .idea/*
 /.idea/*
+.phpintel/*
+/.phpintel/*
 
-### DIFFERENT TYPE OF MASTER CONFIGS ###
+### VS Code Vendor Configs ###
+/.vscode
+
+### Vagrant/Homestead Vendor Configs ###
+/.vagrant
+Homestead.yaml
+Homestead.json
+
+### Master Configs ###
+.env
 composer.lock
 
-### ASSET EXCLUSIONS ###
-vendor/
-/log
+### Assets ###
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+/storage/debugbar
+/storage/framework
+/storage/logs
+/storage/users
+packages/
+
+# Debug Files
+npm-debug.log
+yarn-error.log
+
