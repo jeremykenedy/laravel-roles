@@ -29,7 +29,6 @@ class RolesServiceProvider extends ServiceProvider
      *
      * @return void
      */
-
     public function boot()
     {
         $this->app['router']->aliasMiddleware('role', VerifyRole::class);
