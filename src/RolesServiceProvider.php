@@ -7,9 +7,9 @@ use jeremykenedy\LaravelRoles\Database\Seeds\DefaultConnectRelationshipsSeeder;
 use jeremykenedy\LaravelRoles\Database\Seeds\DefaultPermissionsTableSeeder;
 use jeremykenedy\LaravelRoles\Database\Seeds\DefaultRolesTableSeeder;
 use jeremykenedy\LaravelRoles\Database\Seeds\DefaultUsersTableSeeder;
-use jeremykenedy\LaravelRoles\Middleware\VerifyRole;
-use jeremykenedy\LaravelRoles\Middleware\VerifyPermission;
 use jeremykenedy\LaravelRoles\Middleware\VerifyLevel;
+use jeremykenedy\LaravelRoles\Middleware\VerifyPermission;
+use jeremykenedy\LaravelRoles\Middleware\VerifyRole;
 
 class RolesServiceProvider extends ServiceProvider
 {
@@ -29,7 +29,6 @@ class RolesServiceProvider extends ServiceProvider
      *
      * @return void
      */
-
     public function boot()
     {
         $this->app['router']->aliasMiddleware('role', VerifyRole::class);
