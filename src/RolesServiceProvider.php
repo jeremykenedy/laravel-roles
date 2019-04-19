@@ -7,6 +7,9 @@ use jeremykenedy\LaravelRoles\Database\Seeds\DefaultConnectRelationshipsSeeder;
 use jeremykenedy\LaravelRoles\Database\Seeds\DefaultPermissionsTableSeeder;
 use jeremykenedy\LaravelRoles\Database\Seeds\DefaultRolesTableSeeder;
 use jeremykenedy\LaravelRoles\Database\Seeds\DefaultUsersTableSeeder;
+use jeremykenedy\LaravelRoles\Middleware\VerifyRole;
+use jeremykenedy\LaravelRoles\Middleware\VerifyPermission;
+use jeremykenedy\LaravelRoles\Middleware\VerifyLevel;
 
 class RolesServiceProvider extends ServiceProvider
 {
@@ -22,10 +25,16 @@ class RolesServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      *
+     * @param \Illuminate\Routing\Router $router The router
+     *
      * @return void
      */
+
     public function boot()
     {
+        $this->app['router']->aliasMiddleware('role', VerifyRole::class);
+        $this->app['router']->aliasMiddleware('permission', VerifyPermission::class);
+        $this->app['router']->aliasMiddleware('level', VerifyLevel::class);
         $this->registerBladeExtensions();
     }
 

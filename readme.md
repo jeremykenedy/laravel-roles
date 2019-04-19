@@ -50,11 +50,21 @@ Supports Laravel 5.3, 5.4, 5.5, 5.6, 5.7 and 5.8.
 This package is very easy to set up. There are only couple of steps.
 
 ### Composer
+From your projects root folder in terminal run:
 
-Pull this package in through Composer
+Laravel 5.8 and up use:
+
 ```
-composer require jeremykenedy/laravel-roles
+    composer require jeremykenedy/laravel-roles
 ```
+
+Laravel 5.7 and below use:
+
+```
+    composer require jeremykenedy/laravel-roles:1.4.0
+```
+
+* Note: The major difference is that Laravel's users table migration out the box changed from `$table->increments('id');` to `$table->bigIncrements('id');` in Laravel 5.8.
 
 ### Service Provider
 * Laravel 5.5 and up
@@ -461,8 +471,9 @@ There are four Blade extensions. Basically, it is replacement for classic if sta
 ```
 
 ### Middleware
-
-This package comes with `VerifyRole`, `VerifyPermission` and `VerifyLevel` middleware. You must add them inside your `app/Http/Kernel.php` file.
+This package comes with `VerifyRole`, `VerifyPermission` and `VerifyLevel` middleware.
+The middleware aliases are already registered in `\jeremykenedy\LaravelRoles\RolesServiceProvider` as of 1.7.
+You can optionally add them inside your `app/Http/Kernel.php` file with your own aliases like outlined below:
 
 ```php
 /**
@@ -473,10 +484,16 @@ This package comes with `VerifyRole`, `VerifyPermission` and `VerifyLevel` middl
 protected $routeMiddleware = [
     'auth' => \App\Http\Middleware\Authenticate::class,
     'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+    'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+    'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+    'can' => \Illuminate\Auth\Middleware\Authorize::class,
     'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-    'role' => \jeremykenedy\LaravelRoles\Middleware\VerifyRole::class,
-    'permission' => \jeremykenedy\LaravelRoles\Middleware\VerifyPermission::class,
-    'level' => \jeremykenedy\LaravelRoles\Middleware\VerifyLevel::class,
+    'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
+    'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+    'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+    'role'          => \jeremykenedy\LaravelRoles\Middleware\VerifyRole::class,
+    'permission'    => \jeremykenedy\LaravelRoles\Middleware\VerifyPermission::class,
+    'level'         => \jeremykenedy\LaravelRoles\Middleware\VerifyLevel::class,
 ];
 ```
 
