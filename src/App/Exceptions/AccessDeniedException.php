@@ -1,6 +1,6 @@
 <?php
 
-namespace jeremykenedy\LaravelRoles\Exceptions;
+namespace jeremykenedy\LaravelRoles\App\Exceptions;
 
 use Exception;
 

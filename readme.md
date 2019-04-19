@@ -522,7 +522,7 @@ Route::group(['middleware' => ['role:admin']], function () {
 
 ```
 
-It throws `\jeremykenedy\LaravelRoles\Exceptions\RoleDeniedException`, `\jeremykenedy\LaravelRoles\Exceptions\PermissionDeniedException` or `\jeremykenedy\LaravelRoles\Exceptions\LevelDeniedException` exceptions if it goes wrong.
+It throws `\jeremykenedy\LaravelRoles\App\Exceptions\RoleDeniedException`, `\jeremykenedy\LaravelRoles\App\Exceptions\PermissionDeniedException` or `\jeremykenedy\LaravelRoles\App\Exceptions\LevelDeniedException` exceptions if it goes wrong.
 
 You can catch these exceptions inside `app/Exceptions/Handler.php` file and do whatever you want.
 
@@ -537,10 +537,10 @@ You can catch these exceptions inside `app/Exceptions/Handler.php` file and do w
     public function render($request, Exception $exception)
     {
 
-        $userLevelCheck = $exception instanceof \jeremykenedy\LaravelRoles\Exceptions\RoleDeniedException ||
-            $exception instanceof \jeremykenedy\LaravelRoles\Exceptions\RoleDeniedException ||
-            $exception instanceof \jeremykenedy\LaravelRoles\Exceptions\PermissionDeniedException ||
-            $exception instanceof \jeremykenedy\LaravelRoles\Exceptions\LevelDeniedException;
+        $userLevelCheck = $exception instanceof \jeremykenedy\LaravelRoles\App\Exceptions\RoleDeniedException ||
+            $exception instanceof \jeremykenedy\LaravelRoles\App\Exceptions\RoleDeniedException ||
+            $exception instanceof \jeremykenedy\LaravelRoles\App\Exceptions\PermissionDeniedException ||
+            $exception instanceof \jeremykenedy\LaravelRoles\App\Exceptions\LevelDeniedException;
 
         if ($userLevelCheck) {
 

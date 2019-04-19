@@ -5,7 +5,7 @@ namespace jeremykenedy\LaravelRoles\App\Http\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use jeremykenedy\LaravelRoles\Exceptions\RoleDeniedException;
+use jeremykenedy\LaravelRoles\App\Exceptions\RoleDeniedException;
 
 class VerifyRole
 {

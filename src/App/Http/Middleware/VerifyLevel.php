@@ -5,7 +5,7 @@ namespace jeremykenedy\LaravelRoles\App\Http\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use jeremykenedy\LaravelRoles\Exceptions\LevelDeniedException;
+use jeremykenedy\LaravelRoles\App\Exceptions\LevelDeniedException;
 
 class VerifyLevel
 {
@@ -31,7 +31,7 @@ class VerifyLevel
      * @param \Closure $next
      * @param int      $level
      *
-     * @throws \jeremykenedy\LaravelRoles\Exceptions\LevelDeniedException
+     * @throws \jeremykenedy\LaravelRoles\App\Exceptions\LevelDeniedException
      *
      * @return mixed
      */

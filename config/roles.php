@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'connection' => null,
+    'connection' => env('ROLES_DEFAULT_CONNECTION', null),
 
     /*
     |--------------------------------------------------------------------------
@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'separator' => '.',
+    'separator' => env('ROLES_DEFAULT_SEPARATOR', '.'),
 
     /*
     |--------------------------------------------------------------------------
@@ -40,8 +40,8 @@ return [
     */
 
     'models' => [
-        'role'       => jeremykenedy\LaravelRoles\Models\Role::class,
-        'permission' => jeremykenedy\LaravelRoles\Models\Permission::class,
+        'role'       => env('ROLES_DEFAULT_ROLE_MODEL', jeremykenedy\LaravelRoles\Models\Role::class),
+        'permission' => env('ROLES_DEFAULT_PERMISSION_MODEL', jeremykenedy\LaravelRoles\Models\Permission::class),
     ],
 
     /*
