@@ -4,19 +4,25 @@ namespace jeremykenedy\LaravelRoles\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use jeremykenedy\LaravelRoles\Contracts\RoleHasRelations as RoleHasRelationsContract;
+use jeremykenedy\LaravelRoles\Traits\DatabaseTraits;
 use jeremykenedy\LaravelRoles\Traits\RoleHasRelations;
 use jeremykenedy\LaravelRoles\Traits\Slugable;
 
 class Role extends Model implements RoleHasRelationsContract
 {
-    use Slugable, RoleHasRelations;
+    use Slugable, RoleHasRelations, DatabaseTraits;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'description', 'level'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+        'level'
+    ];
 
     /**
      * Create a new model instance.
@@ -26,9 +32,6 @@ class Role extends Model implements RoleHasRelationsContract
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-
-        if ($connection = config('roles.connection')) {
-            $this->connection = $connection;
-        }
+        $this->table = config('roles.rolesTable');
     }
 }

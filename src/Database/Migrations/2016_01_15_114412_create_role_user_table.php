@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateRoleUserTable extends Migration
 {
@@ -12,14 +13,21 @@ class CreateRoleUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('role_user', function (Blueprint $table) {
-            $table->increments('id')->unsigned();
-            $table->integer('role_id')->unsigned()->index();
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
-            $table->unsignedBigInteger('user_id')->unsigned()->index();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->timestamps();
-        });
+        $connection = config('roles.connection');
+        $table      = config('roles.roleUserTable');
+        $tableCheck = Schema::connection($connection)->hasTable($table);
+
+        if (!$tableCheck) {
+            Schema::connection($connection)->create($table, function (Blueprint $table) {
+                $table->increments('id')->unsigned();
+                $table->integer('role_id')->unsigned()->index();
+                $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+                $table->unsignedBigInteger('user_id')->unsigned()->index();
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->timestamps();
+                $table->softDeletes();
+            });
+        }
     }
 
     /**
@@ -29,6 +37,8 @@ class CreateRoleUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('role_user');
+        $connection = config('roles.connection');
+        $table      = config('roles.roleUserTable');
+        Schema::connection($connection)->dropIfExists($table);
     }
 }

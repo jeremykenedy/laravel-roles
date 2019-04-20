@@ -13,7 +13,12 @@ return [
     |
     */
 
-    'connection' => env('ROLES_DEFAULT_CONNECTION', null),
+    'connection'            => env('ROLES_DATABASE_CONNECTION', null),
+    'rolesTable'            => env('ROLES_ROLES_DATABASE_TABLE', 'roles'),
+    'roleUserTable'         => env('ROLES_ROLE_USER_DATABASE_TABLE', 'role_user'),
+    'permissionsTable'      => env('ROLES_PERMISSIONS_DATABASE_TABLE', 'permissions'),
+    'permissionsRoleTable'  => env('ROLES_PERMISSION_ROLE_DATABASE_TABLE', 'permission_role'),
+    'permissionsUserTable'  => env('ROLES_PERMISSION_USER_DATABASE_TABLE', 'permission_user'),
 
     /*
     |--------------------------------------------------------------------------
@@ -40,8 +45,8 @@ return [
     */
 
     'models' => [
-        'role'       => env('ROLES_DEFAULT_ROLE_MODEL', jeremykenedy\LaravelRoles\Models\Role::class),
-        'permission' => env('ROLES_DEFAULT_PERMISSION_MODEL', jeremykenedy\LaravelRoles\Models\Permission::class),
+        'role'       => env('ROLES_DEFAULT_ROLE_MODEL', jeremykenedy\LaravelRoles\App\Models\Role::class),
+        'permission' => env('ROLES_DEFAULT_PERMISSION_MODEL', jeremykenedy\LaravelRoles\App\Models\Permission::class),
     ],
 
     /*
