@@ -39,8 +39,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | If you want, you can replace default models from this package by models
-    | you created. Have a look at `jeremykenedy\LaravelRoles\Models\Role` model and
-    | `jeremykenedy\LaravelRoles\Models\Permission` model.
+    | you created. Have a look at `jeremykenedy\LaravelRoles\App\Models\Role` model and
+    | `jeremykenedy\LaravelRoles\App\Models\Permission` model.
     |
     */
 
