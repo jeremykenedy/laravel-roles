@@ -3,7 +3,6 @@
 namespace jeremykenedy\LaravelRoles\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
 use jeremykenedy\LaravelRoles\Traits\RolesGUITraits;
 
 class LaravelRolesController extends Controller
@@ -21,9 +20,9 @@ class LaravelRolesController extends Controller
      */
     public function __construct()
     {
-        $this->_rolesGuiAuthEnabled         = config('roles.rolesGuiAuthEnabled');
-        $this->_rolesGuiMiddlewareEnabled   = config('roles.rolesGuiMiddlewareEnabled');
-        $this->_rolesGuiMiddleware          = config('roles.rolesGuiMiddleware');
+        $this->_rolesGuiAuthEnabled = config('roles.rolesGuiAuthEnabled');
+        $this->_rolesGuiMiddlewareEnabled = config('roles.rolesGuiMiddlewareEnabled');
+        $this->_rolesGuiMiddleware = config('roles.rolesGuiMiddleware');
 
         if ($this->_rolesGuiAuthEnabled) {
             $this->middleware('auth');
@@ -41,13 +40,13 @@ class LaravelRolesController extends Controller
      */
     public function index()
     {
-        $roles                              = $this->getRoles();
-        $permissions                        = $this->getPermissions();
-        $deletedRoleItems                   = $this->getDeletedRoles();
-        $users                              = $this->getUsers();
-        $sortedRolesWithUsers               = $this->getSortedUsersWithRoles($roles, $users);
+        $roles = $this->getRoles();
+        $permissions = $this->getPermissions();
+        $deletedRoleItems = $this->getDeletedRoles();
+        $users = $this->getUsers();
+        $sortedRolesWithUsers = $this->getSortedUsersWithRoles($roles, $users);
         $sortedRolesWithPermissionsAndUsers = $this->getSortedRolesWithPermissionsAndUsers($sortedRolesWithUsers, $permissions);
-        $sortedPermissionsRolesUsers        = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions);
+        $sortedPermissionsRolesUsers = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions);
 
         $data = [
             'roles',
@@ -61,5 +60,4 @@ class LaravelRolesController extends Controller
 
         return view('laravelroles::laravelroles.crud.dashboard', compact($data));
     }
-
 }

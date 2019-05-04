@@ -16,11 +16,11 @@ return [
     ],
 
     'cards' => [
-        'users-count'   => '{1} :count user|[2,*] :count users',
+        'users-count'         => '{1} :count user|[2,*] :count users',
         'permissions-count'   => '{1} :count permission|[2,*] :count permissions',
-        'roles-count'   => '{1} :count role|[2,*] :count roles',
-        'none-count'    => 'None',
-        'role-card' => [
+        'roles-count'         => '{1} :count role|[2,*] :count roles',
+        'none-count'          => 'None',
+        'role-card'           => [
             'user-id'                   => 'User Id',
             'user-name'                 => 'Username',
             'user-email'                => 'User Email',
@@ -57,6 +57,6 @@ return [
 
     'tooltips' => [
         'view-user' => 'View User',
-    ]
+    ],
 
 ];

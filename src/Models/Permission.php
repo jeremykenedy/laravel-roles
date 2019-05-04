@@ -42,7 +42,7 @@ class Permission extends Model implements PermissionHasRelationsContract
         'name',
         'slug',
         'description',
-        'model'
+        'model',
     ];
 
     /**

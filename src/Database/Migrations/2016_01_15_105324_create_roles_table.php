@@ -14,7 +14,7 @@ class CreateRolesTable extends Migration
     public function up()
     {
         $connection = config('roles.connection');
-        $table      = config('roles.rolesTable');
+        $table = config('roles.rolesTable');
         $tableCheck = Schema::connection($connection)->hasTable($table);
 
         if (!$tableCheck) {
@@ -38,7 +38,7 @@ class CreateRolesTable extends Migration
     public function down()
     {
         $connection = config('roles.connection');
-        $table      = config('roles.rolesTable');
+        $table = config('roles.rolesTable');
         Schema::connection($connection)->dropIfExists($table);
     }
 }
