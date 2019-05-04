@@ -11,6 +11,5 @@ Route::group([
         'as'            => 'laravelroles::',
         'namespace'     => 'jeremykenedy\LaravelRoles\App\Http\Controllers',
     ], function () {
-
-    Route::resource('roles', 'LaravelRolesController');
-});
+        Route::resource('roles', 'LaravelRolesController');
+    });

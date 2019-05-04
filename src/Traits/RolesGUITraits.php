@@ -9,9 +9,9 @@ trait RolesGUITraits
     /**
      * Retrieves permission roles.
      *
-     * @param Permission $permission                The permission
-     * @param Collection $permissionsAndRolesPivot  The permissions and roles pivot
-     * @param Collection $sortedRolesWithUsers      The sorted roles with users
+     * @param Permission $permission               The permission
+     * @param Collection $permissionsAndRolesPivot The permissions and roles pivot
+     * @param Collection $sortedRolesWithUsers     The sorted roles with users
      *
      * @return Collection of permission roles
      */
@@ -25,18 +25,18 @@ trait RolesGUITraits
                         $roles[] = $sortedRolesWithUsersItemValue['role'];
                     }
                 }
-
             }
         }
+
         return collect($roles);
     }
 
     /**
      * Retrieves permission users.
      *
-     * @param Permission $permission                The permission
-     * @param Collection $permissionsAndRolesPivot  The permissions and roles pivot
-     * @param Collection $sortedRolesWithUsers      The sorted roles with users
+     * @param Permission $permission               The permission
+     * @param Collection $permissionsAndRolesPivot The permissions and roles pivot
+     * @param Collection $sortedRolesWithUsers     The sorted roles with users
      *
      * @return Collection of Permission Users
      */
@@ -54,6 +54,7 @@ trait RolesGUITraits
                 }
             }
         }
+
         return collect($users);
     }
 
@@ -100,8 +101,8 @@ trait RolesGUITraits
     /**
      * Gets the sorted users with roles.
      *
-     * @param collection $roles  The roles
-     * @param collection $users  The users
+     * @param collection $roles The roles
+     * @param collection $users The users
      *
      * @return collection The sorted users with roles.
      */
@@ -122,13 +123,14 @@ trait RolesGUITraits
                 }
             }
         }
+
         return collect($sortedUsersWithRoles);
     }
 
     /**
      * Gets the permissions with roles.
      *
-     * @param collection $role   The role
+     * @param collection $role The role
      *
      * @return collection The permissions with roles.
      */
@@ -138,21 +140,22 @@ trait RolesGUITraits
         if ($role) {
             $query->where('role_id', '=', $role->id);
         }
+
         return $query->get();
     }
 
     /**
      * Gets the sorted roles with permissions.
      *
-     * @param collection $sortedRolesWithUsers  The sorted roles with users
-     * @param collection $permissions           The permissions
+     * @param collection $sortedRolesWithUsers The sorted roles with users
+     * @param collection $permissions          The permissions
      *
      * @return collection The sorted roles with permissions.
      */
     public function getSortedRolesWithPermissionsAndUsers($sortedRolesWithUsers, $permissions)
     {
         $sortedRolesWithPermissions = [];
-        $permissionsAndRoles        = $this->getPermissionsWithRoles();
+        $permissionsAndRoles = $this->getPermissionsWithRoles();
 
         foreach ($sortedRolesWithUsers as $sortedRolekey => $sortedRoleValue) {
             $role = $sortedRoleValue['role'];
@@ -183,21 +186,22 @@ trait RolesGUITraits
                 }
             }
         }
+
         return collect($sortedRolesWithPermissions);
     }
 
     /**
      * Gets the sorted permissons with roles and users.
      *
-     * @param collection $sortedRolesWithUsers  The sorted roles with users
-     * @param collection $permissions           The permissions
+     * @param collection $sortedRolesWithUsers The sorted roles with users
+     * @param collection $permissions          The permissions
      *
      * @return collection The sorted permissons with roles and users.
      */
     public function getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions)
     {
         $sortedPermissionsWithRoles = [];
-        $permissionsAndRolesPivot   = $this->getPermissionsWithRoles();
+        $permissionsAndRolesPivot = $this->getPermissionsWithRoles();
 
         foreach ($permissions as $permissionKey => $permissionValue) {
             $sortedPermissionsWithRoles[] = [
