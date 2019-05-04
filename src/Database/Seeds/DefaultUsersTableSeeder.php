@@ -23,8 +23,8 @@ class DefaultUsersTableSeeder extends Seeder
          */
         echo "\e[32mSeeding:\e[0m DefaultUsersTableSeeder\r\n";
 
-        if (config('roles.defaultUserModel')::where('email', '=', 'admin@admin.com')->first() === null) {
-            $newUser = config('roles.defaultUserModel')::create([
+        if (config('roles.models.defaultUser')::where('email', '=', 'admin@admin.com')->first() === null) {
+            $newUser = config('roles.models.defaultUser')::create([
                 'name'     => 'Admin',
                 'email'    => 'admin@admin.com',
                 'password' => bcrypt('password'),
@@ -37,8 +37,8 @@ class DefaultUsersTableSeeder extends Seeder
             echo "\e[32mSeeding:\e[0m DefaultUsersTableSeeder - User:admin@admin.com\r\n";
         }
 
-        if (config('roles.defaultUserModel')::where('email', '=', 'user@user.com')->first() === null) {
-            $newUser = config('roles.defaultUserModel')::create([
+        if (config('roles.models.defaultUser')::where('email', '=', 'user@user.com')->first() === null) {
+            $newUser = config('roles.models.defaultUser')::create([
                 'name'     => 'User',
                 'email'    => 'user@user.com',
                 'password' => bcrypt('password'),

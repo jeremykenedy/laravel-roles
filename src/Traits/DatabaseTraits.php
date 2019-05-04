@@ -2,8 +2,6 @@
 
 namespace jeremykenedy\LaravelRoles\Traits;
 
-use Illuminate\Support\Str;
-
 trait DatabaseTraits
 {
     /**

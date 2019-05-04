@@ -13,5 +13,4 @@ Route::group([
     ], function () {
 
     Route::resource('roles', 'LaravelRolesController');
-
 });

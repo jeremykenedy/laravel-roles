@@ -34,7 +34,10 @@ class RolesServiceProvider extends ServiceProvider
         $this->app['router']->aliasMiddleware('role', VerifyRole::class);
         $this->app['router']->aliasMiddleware('permission', VerifyPermission::class);
         $this->app['router']->aliasMiddleware('level', VerifyLevel::class);
-        $this->loadRoutesFrom(__DIR__.'/routes/web.php');
+        if (config('roles.rolesGuiEnabled')) {
+            $this->loadRoutesFrom(__DIR__.'/routes/web.php');
+        }
+        $this->loadTranslationsFrom(__DIR__.'/resources/lang/', $this->_packageTag);
         $this->registerBladeExtensions();
     }
 
@@ -45,8 +48,11 @@ class RolesServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/roles.php', 'roles');
-        $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
+        $this->mergeConfigFrom(__DIR__.'/config/roles.php', 'roles');
+        $this->loadMigrationsFrom(__DIR__.'/database/Migrations');
+        if (config('roles.rolesGuiEnabled')) {
+            $this->loadViewsFrom(__DIR__.'/resources/views/', $this->_packageTag);
+        }
         $this->publishFiles();
         $this->loadSeedsFrom();
     }
@@ -93,21 +99,21 @@ class RolesServiceProvider extends ServiceProvider
         $publishTag = $this->_packageTag;
 
         $this->publishes([
-            __DIR__.'/../config/roles.php' => config_path('roles.php'),
+            __DIR__.'/config/roles.php' => config_path('roles.php'),
         ], $publishTag.'-config');
 
         $this->publishes([
-            __DIR__.'/Database/Migrations' => database_path('migrations'),
+            __DIR__.'/database/Migrations' => database_path('migrations'),
         ], $publishTag.'-migrations');
 
         $this->publishes([
-            __DIR__.'/Database/Seeds/publish' => database_path('seeds'),
+            __DIR__.'/database/Seeds/publish' => database_path('seeds'),
         ], $publishTag.'-seeds');
 
         $this->publishes([
-            __DIR__.'/../config/roles.php'    => config_path('roles.php'),
-            __DIR__.'/Database/Migrations'    => database_path('migrations'),
-            __DIR__.'/Database/Seeds/publish' => database_path('seeds'),
+            __DIR__.'/config/roles.php'    => config_path('roles.php'),
+            __DIR__.'/database/Migrations'    => database_path('migrations'),
+            __DIR__.'/database/Seeds/publish' => database_path('seeds'),
         ], $publishTag);
     }
 

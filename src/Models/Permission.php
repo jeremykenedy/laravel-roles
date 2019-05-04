@@ -1,17 +1,17 @@
 <?php
 
-namespace jeremykenedy\LaravelRoles\App\Models;
+namespace jeremykenedy\LaravelRoles\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use jeremykenedy\LaravelRoles\Contracts\RoleHasRelations as RoleHasRelationsContract;
+use jeremykenedy\LaravelRoles\Contracts\PermissionHasRelations as PermissionHasRelationsContract;
 use jeremykenedy\LaravelRoles\Traits\DatabaseTraits;
-use jeremykenedy\LaravelRoles\Traits\RoleHasRelations;
+use jeremykenedy\LaravelRoles\Traits\PermissionHasRelations;
 use jeremykenedy\LaravelRoles\Traits\Slugable;
 
-class Role extends Model implements RoleHasRelationsContract
+class Permission extends Model implements PermissionHasRelationsContract
 {
-    use DatabaseTraits, RoleHasRelations, Slugable, SoftDeletes;
+    use DatabaseTraits, PermissionHasRelations, Slugable, SoftDeletes;
 
     /**
      * The attributes that are not mass assignable.
@@ -42,7 +42,7 @@ class Role extends Model implements RoleHasRelationsContract
         'name',
         'slug',
         'description',
-        'level'
+        'model'
     ];
 
     /**
@@ -55,7 +55,7 @@ class Role extends Model implements RoleHasRelationsContract
         'name'          => 'string',
         'slug'          => 'string',
         'description'   => 'string',
-        'level'         => 'integer',
+        'model'         => 'string',
         'created_at'    => 'datetime',
         'updated_at'    => 'datetime',
         'deleted_at'    => 'datetime',
@@ -76,6 +76,6 @@ class Role extends Model implements RoleHasRelationsContract
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = config('roles.rolesTable');
+        $this->table = config('roles.permissionsTable');
     }
 }

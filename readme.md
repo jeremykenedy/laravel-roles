@@ -260,7 +260,7 @@ $moderatorRole = config('roles.models.role')::create([
 It's really simple. You fetch a user from database and call `attachRole` method. There is `BelongsToMany` relationship between `User` and `Role` model.
 
 ```php
-$user = config('roles.defaultUserModel')::find($id);
+$user = config('roles.models.defaultUser')::find($id);
 
 $user->attachRole($adminRole); // you can pass whole object, or just an id
 $user->detachRole($adminRole); // in case you want to detach role
@@ -278,7 +278,7 @@ You can assign a role to a user upon registration by including the needed models
 ```php
     protected function create(array $data)
     {
-        $user = config('roles.defaultUserModel')::create([
+        $user = config('roles.models.defaultUser')::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
@@ -374,7 +374,7 @@ You can attach permissions to a role or directly to a specific user (and of cour
 $role = config('roles.models.role')::find($roleId);
 $role->attachPermission($createUsersPermission); // permission attached to a role
 
-$user = config('roles.defaultUserModel')::find($userId);
+$user = config('roles.models.defaultUser')::find($userId);
 $user->attachPermission($deleteUsersPermission); // permission attached to a user
 ```
 
@@ -604,14 +604,14 @@ return [
     |--------------------------------------------------------------------------
     |
     | If you want, you can replace default models from this package by models
-    | you created. Have a look at `jeremykenedy\LaravelRoles\App\Models\Role` model and
-    | `jeremykenedy\LaravelRoles\App\Models\Permission` model.
+    | you created. Have a look at `jeremykenedy\LaravelRoles\Models\Role` model and
+    | `jeremykenedy\LaravelRoles\Models\Permission` model.
     |
     */
 
     'models' => [
-        'role'       => jeremykenedy\LaravelRoles\App\Models\Role::class,
-        'permission' => jeremykenedy\LaravelRoles\App\Models\Permission::class,
+        'role'       => jeremykenedy\LaravelRoles\Models\Role::class,
+        'permission' => jeremykenedy\LaravelRoles\Models\Permission::class,
     ],
 
     /*
