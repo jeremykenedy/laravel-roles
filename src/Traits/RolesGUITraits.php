@@ -213,4 +213,35 @@ trait RolesGUITraits
 
         return collect($sortedPermissionsWithRoles);
     }
+
+    /**
+     * Removes an users and permissions from role.
+     *
+     * @param Role$role   The role
+     *
+     * @return void
+     */
+    public function removeUsersAndPermissionsFromRole($role)
+    {
+        $users                  = $this->getUsers();
+        $roles                  = $this->getRoles();
+        $sortedRolesWithUsers   = $this->getSortedUsersWithRoles($roles, $users);
+        $roleUsers              = [];
+
+        // Remove Users Attached to Role
+        foreach ($sortedRolesWithUsers as $sortedRolesWithUsersKey => $sortedRolesWithUsersValue) {
+            if ($sortedRolesWithUsersValue['role'] == $role) {
+                $roleUsers[] = $sortedRolesWithUsersValue['users'];
+            }
+        }
+        foreach ($roleUsers as $roleUserKey => $roleUserValue) {
+            if(!empty($roleUserValue)) {
+                $roleUserValue[$roleUserKey]->detachRole($role);
+            }
+        }
+
+        // Remove Permissions from Role
+        $role->detachAllPermissions();
+    }
+
 }

@@ -1,4 +1,4 @@
-@if(config('laravelroles.builtInFlashMessagesEnabled'))
+@if(config('roles.builtInFlashMessagesEnabled'))
     <div class="container">
         <div class="row">
             <div class="col-sm-12">

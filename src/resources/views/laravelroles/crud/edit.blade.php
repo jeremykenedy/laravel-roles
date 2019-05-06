@@ -1,0 +1,4 @@
+@extends(config('roles.bladeExtended'))
+
+
+

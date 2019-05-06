@@ -1,34 +1,37 @@
 <div class="table-responsive roles-table">
-    <table class="table table-sm table-striped data-table">
-        <caption id="roles_count">
-            {!! trans_choice('laravelroles::laravelroles.roles-table.caption', $roles->count(), ['count' => $roles->count()]) !!}
+    <table class="table table-sm table-striped data-table roles-table">
+        <caption class="p-1 pb-0">
+            {!! trans_choice('laravelroles::laravelroles.roles-table.caption', $items->count(), ['count' => $items->count()]) !!}
         </caption>
         <thead class="thead">
             <tr>
-                <th scope="col">
+                <th scope="col" class="">
                     {!! trans('laravelroles::laravelroles.roles-table.id') !!}
                 </th>
-                <th scope="col">
+                <th scope="col" class="">
                     {!! trans('laravelroles::laravelroles.roles-table.name') !!}
                 </th>
-                <th scope="col" class="hidden-xs">
+                <th scope="col" class="hidden-xs ">
                     {!! trans('laravelroles::laravelroles.roles-table.desc') !!}
                 </th>
-                <th scope="col">
+                <th scope="col" class="">
                     {!! trans('laravelroles::laravelroles.roles-table.level') !!}
                 </th>
                 <th scope="col" class="hidden-xs hidden-sm">
+                    {!! trans('laravelroles::laravelroles.roles-table.permissons') !!}
+                </th>
+                <th scope="col" class="hidden-xs hidden-sm ">
                     {!! trans('laravelroles::laravelroles.roles-table.createdAt') !!}
                 </th>
-                <th scope="col" class="hidden-xs hidden-sm">
+                <th scope="col" class="hidden-xs hidden-sm ">
                     {!! trans('laravelroles::laravelroles.roles-table.updatedAt') !!}
                 </th>
                 @if($tabletype == 'deleted')
-                    <th scope="col" class="hidden-xs hidden-sm">
+                    <th scope="col" class="hidden-xs hidden-sm ">
                         {!! trans('laravelroles::laravelroles.roles-table.deletedAt') !!}
                     </th>
                 @endif
-                <th class="no-search no-sort" colspan="3">
+                <th class="no-search no-sort " colspan="3">
                     {!! trans('laravelroles::laravelroles.roles-table.actions') !!}
                 </th>
             </tr>
@@ -50,6 +53,19 @@
                             {{ $item['role']->level }}
                         </td>
                         <td class="hidden-xs hidden-sm">
+                            @if($item['permissions']->count() > 0)
+                                @foreach($item['permissions'] as $itemUserKey => $itemUser)
+                                    <span class="badge badge-pill badge-primary mb-1">
+                                        {{ $itemUser->name }}
+                                    </span>
+                                @endforeach
+                            @else
+                                <span class="badge badge-pill badge-default">
+                                    {!! trans('laravelroles::laravelroles.cards.none-count') !!}
+                                </span>
+                            @endif
+                        </td>
+                        <td class="hidden-xs hidden-sm">
                             {{ $item['role']->created_at }}
                         </td>
                         <td class="hidden-xs hidden-sm">
@@ -60,21 +76,28 @@
                                 {{ $item['role']->deleted_at }}
                             </td>
                         @endif
-
-                        <td>
-                            @if($tabletype == 'normal')
-                                // Normal Actions
-                            @endif
-                            @if($tabletype == 'deleted')
-                                // Deleted Actions
-                            @endif
-                        </td>
-                        <td></td>
-
+                        @if($tabletype == 'normal')
+                            <td>
+                                <a class="btn btn-sm btn-outline-info btn-block" href="{{ route('laravelroles::roles.show', $item['role']->id) }}" data-toggle="tooltip" title="{{ trans('laravelroles::laravelroles.tooltips.show-role') }}">
+                                    {!! trans("laravelroles::laravelroles.buttons.show") !!}
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary btn-block" href="{{ route('laravelroles::roles.edit', $item['role']->id) }}" data-toggle="tooltip" title="{{ trans('laravelroles::laravelroles.tooltips.edit-role') }}">
+                                    {!! trans("laravelroles::laravelroles.buttons.edit") !!}
+                                </a>
+                            </td>
+                            <td>
+                                @include('laravelroles::laravelroles.forms.delete-sm', ['type' => 'Role' ,'item' => $item['role']])
+                            </td>
+                        @endif
+                        @if($tabletype == 'deleted')
+                            <td>Show :: TODO</td>
+                            <td>Restore :: TODO</td>
+                            <td>Destroy :: TODO</td>
+                        @endif
                     </tr>
                 @endforeach
-
-
             @else
                 <tr>
                     <td>{!! trans("laravelroles::laravelroles.roles-table.none") !!}</td>

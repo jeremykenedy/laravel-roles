@@ -150,6 +150,17 @@
         display: table;
         table-layout: fixed;
     }
+    .roles-table {
+        font-size: .9em;
+    }
+    .table.roles-table thead th,
+    .table.roles-table td {
+        border: none;
+        vertical-align: middle;
+    }
+    .table.roles-table form {
+        margin: 0;
+    }
     @media(min-width: 576px) {
         .edit-form-delete {
             margin-top: -2.85em;

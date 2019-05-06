@@ -20,9 +20,9 @@ class LaravelRolesController extends Controller
      */
     public function __construct()
     {
-        $this->_rolesGuiAuthEnabled = config('roles.rolesGuiAuthEnabled');
-        $this->_rolesGuiMiddlewareEnabled = config('roles.rolesGuiMiddlewareEnabled');
-        $this->_rolesGuiMiddleware = config('roles.rolesGuiMiddleware');
+        $this->_rolesGuiAuthEnabled         = config('roles.rolesGuiAuthEnabled');
+        $this->_rolesGuiMiddlewareEnabled   = config('roles.rolesGuiMiddlewareEnabled');
+        $this->_rolesGuiMiddleware          = config('roles.rolesGuiMiddleware');
 
         if ($this->_rolesGuiAuthEnabled) {
             $this->middleware('auth');
@@ -40,13 +40,13 @@ class LaravelRolesController extends Controller
      */
     public function index()
     {
-        $roles = $this->getRoles();
-        $permissions = $this->getPermissions();
-        $deletedRoleItems = $this->getDeletedRoles();
-        $users = $this->getUsers();
-        $sortedRolesWithUsers = $this->getSortedUsersWithRoles($roles, $users);
+        $roles                              = $this->getRoles();
+        $permissions                        = $this->getPermissions();
+        $deletedRoleItems                   = $this->getDeletedRoles();
+        $users                              = $this->getUsers();
+        $sortedRolesWithUsers               = $this->getSortedUsersWithRoles($roles, $users);
         $sortedRolesWithPermissionsAndUsers = $this->getSortedRolesWithPermissionsAndUsers($sortedRolesWithUsers, $permissions);
-        $sortedPermissionsRolesUsers = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions);
+        $sortedPermissionsRolesUsers        = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions);
 
         $data = [
             'roles',
@@ -59,5 +59,36 @@ class LaravelRolesController extends Controller
         ];
 
         return view('laravelroles::laravelroles.crud.dashboard', compact($data));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $item = config('roles.models.role')::findOrFail($id);
+
+        return view('laravelroles::laravelroles.crud.show', compact('item'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $role = config('roles.models.role')::findOrFail($id);
+        $this->removeUsersAndPermissionsFromRole($role);
+        $role->delete();
+
+        return redirect(route('laravelroles::roles.index'))
+                    ->with('success', trans('laravelroles::laravelroles.flash-messages.successDeletedItem', ['type' => 'Role', 'role' => $role->name]));
     }
 }

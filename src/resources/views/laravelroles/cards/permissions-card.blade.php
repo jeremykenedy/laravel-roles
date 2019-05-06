@@ -15,7 +15,8 @@
                 <ul class="list-group list-group-flush">
                     @foreach($items as $itemKey => $item)
                         <li id="accordion_permissions_{{ $itemKey }}" class="list-group-item accordion @if($item['users']->count() > 0) list-group-item-action accordion-item collapsed @endif" data-toggle="collapse" href="#collapse_permissions_{{ $itemKey }}">
-                            <div class="d-flex justify-content-between align-items-center">
+
+                            <div class="d-flex justify-content-between align-items-center" @if($item['roles']->count() > 0 || $item['users']->count() > 0) data-toggle="tooltip" title="{{ trans("laravelroles::laravelroles.tooltips.show-hide") }}" @endif>
                                 <span class="badge badge-default permission-name">
                                     {{ $item['permission']->name }}
                                 </span>
@@ -28,6 +29,8 @@
                                     </span>
                                 </div>
                             </div>
+
+
                             @if($item['roles']->count() > 0 || $item['users']->count() > 0)
                                 <div id="collapse_permissions_{{ $itemKey }}" class="collapse" data-parent="#accordion_permissions_{{ $itemKey }}" >
                                     @if($item['roles']->count() > 0)

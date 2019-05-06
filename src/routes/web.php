@@ -7,9 +7,9 @@
 |
 */
 Route::group([
-        'middleware'    => ['web'],
-        'as'            => 'laravelroles::',
-        'namespace'     => 'jeremykenedy\LaravelRoles\App\Http\Controllers',
-    ], function () {
-        Route::resource('roles', 'LaravelRolesController');
-    });
+    'middleware'    => ['web'],
+    'as'            => 'laravelroles::',
+    'namespace'     => 'jeremykenedy\LaravelRoles\App\Http\Controllers',
+], function () {
+    Route::resource('roles', 'LaravelRolesController');
+});
