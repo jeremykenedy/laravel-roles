@@ -99,6 +99,54 @@ trait RolesGUITraits
     }
 
     /**
+     * Gets the deleted permissions.
+     *
+     * @return collection The deleted permissions.
+     */
+    public function getDeletedPermissions()
+    {
+        return config('roles.models.permission')::onlyTrashed();
+    }
+
+    /**
+     * Gets the dashboard data.
+     *
+     * @return array  The dashboard data and view.
+     */
+    public function getDashboardData()
+    {
+        $roles                              = $this->getRoles();
+        $permissions                        = $this->getPermissions();
+        $deletedRoleItems                   = $this->getDeletedRoles();
+        $deletedPermissionsItems            = $this->getDeletedPermissions();
+        $users                              = $this->getUsers();
+        $sortedRolesWithUsers               = $this->getSortedUsersWithRoles($roles, $users);
+        $sortedRolesWithPermissionsAndUsers = $this->getSortedRolesWithPermissionsAndUsers($sortedRolesWithUsers, $permissions);
+        $sortedPermissionsRolesUsers        = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions);
+
+        $data = [
+            'roles' => $roles,
+            'permissions' => $permissions,
+            'deletedRoleItems' => $deletedRoleItems,
+            'deletedPermissionsItems' => $deletedPermissionsItems,
+            'users' => $users,
+            'sortedRolesWithUsers' => $sortedRolesWithUsers,
+            'sortedRolesWithPermissionsAndUsers' => $sortedRolesWithPermissionsAndUsers,
+            'sortedPermissionsRolesUsers' => $sortedPermissionsRolesUsers,
+        ];
+
+        $view = 'laravelroles::laravelroles.crud.dashboard';
+
+        $data = [
+            'data' => $data,
+            'view' => $view
+        ];
+
+        return $data;
+    }
+
+
+    /**
      * Gets the sorted users with roles.
      *
      * @param collection $roles The roles
@@ -244,4 +292,34 @@ trait RolesGUITraits
         $role->detachAllPermissions();
     }
 
+    /**
+     * Removes an users and permissions from permission.
+     *
+     * @param Permission  $permission   The Permission
+     *
+     * @return void
+     */
+    public function removeUsersAndRolesFromPermissions($permission)
+    {
+        $users                              = $this->getUsers();
+        $roles                              = $this->getRoles();
+        $permissions                        = $this->getPermissions();
+        $sortedRolesWithUsers               = $this->getSortedUsersWithRoles($roles, $users);
+        $sortedPermissionsRolesUsers        = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions);
+
+        foreach ($sortedPermissionsRolesUsers as $sortedPermissionsRolesUsersKey => $sortedPermissionsRolesUsersItem) {
+            if ($sortedPermissionsRolesUsersItem['permission']->id === $permission->id) {
+
+                // Remove Permission from roles
+                foreach ($sortedPermissionsRolesUsersItem['roles'] as $permissionRoleKey => $permissionRoleItem) {
+                    $permissionRoleItem->detachPermission($permission);
+                }
+
+                // Permission Permission from Users
+                foreach ($sortedPermissionsRolesUsersItem['users'] as $permissionUserKey => $permissionUserItem) {
+                    $permissionUserItem->detachPermission($permission);
+                }
+            }
+        }
+    }
 }

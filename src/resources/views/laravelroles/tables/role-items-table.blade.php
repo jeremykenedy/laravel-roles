@@ -5,16 +5,16 @@
         </caption>
         <thead class="thead">
             <tr>
-                <th scope="col" class="">
+                <th scope="col">
                     {!! trans('laravelroles::laravelroles.roles-table.id') !!}
                 </th>
-                <th scope="col" class="">
+                <th scope="col">
                     {!! trans('laravelroles::laravelroles.roles-table.name') !!}
                 </th>
                 <th scope="col" class="hidden-xs ">
                     {!! trans('laravelroles::laravelroles.roles-table.desc') !!}
                 </th>
-                <th scope="col" class="">
+                <th scope="col">
                     {!! trans('laravelroles::laravelroles.roles-table.level') !!}
                 </th>
                 <th scope="col" class="hidden-xs hidden-sm">
@@ -54,9 +54,9 @@
                         </td>
                         <td class="hidden-xs hidden-sm">
                             @if($item['permissions']->count() > 0)
-                                @foreach($item['permissions'] as $itemUserKey => $itemUser)
+                                @foreach($item['permissions'] as $itemPermKey => $itemPerm)
                                     <span class="badge badge-pill badge-primary mb-1">
-                                        {{ $itemUser->name }}
+                                        {{ $itemPerm->name }}
                                     </span>
                                 @endforeach
                             @else
@@ -66,14 +66,14 @@
                             @endif
                         </td>
                         <td class="hidden-xs hidden-sm">
-                            {{ $item['role']->created_at }}
+                            {{ $item['role']->created_at->format(trans('laravelroles::laravelroles.date-format')) }}
                         </td>
                         <td class="hidden-xs hidden-sm">
-                            {{ $item['role']->updated_at }}
+                            {{ $item['role']->updated_at->format(trans('laravelroles::laravelroles.date-format')) }}
                         </td>
                         @if($tabletype == 'deleted')
                             <td class="hidden-xs hidden-sm">
-                                {{ $item['role']->deleted_at }}
+                                {{ $item['role']->deleted_at->format(trans('laravelroles::laravelroles.date-format')) }}
                             </td>
                         @endif
                         @if($tabletype == 'normal')

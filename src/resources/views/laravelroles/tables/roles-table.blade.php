@@ -11,15 +11,15 @@
                     <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-ellipsis-v fa-fw" aria-hidden="true"></i>
                         <span class="sr-only">
-                            {!! trans('laravelroles::laravelroles.users-menu-alt') !!}
+                            {!! trans('laravelroles::laravelroles.dropdown-menu-alt') !!}
                         </span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="">
+                        <a class="dropdown-item" href="{{ route('laravelroles::roles.create') }}">
                             <i class="fa fa-fw fa-plus" aria-hidden="true"></i>
                             {!! trans('laravelroles::laravelroles.buttons.create-new-role') !!}
                         </a>
-                        <a class="dropdown-item" href="{{ url('/blocker-deleted') }}">
+                        <a class="dropdown-item" href="">
                             <i class="fa fa-fw fa-trash-o" aria-hidden="true"></i>
                             {!! trans('laravelroles::laravelroles.buttons.show-deleted-roles') !!}
                             <span class="badge-pill badge badge-danger">
@@ -30,7 +30,7 @@
                 </div>
             @else
                 <div class="float-right">
-                    <a class="btn btn-sm" href="">
+                    <a class="btn btn-sm" href="{{ route('laravelroles::roles.create') }}">
                         <i class="fa fa-fw fa-plus" aria-hidden="true"></i>
                         {!! trans('laravelroles::laravelroles.buttons.create-new-role') !!}
                     </a>

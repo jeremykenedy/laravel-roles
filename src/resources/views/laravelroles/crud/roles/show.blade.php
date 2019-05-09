@@ -123,23 +123,103 @@
                                     </span>
                                 @endif
                             </li>
+                            <li id="accordion_roles_users" class="list-group-item accordion @if($item['users']->count() > 0) list-group-item-action accordion-item collapsed @endif" data-toggle="collapse" href="#collapse_roles_users">
+                                <div class="d-flex justify-content-between align-items-center" @if($item['users']->count() > 0) data-toggle="tooltip" title="{{ trans("laravelroles::laravelroles.tooltips.show-hide") }}" @endif>
+                                    Role Users
+                                    <span class="badge badge-pill badge-dark">
+                                        @if($item['users']->count() > 0)
+                                            {!! trans_choice('laravelroles::laravelroles.cards.users-count', count($item['users']), ['count' => count($item['users'])]) !!}
+                                        @else
+                                            {!! trans('laravelroles::laravelroles.cards.none-count') !!}
+                                        @endif
+                                    </span>
+                                </div>
+                                @if($item['users']->count() > 0)
+                                    <div id="collapse_roles_users" class="collapse" data-parent="#accordion_roles_users" >
+                                        <table class="table table-striped table-sm mt-3">
+                                            <caption>
+                                                {!! trans('laravelroles::laravelroles.cards.role-card.table-users-caption', ['role' => $item->name]) !!}
+                                            </caption>
+                                            <thead>
+                                                <tr>
+                                                    <th>{!! trans('laravelroles::laravelroles.cards.role-card.user-id') !!}</th>
+                                                    <th>{!! trans('laravelroles::laravelroles.cards.role-card.user-name') !!}</th>
+                                                    <th>{!! trans('laravelroles::laravelroles.cards.role-card.user-email') !!}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if($item['users']->count() > 0)
+                                                    @foreach($item['users'] as $itemUserKey => $itemUser)
+                                                        <tr>
+                                                            <td>{{ $itemUser->id }}</td>
+                                                            <td>{{ $itemUser->name }}</td>
+                                                            <td>{{ $itemUser->email }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                @else
+                                                    <tr>
+                                                        <td colspan="3">
+                                                            {!! trans('laravelroles::laravelroles.cards.none-count') !!}
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @endif
+                            </li>
+                            <li id="accordion_roles_permissions" class="list-group-item accordion @if($item['permissions']->count() > 0) list-group-item-action accordion-item collapsed @endif" data-toggle="collapse" href="#collapse_roles_permissions">
+                                <div class="d-flex justify-content-between align-items-center" @if($item['permissions']->count() > 0) data-toggle="tooltip" title="{{ trans("laravelroles::laravelroles.tooltips.show-hide") }}" @endif>
+                                    Role Permissions
+                                    <span class="badge badge-pill badge-dark">
+                                        @if($item['permissions']->count() > 0)
+                                            {!! trans_choice('laravelroles::laravelroles.cards.permissions-count', count($item['permissions']), ['count' => count($item['permissions'])]) !!}
+                                        @else
+                                            {!! trans('laravelroles::laravelroles.cards.none-count') !!}
+                                        @endif
+                                    </span>
+                                </div>
+                                @if($item['permissions']->count() > 0)
+                                    <div id="collapse_roles_permissions" class="collapse" data-parent="#accordion_roles_permissions" >
+                                        <table class="table table-striped table-sm mt-3">
+                                            <caption>
+                                                {!! trans('laravelroles::laravelroles.cards.role-card.table-permissions-caption', ['role' => $item->name]) !!}
+                                            </caption>
+                                            <thead>
+                                                <tr>
+                                                    <th>{!! trans('laravelroles::laravelroles.cards.role-card.permissions-id') !!}</th>
+                                                    <th>{!! trans('laravelroles::laravelroles.cards.role-card.permissions-name') !!}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($item['permissions'] as $itemUserKey => $itemUser)
+                                                    <tr>
+                                                        <td>{{ $itemUser->id }}</td>
+                                                        <td>{{ $itemUser->name }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @endif
+                            </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 {!! trans('laravelroles::laravelroles.cards.role-info-card.created') !!}
                                 <span class="badge badge-pill">
-                                    {!! $item->created_at->format('m/d/Y H:ia') !!}
+                                    {!! $item->created_at->format(trans('laravelroles::laravelroles.date-format')) !!}
                                 </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 {!! trans('laravelroles::laravelroles.cards.role-info-card.updated') !!}
                                 <span class="badge badge-pill">
-                                    {!! $item->updated_at->format('m/d/Y H:ia') !!}
+                                    {!! $item->updated_at->format(trans('laravelroles::laravelroles.date-format')) !!}
                                 </span>
                             </li>
                             @if ($item->deleted_at)
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     {!! trans('laravelroles::laravelroles.cards.role-info-card.deleted') !!}
                                     <span class="badge badge-pill">
-                                        {!! $item->deleted_at->format('m/d/Y H:ia') !!}
+                                        {!! $item->deleted_at->format(trans('laravelroles::laravelroles.date-format')) !!}
                                     </span>
                                 </li>
                             @endif

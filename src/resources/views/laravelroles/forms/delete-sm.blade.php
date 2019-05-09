@@ -2,19 +2,25 @@
     $formClass  = '';
     $btnClass   = 'btn-outline-danger btn-sm';
     $btnText    = trans("laravelroles::laravelroles.buttons.delete");
+    $btnTooltip = trans('laravelroles::laravelroles.tooltips.delete-role');
+    $formAction = route('laravelroles::roles.destroy', $item->id);
     if(isset($large)) {
         $formClass  = 'mb-0';
         $btnClass   = 'btn-danger btn-sm mb-0';
         $btnText    = trans("laravelroles::laravelroles.buttons.delete-large");
     }
+    if($type == 'Permission') {
+        $btnTooltip = trans('laravelroles::laravelroles.tooltips.delete-permission');
+        $formAction = route('laravelroles::permissions.destroy', $item->id);
+    }
 @endphp
 
 <form
-    action="{{ route('laravelroles::roles.destroy', $item->id) }}"
+    action="{{ $formAction }}"
     method="POST"
     accept-charset="utf-8"
     data-toggle="tooltip"
-    title="{{ trans('laravelroles::laravelroles.tooltips.delete-role') }}"
+    title="{{ $btnTooltip }}"
     class="{{ $formClass }}"
 >
     {{ csrf_field() }}

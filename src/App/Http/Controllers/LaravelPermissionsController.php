@@ -5,7 +5,7 @@ namespace jeremykenedy\LaravelRoles\App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use jeremykenedy\LaravelRoles\Traits\RolesGUITraits;
 
-class LaravelRolesController extends Controller
+class LaravelPermissionsController extends Controller
 {
     use RolesGUITraits;
 
@@ -54,9 +54,9 @@ class LaravelRolesController extends Controller
      */
     public function show($id)
     {
-        $item = config('roles.models.role')::findOrFail($id);
+        $item = config('roles.models.permission')::findOrFail($id);
 
-        return view('laravelroles::laravelroles.crud.roles.show', compact('item'));
+        return view('laravelroles::laravelroles.crud.permissions.show', compact('item'));
     }
 
     /**
@@ -68,11 +68,11 @@ class LaravelRolesController extends Controller
      */
     public function destroy($id)
     {
-        $role = config('roles.models.role')::findOrFail($id);
-        $this->removeUsersAndPermissionsFromRole($role);
-        $role->delete();
+        $permission = config('roles.models.permission')::findOrFail($id);
+        $this->removeUsersAndRolesFromPermissions($permission);
+        $permission->delete();
 
         return redirect(route('laravelroles::roles.index'))
-                    ->with('success', trans('laravelroles::laravelroles.flash-messages.successDeletedItem', ['type' => 'Role', 'item' => $role->name]));
+                    ->with('success', trans('laravelroles::laravelroles.flash-messages.successDeletedItem', ['type' => 'Permission', 'item' => $permission->name]));
     }
 }

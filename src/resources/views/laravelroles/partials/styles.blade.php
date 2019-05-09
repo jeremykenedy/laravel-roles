@@ -150,14 +150,18 @@
         display: table;
         table-layout: fixed;
     }
+    .permissions-table,
     .roles-table {
         font-size: .9em;
     }
+    .table.permissions-table thead th,
+    .table.permissions-table td,
     .table.roles-table thead th,
     .table.roles-table td {
         border: none;
         vertical-align: middle;
     }
+    .table.permissions-table form,
     .table.roles-table form {
         margin: 0;
     }
