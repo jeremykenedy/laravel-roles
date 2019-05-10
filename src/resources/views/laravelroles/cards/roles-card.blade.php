@@ -11,8 +11,8 @@
             </div>
         </div>
         <div class="list-group-flush flex-fill">
-            @if(count($items) != 0)
-                <ul class="list-group list-group-flush">
+            <ul class="list-group list-group-flush">
+                @if(count($items) != 0)
                     @foreach($items as $itemKey => $item)
                         @php
                             if($item['role']['slug'] == 'user') {
@@ -94,10 +94,12 @@
                             @endif
                         </li>
                     @endforeach
-                </ul>
-            @else
-                {!! trans('laravelroles::laravelroles.cards.none-count') !!}
-            @endif
+                @else
+                    <li class="list-group-item">
+                        {!! trans('laravelroles::laravelroles.cards.none-count') !!}
+                    </li>
+                @endif
+            </ul>
         </div>
     </div>
 </div>

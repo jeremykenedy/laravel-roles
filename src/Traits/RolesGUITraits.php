@@ -7,58 +7,6 @@ use Illuminate\Support\Facades\DB;
 trait RolesGUITraits
 {
     /**
-     * Retrieves permission roles.
-     *
-     * @param Permission $permission               The permission
-     * @param Collection $permissionsAndRolesPivot The permissions and roles pivot
-     * @param Collection $sortedRolesWithUsers     The sorted roles with users
-     *
-     * @return Collection of permission roles
-     */
-    private function retrievePermissionRoles($permission, $permissionsAndRolesPivot, $sortedRolesWithUsers)
-    {
-        $roles = [];
-        foreach ($permissionsAndRolesPivot as $permissionAndRoleKey => $permissionAndRoleValue) {
-            if ($permission->id === $permissionAndRoleValue->permission_id) {
-                foreach ($sortedRolesWithUsers as $sortedRolesWithUsersItemKey => $sortedRolesWithUsersItemValue) {
-                    if ($sortedRolesWithUsersItemValue['role']->id === $permissionAndRoleValue->role_id) {
-                        $roles[] = $sortedRolesWithUsersItemValue['role'];
-                    }
-                }
-            }
-        }
-
-        return collect($roles);
-    }
-
-    /**
-     * Retrieves permission users.
-     *
-     * @param Permission $permission               The permission
-     * @param Collection $permissionsAndRolesPivot The permissions and roles pivot
-     * @param Collection $sortedRolesWithUsers     The sorted roles with users
-     *
-     * @return Collection of Permission Users
-     */
-    private function retrievePermissionUsers($permission, $permissionsAndRolesPivot, $sortedRolesWithUsers)
-    {
-        $users = [];
-        foreach ($permissionsAndRolesPivot as $permissionsAndRolesPivotItemKey => $permissionsAndRolesPivotItemValue) {
-            if ($permission->id === $permissionsAndRolesPivotItemValue->permission_id) {
-                foreach ($sortedRolesWithUsers as $sortedRolesWithUsersItemKey => $sortedRolesWithUsersItemValue) {
-                    if ($permissionsAndRolesPivotItemValue->role_id === $sortedRolesWithUsersItemValue['role']->id) {
-                        foreach ($sortedRolesWithUsersItemValue['users'] as $sortedRolesWithUsersItemValueUser) {
-                            $users[] = $sortedRolesWithUsersItemValueUser;
-                        }
-                    }
-                }
-            }
-        }
-
-        return collect($users);
-    }
-
-    /**
      * Gets the roles.
      *
      * @return collection The roles.
@@ -89,6 +37,18 @@ trait RolesGUITraits
     }
 
     /**
+     * Gets the user.
+     *
+     * @param int $id The user id
+     *
+     * @return User The user.
+     */
+    public function getUser($id)
+    {
+        return config('roles.models.defaultUser')::findOrFail($id);
+    }
+
+    /**
      * Gets the deleted roles.
      *
      * @return collection The deleted roles.
@@ -109,6 +69,40 @@ trait RolesGUITraits
     }
 
     /**
+     * Gets the permissions with roles.
+     *
+     * @param collection $role The role
+     *
+     * @return collection The permissions with roles.
+     */
+    public function getPermissionsWithRoles($role = null)
+    {
+        $query = DB::table(config('roles.permissionsRoleTable'));
+        if ($role) {
+            $query->where('role_id', '=', $role->id);
+        }
+
+        return $query->get();
+    }
+
+    /**
+     * Gets the permission users.
+     *
+     * @param int $permissionId  The permission identifier
+     *
+     * @return Collection The permission users.
+     */
+    public function getPermissionUsers($permissionId = null)
+    {
+        $query = DB::table(config('roles.permissionsUserTable'));
+        if ($permissionId) {
+            $query->where('permission_id', '=', $permissionId);
+        }
+
+        return $query->get();
+    }
+
+    /**
      * Gets the dashboard data.
      *
      * @return array  The dashboard data and view.
@@ -122,7 +116,7 @@ trait RolesGUITraits
         $users                              = $this->getUsers();
         $sortedRolesWithUsers               = $this->getSortedUsersWithRoles($roles, $users);
         $sortedRolesWithPermissionsAndUsers = $this->getSortedRolesWithPermissionsAndUsers($sortedRolesWithUsers, $permissions);
-        $sortedPermissionsRolesUsers        = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions);
+        $sortedPermissionsRolesUsers        = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions, $users);
 
         $data = [
             'roles' => $roles,
@@ -145,6 +139,79 @@ trait RolesGUITraits
         return $data;
     }
 
+    /**
+     * Retrieves permission roles.
+     *
+     * @param Permission $permission               The permission
+     * @param Collection $permissionsAndRolesPivot The permissions and roles pivot
+     * @param Collection $sortedRolesWithUsers     The sorted roles with users
+     *
+     * @return Collection of permission roles
+     */
+    public function retrievePermissionRoles($permission, $permissionsAndRolesPivot, $sortedRolesWithUsers)
+    {
+        $roles = [];
+        foreach ($permissionsAndRolesPivot as $permissionAndRoleKey => $permissionAndRoleValue) {
+            if ($permission->id === $permissionAndRoleValue->permission_id) {
+                foreach ($sortedRolesWithUsers as $sortedRolesWithUsersItemKey => $sortedRolesWithUsersItemValue) {
+                    if ($sortedRolesWithUsersItemValue['role']->id === $permissionAndRoleValue->role_id) {
+                        $roles[] = $sortedRolesWithUsersItemValue['role'];
+                    }
+                }
+            }
+        }
+
+        return collect($roles);
+    }
+
+    /**
+     * Retrieves permission users.
+     *
+     * @param Permission $permission               The permission
+     * @param Collection $permissionsAndRolesPivot The permissions and roles pivot
+     * @param Collection $sortedRolesWithUsers     The sorted roles with users
+     * @param Collection $permissionUsersPivot     The permission users pivot
+     * @param Collection $users                    The users
+     *
+     * @return Collection of Permission Users
+     */
+
+    public function retrievePermissionUsers($permission, $permissionsAndRolesPivot, $sortedRolesWithUsers, $permissionUsersPivot, $appUsers)
+    {
+        $users      = [];
+        $userIds    = [];
+
+        // Get Users from permissions associated with roles
+        foreach ($permissionsAndRolesPivot as $permissionsAndRolesPivotItemKey => $permissionsAndRolesPivotItemValue) {
+            if ($permission->id === $permissionsAndRolesPivotItemValue->permission_id) {
+                foreach ($sortedRolesWithUsers as $sortedRolesWithUsersItemKey => $sortedRolesWithUsersItemValue) {
+                    if ($permissionsAndRolesPivotItemValue->role_id === $sortedRolesWithUsersItemValue['role']->id) {
+                        foreach ($sortedRolesWithUsersItemValue['users'] as $sortedRolesWithUsersItemValueUser) {
+                            $users[] = $sortedRolesWithUsersItemValueUser;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Setup Users IDs from permissions associated with roles
+        foreach ($users as $userKey => $userValue) {
+            $userIds[] = $userValue->id;
+        }
+
+        // Get Users from permissions pivot table that are not already in users from permissions associated with roles
+        foreach ($permissionUsersPivot as $permissionUsersPivotKey => $permissionUsersPivotItem) {
+            if (!in_array($permissionUsersPivotItem->user_id, $userIds) && $permission->id === $permissionUsersPivotItem->permission_id) {
+                foreach ($appUsers as $appUser) {
+                    if ($appUser->id === $permissionUsersPivotItem->user_id) {
+                        $users[] = $appUser;
+                    }
+                }
+            }
+        }
+
+        return collect($users);
+    }
 
     /**
      * Gets the sorted users with roles.
@@ -173,23 +240,6 @@ trait RolesGUITraits
         }
 
         return collect($sortedUsersWithRoles);
-    }
-
-    /**
-     * Gets the permissions with roles.
-     *
-     * @param collection $role The role
-     *
-     * @return collection The permissions with roles.
-     */
-    public function getPermissionsWithRoles($role = null)
-    {
-        $query = DB::table(config('roles.permissionsRoleTable'));
-        if ($role) {
-            $query->where('role_id', '=', $role->id);
-        }
-
-        return $query->get();
     }
 
     /**
@@ -243,19 +293,21 @@ trait RolesGUITraits
      *
      * @param collection $sortedRolesWithUsers The sorted roles with users
      * @param collection $permissions          The permissions
+     * @param colection $users                 The users
      *
      * @return collection The sorted permissons with roles and users.
      */
-    public function getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions)
+    public function getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions, $users)
     {
         $sortedPermissionsWithRoles = [];
-        $permissionsAndRolesPivot = $this->getPermissionsWithRoles();
+        $permissionsAndRolesPivot   = $this->getPermissionsWithRoles();
+        $permissionUsersPivot       = $this->getPermissionUsers();
 
         foreach ($permissions as $permissionKey => $permissionValue) {
             $sortedPermissionsWithRoles[] = [
                 'permission'    => $permissionValue,
                 'roles'         => $this->retrievePermissionRoles($permissionValue, $permissionsAndRolesPivot, $sortedRolesWithUsers),
-                'users'         => $this->retrievePermissionUsers($permissionValue, $permissionsAndRolesPivot, $sortedRolesWithUsers),
+                'users'         => $this->retrievePermissionUsers($permissionValue, $permissionsAndRolesPivot, $sortedRolesWithUsers, $permissionUsersPivot, $users),
             ];
         }
 
@@ -305,7 +357,7 @@ trait RolesGUITraits
         $roles                              = $this->getRoles();
         $permissions                        = $this->getPermissions();
         $sortedRolesWithUsers               = $this->getSortedUsersWithRoles($roles, $users);
-        $sortedPermissionsRolesUsers        = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions);
+        $sortedPermissionsRolesUsers        = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions, $users);
 
         foreach ($sortedPermissionsRolesUsers as $sortedPermissionsRolesUsersKey => $sortedPermissionsRolesUsersItem) {
             if ($sortedPermissionsRolesUsersItem['permission']->id === $permission->id) {

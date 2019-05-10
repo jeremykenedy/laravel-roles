@@ -11,8 +11,8 @@
             </div>
         </div>
         <div class="flex-fill">
-            @if(count($items) != 0)
-                <ul class="list-group list-group-flush">
+            <ul class="list-group list-group-flush">
+                @if(count($items) != 0)
                     @foreach($items as $itemKey => $item)
                         <li id="accordion_permissions_{{ $itemKey }}" class="list-group-item accordion @if($item['users']->count() > 0) list-group-item-action accordion-item collapsed @endif" data-toggle="collapse" href="#collapse_permissions_{{ $itemKey }}">
 
@@ -81,10 +81,12 @@
                             @endif
                         </li>
                     @endforeach
-                </ul>
-            @else
-                {!! trans('laravelroles::laravelroles.cards.none-count') !!}
-            @endif
+                @else
+                    <li class="list-group-item">
+                        {!! trans('laravelroles::laravelroles.cards.none-count') !!}
+                    </li>
+                @endif
+            </ul>
         </div>
     </div>
 </div>

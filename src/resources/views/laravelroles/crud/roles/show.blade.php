@@ -44,13 +44,9 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span id="card_title">
                                 @isset($typeDeleted)
-
                                     {!! trans('laravelroles::laravelroles.titles.show-role-deleted', ['name' => $item->name]) !!}
-
                                 @else
-
                                     {!! trans('laravelroles::laravelroles.titles.show-role', ['name' => $item->name]) !!}
-
                                 @endisset
                             </span>
                             <div class="pull-right">
@@ -107,12 +103,12 @@
                                 </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {!! trans('laravelroles::laravelroles.cards.role-info-card.role-permissons') !!}
+                                {!! trans('laravelroles::laravelroles.cards.role-info-card.role-permissions') !!}
                                 @if($item['permissions']->count() > 0)
                                     <div>
-                                        @foreach($item['permissions'] as $itemUserKey => $itemUser)
+                                        @foreach($item['permissions'] as $itemUserKey => $itemValue)
                                             <span class="badge badge-pill badge-primary float-right">
-                                                {{ $itemUser->name }}
+                                                {{ $itemValue->name }}
                                             </span>
                                             <br />
                                         @endforeach
@@ -125,7 +121,7 @@
                             </li>
                             <li id="accordion_roles_users" class="list-group-item accordion @if($item['users']->count() > 0) list-group-item-action accordion-item collapsed @endif" data-toggle="collapse" href="#collapse_roles_users">
                                 <div class="d-flex justify-content-between align-items-center" @if($item['users']->count() > 0) data-toggle="tooltip" title="{{ trans("laravelroles::laravelroles.tooltips.show-hide") }}" @endif>
-                                    Role Users
+                                    {!! trans('laravelroles::laravelroles.cards.role-info-card.role-users') !!}
                                     <span class="badge badge-pill badge-dark">
                                         @if($item['users']->count() > 0)
                                             {!! trans_choice('laravelroles::laravelroles.cards.users-count', count($item['users']), ['count' => count($item['users'])]) !!}
@@ -170,7 +166,7 @@
                             </li>
                             <li id="accordion_roles_permissions" class="list-group-item accordion @if($item['permissions']->count() > 0) list-group-item-action accordion-item collapsed @endif" data-toggle="collapse" href="#collapse_roles_permissions">
                                 <div class="d-flex justify-content-between align-items-center" @if($item['permissions']->count() > 0) data-toggle="tooltip" title="{{ trans("laravelroles::laravelroles.tooltips.show-hide") }}" @endif>
-                                    Role Permissions
+                                    {!! trans('laravelroles::laravelroles.cards.role-info-card.role-permissions') !!}
                                     <span class="badge badge-pill badge-dark">
                                         @if($item['permissions']->count() > 0)
                                             {!! trans_choice('laravelroles::laravelroles.cards.permissions-count', count($item['permissions']), ['count' => count($item['permissions'])]) !!}
@@ -242,7 +238,6 @@
                                     // TODO
 
                                 @else
-                                    {{-- @include('laravelroles::forms.delete-item') --}}
                                      @include('laravelroles::laravelroles.forms.delete-sm', ['type' => 'Role' ,'item' => $item, 'large' => true])
                                 @endisset
                             </div>
@@ -253,17 +248,17 @@
         </div>
     </div>
 
-        @include('laravelroles::laravelroles.modals.confirm-modal',[
-            'formTrigger' => 'confirmRestore',
-            'modalClass' => 'success',
-            'actionBtnIcon' => 'fa-check'
-        ])
+    @include('laravelroles::laravelroles.modals.confirm-modal',[
+        'formTrigger' => 'confirmRestore',
+        'modalClass' => 'success',
+        'actionBtnIcon' => 'fa-check'
+    ])
 
-        @include('laravelroles::laravelroles.modals.confirm-modal',[
-            'formTrigger' => 'confirmDelete',
-            'modalClass' => 'danger',
-            'actionBtnIcon' => 'fa-trash-o'
-        ])
+    @include('laravelroles::laravelroles.modals.confirm-modal',[
+        'formTrigger' => 'confirmDelete',
+        'modalClass' => 'danger',
+        'actionBtnIcon' => 'fa-trash-o'
+    ])
 
 @endsection
 
