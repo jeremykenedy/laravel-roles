@@ -103,6 +103,35 @@ trait RolesGUITraits
     }
 
     /**
+     * Gets the permission item data.
+     *
+     * @param int $id   The Permission ID
+     *
+     * @return array    The Permission item data.
+     */
+    public function getPermissionItemData($id)
+    {
+        $permission                         = config('roles.models.permission')::findOrFail($id);
+        $users                              = $this->getUsers();
+        $roles                              = $this->getRoles();
+        $permissions                        = $this->getPermissions();
+        $sortedRolesWithUsers               = $this->getSortedUsersWithRoles($roles, $users);
+        $sortedPermissionsRolesUsers        = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions, $users);
+
+        $data = [];
+
+        foreach ($sortedPermissionsRolesUsers as $item) {
+            if ($item['permission']->id === $permission->id) {
+                $data = [
+                    'item' => $item
+                ];
+            }
+        }
+
+        return $data;
+    }
+
+    /**
      * Gets the dashboard data.
      *
      * @return array  The dashboard data and view.

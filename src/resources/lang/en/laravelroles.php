@@ -8,6 +8,8 @@ return [
     |--------------------------------------------------------------------------
     */
 
+    'date-format' => 'm/d/Y H:ia',
+
     'titles' => [
         'dashboard'         => 'Roles Dashboard',
         'show-role'         => 'Showing Role: <strong>:name</strong>',
@@ -18,6 +20,7 @@ return [
         'permissions-card'  => 'Permissions',
         'permissions-table' => 'Active Permissions',
         'dropdown-menu-alt' => 'Show Roles Dropdown Menu',
+        'create-role'       => 'Create New Role',
     ],
 
     'cards' => [
@@ -126,7 +129,7 @@ return [
         'back-roles'                => 'Back to dashboard',
         'back-permissions-deleted'  => 'Back to deleted dashboard',
         'back-permissions'          => 'Back to dashboard',
-
+        'save-role'                 => "Save Role Now",
     ],
 
     'modals' => [
@@ -148,9 +151,38 @@ return [
         'error'                 => 'Error',
         'whoops'                => 'Whoops! ',
         'someProblems'          => 'There were some problems with your input.',
-        'successDeletedItem'    => 'Successfully Releted :type: :item',
+        'successDeletedItem'    => 'Successfully Deleted :type: :item',
+        'role-create'           => 'Successfully Created New Role: :role',
     ],
 
-    'date-format' => 'm/d/Y H:ia',
-
+    'forms' => [
+        'roles-form' => [
+            'role-name' => [
+                'label'         => 'Role Name',
+                'placeholder'   => 'Type Role Name',
+            ],
+            'role-slug' => [
+                'label'         => 'Role Slug',
+                'placeholder'   => 'Type Role Slug',
+            ],
+            'role-desc' => [
+                'label'         => 'Role Description',
+                'placeholder'   => 'Type Role Description',
+            ],
+            'role-level' => [
+                'label'         => 'Role Level',
+                'placeholder'   => 'Type Role Level',
+            ],
+            'role-permissions' => [
+                'label'         => 'Role Permissions',
+                'placeholder'   => 'Select Permissions',
+            ],
+            'buttons' => [
+                'save-role'     => [
+                    'name'      => 'Save Role',
+                    'sr-icon'   => 'Save Role Icon',
+                ]
+            ],
+        ],
+    ],
 ];

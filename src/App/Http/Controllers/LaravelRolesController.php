@@ -3,6 +3,8 @@
 namespace jeremykenedy\LaravelRoles\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use jeremykenedy\LaravelRoles\App\Http\Requests\StoreRoleRequest;
+use jeremykenedy\LaravelRoles\App\Services\RoleFormFields;
 use jeremykenedy\LaravelRoles\Traits\RolesGUITraits;
 
 class LaravelRolesController extends Controller
@@ -46,6 +48,43 @@ class LaravelRolesController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $service = new RoleFormFields();
+        $data = $service->handle();
+
+        return view('laravelroles::laravelroles.crud.roles.create', $data);
+    }
+
+    /**
+     * Store a newly created role in storage.
+     *
+     * @param \jeremykenedy\LaravelRoles\App\Http\Requests $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreRoleRequest $request)
+    {
+        $role           = config('roles.models.role')::create($request->postFillData());
+        $permissions    = $request->get('permissions');
+
+        if ($permissions) {
+            $permissionIds = [];
+            foreach ($permissions as $permission) {
+                $permissionIds[] = json_decode($permission)->id;
+            }
+            $role->syncPermissions($permissionIds);
+        }
+
+        return redirect()->route('laravelroles::roles.index')
+                            ->with('success', trans('laravelroles::laravelroles.flash-messages.role-create', ['role' => $role->name]));
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param int $id
@@ -57,6 +96,18 @@ class LaravelRolesController extends Controller
         $item = config('roles.models.role')::findOrFail($id);
 
         return view('laravelroles::laravelroles.crud.roles.show', compact('item'));
+    }
+
+    /**
+     * Edit the specified resource.
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+
     }
 
     /**

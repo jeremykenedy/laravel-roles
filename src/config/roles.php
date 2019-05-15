@@ -111,6 +111,10 @@ return [
     // Optional Roles GUI Middleware
     'rolesGuiMiddleware'            => env('ROLES_GUI_MIDDLEWARE', 'role:admin'),
 
+    // User Permissions or Role needed to create a new role
+    'rolesGuiCreateNewRolesMiddlwareType'   => env('ROLES_GUI_CREATE_ROLE_MIDDLWARE_TYPE', 'role'), //permissions or roles
+    'rolesGuiCreateNewRolesMiddlware'       => env('ROLES_GUI_CREATE_ROLE_MIDDLWARE_TYPE', 'admin'), // admin, XXX. ... or perms.XXX
+
     // The parent blade file
     'bladeExtended'                 => env('ROLES_GUI_BLADE_EXTENDED', 'layouts.app'),
 
@@ -136,6 +140,11 @@ return [
     // jQuery
     'enablejQueryCDN'               => env('ROLES_GUI_JQUERY_CDN_ENABLED', true),
     'JQueryCDN'                     => env('ROLES_GUI_JQUERY_CDN_URL', 'https://code.jquery.com/jquery-3.3.1.min.js'),
+
+    // Selectize JS
+    'enableSelectizeJsCDN'          => env('ROLES_GUI_SELECTIZEJS_CDN_ENABLED', true),
+    'SelectizeJsCDN'                => env('ROLES_GUI_SELECTIZEJS_CDN_URL', 'https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js'),
+    'enableSelectizeJs'             => env('ROLES_GUI_SELECTIZEJS_ENABLED', true),
 
     // Font Awesome
     'enableFontAwesomeCDN'          => env('ROLES_GUI_FONT_AWESOME_CDN_ENABLED', true),

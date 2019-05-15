@@ -54,24 +54,23 @@ class LaravelPermissionsController extends Controller
      */
     public function show($id)
     {
-        $permission = config('roles.models.permission')::findOrFail($id);
-        $users                              = $this->getUsers();
-        $roles                              = $this->getRoles();
-        $permissions                        = $this->getPermissions();
-        $sortedRolesWithUsers               = $this->getSortedUsersWithRoles($roles, $users);
-        $sortedPermissionsRolesUsers        = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions, $users);
-
-        $data = [];
-
-        foreach ($sortedPermissionsRolesUsers as $item) {
-            if ($item['permission']->id === $permission->id) {
-                $data = [
-                    'item' => $item
-                ];
-            }
-        }
+        $data = $this->getPermissionItemData($id);
 
         return view('laravelroles::laravelroles.crud.permissions.show', $data);
+    }
+
+    /**
+     * Edit the specified resource.
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $data = $this->getPermissionItemData($id);
+
+        return view('laravelroles::laravelroles.crud.permissions.edit', $data);
     }
 
     /**
