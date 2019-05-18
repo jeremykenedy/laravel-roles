@@ -4,7 +4,7 @@ namespace jeremykenedy\LaravelRoles\App\Services;
 
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
 
-class RoleFormFields
+class PermissionFormFields
 {
     use RolesAndPermissionsHelpersTrait;
 
@@ -17,8 +17,7 @@ class RoleFormFields
         'name'          => '',
         'slug'          => '',
         'description'   => '',
-        'level'         => '',
-        'permissions'   => [],
+        'model'         => '',
     ];
 
     /**
@@ -41,12 +40,9 @@ class RoleFormFields
     public function handle()
     {
         $fields = $this->fieldList;
-        $rolePermissionsIds = [];
 
         if ($this->id) {
             $fields = $this->fieldsFromModel($this->id, $fields);
-            $rolePermissionsIds = $this->getRolePermissionsIds($this->id);
-
         }
 
         foreach ($fields as $fieldName => $fieldValue) {
@@ -54,15 +50,14 @@ class RoleFormFields
         }
 
         // Get the additional data for the form fields
-        $roleFormFieldData = $this->roleFormFieldData();
+        $permissionFormFieldData = $this->permissionFormFieldData();
 
         return array_merge(
-            $fields, [
-                'allPermissions' => config('roles.models.permission')::all(),
-                'rolePermissionsIds' => $rolePermissionsIds,
-            ],
-            $roleFormFieldData
+            $fields,
+            $permissionFormFieldData
         );
+
+        return $fields;
     }
 
     /**
@@ -75,7 +70,7 @@ class RoleFormFields
      */
     protected function fieldsFromModel($id, array $fields)
     {
-        $role = config('roles.models.role')::findOrFail($id);
+        $permission = config('roles.models.permission')::findOrFail($id);
 
         $fieldNames = array_keys(array_except($fields, ['permissions']));
 
@@ -83,10 +78,8 @@ class RoleFormFields
             'id' => $id,
         ];
         foreach ($fieldNames as $field) {
-            $fields[$field] = $role->{$field};
+            $fields[$field] = $permission->{$field};
         }
-
-        $fields['permissions'] = $role->permissions();
 
         return $fields;
     }
@@ -96,12 +89,10 @@ class RoleFormFields
      *
      * @return array
      */
-    protected function roleFormFieldData()
+    protected function permissionFormFieldData()
     {
-        $allAvailablePermissions = config('roles.models.permission')::all();
-
         return [
-            'allAvailablePermissions'   => $allAvailablePermissions,
+            'permissionModels' => $this->getPermissionModels(),
         ];
     }
 }

@@ -127,6 +127,16 @@ trait RolesAndPermissionsHelpersTrait
     }
 
     /**
+     * Gets the permission models.
+     *
+     * @return The permission models.
+     */
+    public function getPermissionModels()
+    {
+        return DB::table(config('roles.permissionsTable'))->pluck('model')->unique('model');
+    }
+
+    /**
      * Gets the role permissions.
      *
      * @param int $id The Role Id

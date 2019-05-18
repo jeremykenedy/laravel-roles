@@ -22,6 +22,8 @@ return [
         'dropdown-menu-alt' => 'Show Roles Dropdown Menu',
         'create-role'       => 'Create New Role',
         'edit-role'         => 'Editing Role: <strong>:name</strong>',
+        'create-permission' => 'Create New Permission',
+        'edit-permission'   => 'Editing Permission: <strong>:name</strong>',
     ],
 
     'cards' => [
@@ -61,6 +63,7 @@ return [
             'permission-id'     => 'Permission Id',
             'permission-name'   => 'Permission Name',
             'permission-slug'   => 'Permission Slug',
+            'permission-model'  => 'Permission Model',
             'permission-desc'   => 'Permission Description',
             'permission-roles'  => 'Permission Roles',
             'permission-users'  => 'Permission Users',
@@ -133,6 +136,8 @@ return [
         'back-permissions'          => 'Back to dashboard',
         'save-role'                 => "Save New Role",
         'update-role'               => "Save Role Changes",
+        'save-permission'           => "Save New Permission",
+        'update-permission'         => "Save Permission Changes",
     ],
 
     'modals' => [
@@ -189,6 +194,34 @@ return [
                 'update-role'     => [
                     'name'      => 'Save Role Changes',
                     'sr-icon'   => 'Save Role Changes Icon',
+                ],
+            ],
+        ],
+        'permissions-form' => [
+            'permission-name' => [
+                'label'         => 'Permission Name',
+                'placeholder'   => 'Type Permission Name',
+            ],
+            'permission-slug' => [
+                'label'         => 'Permission Slug',
+                'placeholder'   => 'Type Permission Slug',
+            ],
+            'permission-desc' => [
+                'label'         => 'Permission Description',
+                'placeholder'   => 'Type Permission Description',
+            ],
+            'permission-model' => [
+                'label'         => 'Permission Model',
+                'placeholder'   => 'Select Permission Model',
+            ],
+            'buttons' => [
+                'save-permission'     => [
+                    'name'      => 'Save Permission',
+                    'sr-icon'   => 'Save Permission Icon',
+                ],
+                'update-permission'     => [
+                    'name'      => 'Save Permission Changes',
+                    'sr-icon'   => 'Save Permission Changes Icon',
                 ],
             ],
         ],

@@ -3,7 +3,9 @@
 namespace jeremykenedy\LaravelRoles\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use jeremykenedy\LaravelRoles\App\Services\PermissionFormFields;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
+use Illuminate\Http\Request;
 
 class LaravelPermissionsController extends Controller
 {
@@ -46,6 +48,19 @@ class LaravelPermissionsController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $service    = new PermissionFormFields();
+        $data       = $service->handle();
+
+        return view('laravelroles::laravelroles.crud.permissions.create', $data);
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param int $id
@@ -66,9 +81,14 @@ class LaravelPermissionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        $data = $this->getPermissionItemData($id);
+        // $data = $this->getPermissionItemData($id);
+
+        $service    = new PermissionFormFields($id);
+        $data       = $service->handle();
+
+        // dd($data);
 
         return view('laravelroles::laravelroles.crud.permissions.edit', $data);
     }

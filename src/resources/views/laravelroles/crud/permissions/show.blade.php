@@ -85,6 +85,12 @@
                                 </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {!! trans('laravelroles::laravelroles.cards.permission-info-card.permission-model') !!}
+                                <span class="badge badge-pill">
+                                    {{ $item['permission']->model }}
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
                                 {!! trans('laravelroles::laravelroles.cards.permission-info-card.permission-desc') !!}
                                 <span class="badge badge-pill">
                                     @if($item['permission']->desc)
