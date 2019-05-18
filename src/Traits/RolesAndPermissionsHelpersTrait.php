@@ -4,7 +4,7 @@ namespace jeremykenedy\LaravelRoles\Traits;
 
 use Illuminate\Support\Facades\DB;
 
-trait RolesGUITraits
+trait RolesAndPermissionsHelpersTrait
 {
     /**
      * Gets the roles.
@@ -17,6 +17,18 @@ trait RolesGUITraits
     }
 
     /**
+     * Gets the role.
+     *
+     * @param int $id       The identifier
+     *
+     * @return collection   The role.
+     */
+    public function getRole($id)
+    {
+        return config('roles.models.role')::findOrFail($id);
+    }
+
+    /**
      * Gets the permissions.
      *
      * @return collection The permissions.
@@ -24,6 +36,18 @@ trait RolesGUITraits
     public function getPermissions()
     {
         return config('roles.models.permission')::all();
+    }
+
+    /**
+     * Gets the permission.
+     *
+     * @param int $id The identifier
+     *
+     * @return collection The permission.
+     */
+    public function getPermission($id)
+    {
+        return config('roles.models.permission')::findOrFail($id);
     }
 
     /**
@@ -71,15 +95,15 @@ trait RolesGUITraits
     /**
      * Gets the permissions with roles.
      *
-     * @param collection $role The role
+     * @param int $roleId The role Id
      *
      * @return collection The permissions with roles.
      */
-    public function getPermissionsWithRoles($role = null)
+    public function getPermissionsWithRoles($roleId = null)
     {
         $query = DB::table(config('roles.permissionsRoleTable'));
-        if ($role) {
-            $query->where('role_id', '=', $role->id);
+        if ($roleId) {
+            $query->where('role_id', '=', $roleId);
         }
 
         return $query->get();
@@ -100,6 +124,48 @@ trait RolesGUITraits
         }
 
         return $query->get();
+    }
+
+    /**
+     * Gets the role permissions.
+     *
+     * @param int $id The Role Id
+     *
+     * @return array The role permissions.
+     */
+    public function getRolePermissions($id)
+    {
+        $permissionPivots = $this->getPermissionsWithRoles($id);
+        $permissions = [];
+
+        if (count($permissionPivots) != 0) {
+            foreach ($permissionPivots as $permissionPivot) {
+                $permissions[] = $this->getPermission($permissionPivot->permission_id);
+            }
+        }
+
+        return collect($permissions);
+    }
+
+    /**
+     * Gets the role permissions identifiers.
+     *
+     * @param int $id The Role Id
+     *
+     * @return array The role permissions Ids.
+     */
+    public function getRolePermissionsIds($id)
+    {
+        $permissionPivots = $this->getPermissionsWithRoles($id);
+        $permissionIds = [];
+
+        if (count($permissionPivots) != 0) {
+            foreach ($permissionPivots as $permissionPivot) {
+                $permissionIds[] = $permissionPivot->permission_id;
+            }
+        }
+
+        return $permissionIds;
     }
 
     /**
@@ -402,5 +468,72 @@ trait RolesGUITraits
                 }
             }
         }
+    }
+
+    /**
+     * Stores role with permissions.
+     *
+     * @param array   $roleData         The role data
+     * @param object  $rolePermissions  The role permissions
+     *
+     * @return collection               The Role
+     */
+    public function storeRoleWithPermissions($roleData, $rolePermissions)
+    {
+        $role = config('roles.models.role')::create($roleData);
+
+        if ($rolePermissions) {
+            $permissionIds = [];
+            foreach ($rolePermissions as $permission) {
+                $permissionIds[] = json_decode($permission)->id;
+            }
+            $role->syncPermissions($permissionIds);
+        }
+
+        return $role;
+    }
+
+    /**
+     * Update Role with permissions
+     *
+     * @param int    $id               The identifier
+     * @param array  $roleData         The role data
+     * @param object $rolePermissions  The role permissions
+     *
+     * @return collection              The Role
+     */
+    public function updateRoleWithPermissions($id, $roleData, $rolePermissions)
+    {
+        $role = config('roles.models.role')::findOrFail($id);
+
+        $role->fill($roleData);
+        $role->save();
+        $role->detachAllPermissions();
+
+        if ($rolePermissions) {
+            $permissionIds = [];
+            foreach ($rolePermissions as $permission) {
+                $permissionIds[] = json_decode($permission)->id;
+            }
+            $role->syncPermissions($permissionIds);
+        }
+
+        return $role;
+    }
+
+    /**
+     * Delete a role
+     *
+     * @param int $id     The identifier
+     *
+     * @return collection
+     */
+    public function deleteRole($id)
+    {
+        $role = $this->getRole($id);
+        $this->removeUsersAndPermissionsFromRole($role);
+        $role->delete();
+
+        return $role;
     }
 }

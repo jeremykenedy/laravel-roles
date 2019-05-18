@@ -1,3 +1,9 @@
+@php
+    if(!$level){
+        $level = 0;
+    }
+@endphp
+
 <div class="form-group has-feedback row {{ $errors->has('level') ? ' has-error ' : '' }}">
     <label for="level" class="col-12 control-label">
         {{ trans("laravelroles::laravelroles.forms.roles-form.role-level.label") }}

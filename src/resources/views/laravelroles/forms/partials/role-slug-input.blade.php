@@ -3,7 +3,7 @@
         {{ trans("laravelroles::laravelroles.forms.roles-form.role-slug.label") }}
     </label>
     <div class="col-12">
-        <input type="text" id="slug" name="slug" class="form-control" value="{{ $slug }}" placeholder="{{ trans('laravelroles::laravelroles.forms.roles-form.role-slug.placeholder') }}">
+        <input type="text" id="slug" name="slug" class="form-control" value="{{ $slug }}" onkeypress="return numbersAndLettersOnly()" placeholder="{{ trans('laravelroles::laravelroles.forms.roles-form.role-slug.placeholder') }}">
     </div>
     @if ($errors->has('slug'))
         <div class="col-12">

@@ -1,5 +1,4 @@
 {{ csrf_field() }}
-{{ method_field('POST') }}
 <div class="row">
     <div class="col-md-8">
         @include('laravelroles::laravelroles.forms.partials.role-name-input')

@@ -6,10 +6,11 @@
         <select name="permissions[]" id="permissions" multiple>
             <option value="">{{ trans("laravelroles::laravelroles.forms.roles-form.role-permissions.placeholder") }}</option>
             @foreach ($allPermissions as $permission)
-                <option @if (in_array($permission, $permissions)) selected @endif value="{{ $permission }}">
+                <option @if (in_array($permission->id, $rolePermissionsIds)) selected @endif value="{{ $permission }}">
                     {{ $permission->name }}
                 </option>
             @endforeach
+
         </select>
     </div>
     @if ($errors->has('permissions'))

@@ -30,11 +30,11 @@ class StoreRoleRequest extends FormRequest
     public function rules()
     {
         return [
-
-            'name'          => 'required|string|max:255|unique:'.config('roles.rolesTable').',id,'.$this->id,
-            'slug'          => 'required|string|max:255|unique:'.config('roles.rolesTable').',id,'.$this->id,
+            'name'          => 'required|unique:'.config('roles.rolesTable').',name,'.$this->id.',id',
+            'slug'          => 'required|unique:'.config('roles.rolesTable').',slug,'.$this->id.',id',
             'description'   => 'nullable|string|max:255',
             'level'         => 'required|integer',
+
         ];
     }
 
@@ -43,7 +43,7 @@ class StoreRoleRequest extends FormRequest
      *
      * @return array
      */
-    public function postFillData()
+    public function roleFillData()
     {
         return [
             'name'          => $this->name,

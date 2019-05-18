@@ -3,11 +3,11 @@
 namespace jeremykenedy\LaravelRoles\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use jeremykenedy\LaravelRoles\Traits\RolesGUITraits;
+use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
 
 class LaravelPermissionsController extends Controller
 {
-    use RolesGUITraits;
+    use RolesAndPermissionsHelpersTrait;
 
     private $_rolesGuiAuthEnabled;
     private $_rolesGuiMiddlewareEnabled;

@@ -29,17 +29,26 @@
                                 $indRoleTextClass = 'text-secondary';
                             }
                         @endphp
-                        <li id="accordion_roles_{{ $itemKey }}" class="list-group-item accordion @if($item['users']->count() > 0) list-group-item-action accordion-item collapsed @endif" data-toggle="collapse" href="#collapse_roles_{{ $itemKey }}">
+                        <li id="accordion_roles_{{ $itemKey }}" class="list-group-item accordion @if($item['users']->count() > 0 || $item['permissions']->count() > 0) list-group-item-action accordion-item collapsed @endif" data-toggle="collapse" href="#collapse_roles_{{ $itemKey }}">
                             <div class="d-flex justify-content-between align-items-center" @if($item['users']->count() > 0 || $item['permissions']->count() > 0) data-toggle="tooltip" title="{{ trans("laravelroles::laravelroles.tooltips.show-hide") }}" @endif>
                                 <span class="badge badge-default role-name">
                                     {!! trans('laravelroles::laravelroles.titles.role-card') !!} <strong class="{{ $indRoleTextClass }}">{{ $item['role']->name }}</strong>
                                 </span>
                                 <div>
+                                    <span class="badge badge-light">
+                                        <small>
+                                            {{ trans('laravelroles::laravelroles.cards.level', ['level' => $item['role']->level]) }}
+                                        </small>
+                                    </span>
                                     <span class="badge badge-pill {{ $indRoleBadgeClass }}">
-                                        {!! trans_choice('laravelroles::laravelroles.cards.users-count', count($item['users']), ['count' => count($item['users'])]) !!}
+                                        <small>
+                                            {!! trans_choice('laravelroles::laravelroles.cards.users-count', count($item['users']), ['count' => count($item['users'])]) !!}
+                                        </small>
                                     </span>
                                     <span class="badge badge-secondary badge-pill">
-                                        {!! trans_choice('laravelroles::laravelroles.cards.permissions-count', count($item['permissions']), ['count' => count($item['permissions'])]) !!}
+                                        <small>
+                                            {!! trans_choice('laravelroles::laravelroles.cards.permissions-count', count($item['permissions']), ['count' => count($item['permissions'])]) !!}
+                                        </small>
                                     </span>
                                 </div>
                             </div>

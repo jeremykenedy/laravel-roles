@@ -3,7 +3,7 @@
         {{ trans("laravelroles::laravelroles.forms.roles-form.role-desc.label") }}
     </label>
     <div class="col-12">
-        <textarea id="description" name="description" class="form-control" value="{{ $description }}" placeholder="{{ trans('laravelroles::laravelroles.forms.roles-form.role-desc.placeholder') }}"></textarea>
+        <textarea id="description" name="description" class="form-control" placeholder="{{ trans('laravelroles::laravelroles.forms.roles-form.role-desc.placeholder') }}">{{ $description }}</textarea>
     </div>
     @if ($errors->has('description'))
         <div class="col-12">

@@ -2,10 +2,12 @@
 
 namespace jeremykenedy\LaravelRoles\App\Services;
 
-use Carbon\Carbon;
+use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
 
 class RoleFormFields
 {
+    use RolesAndPermissionsHelpersTrait;
+
     /**
      * List of fields and default value for each field.
      *
@@ -39,9 +41,12 @@ class RoleFormFields
     public function handle()
     {
         $fields = $this->fieldList;
+        $rolePermissionsIds = [];
 
         if ($this->id) {
             $fields = $this->fieldsFromModel($this->id, $fields);
+            $rolePermissionsIds = $this->getRolePermissionsIds($this->id);
+
         }
 
         foreach ($fields as $fieldName => $fieldValue) {
@@ -54,6 +59,7 @@ class RoleFormFields
         return array_merge(
             $fields, [
                 'allPermissions' => config('roles.models.permission')::all(),
+                'rolePermissionsIds' => $rolePermissionsIds,
             ],
             $roleFormFieldData
         );
@@ -80,7 +86,7 @@ class RoleFormFields
             $fields[$field] = $role->{$field};
         }
 
-        $fields['permissions'] = $role->permissions()->all();
+        $fields['permissions'] = $role->permissions();
 
         return $fields;
     }

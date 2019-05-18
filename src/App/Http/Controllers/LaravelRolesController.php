@@ -4,12 +4,14 @@ namespace jeremykenedy\LaravelRoles\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use jeremykenedy\LaravelRoles\App\Http\Requests\StoreRoleRequest;
+use jeremykenedy\LaravelRoles\App\Http\Requests\UpdateRoleRequest;
 use jeremykenedy\LaravelRoles\App\Services\RoleFormFields;
-use jeremykenedy\LaravelRoles\Traits\RolesGUITraits;
+use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
+use Illuminate\Http\Request;
 
 class LaravelRolesController extends Controller
 {
-    use RolesGUITraits;
+    use RolesAndPermissionsHelpersTrait;
 
     private $_rolesGuiAuthEnabled;
     private $_rolesGuiMiddlewareEnabled;
@@ -54,8 +56,8 @@ class LaravelRolesController extends Controller
      */
     public function create()
     {
-        $service = new RoleFormFields();
-        $data = $service->handle();
+        $service    = new RoleFormFields();
+        $data       = $service->handle();
 
         return view('laravelroles::laravelroles.crud.roles.create', $data);
     }
@@ -63,22 +65,15 @@ class LaravelRolesController extends Controller
     /**
      * Store a newly created role in storage.
      *
-     * @param \jeremykenedy\LaravelRoles\App\Http\Requests $request
+     * @param \jeremykenedy\LaravelRoles\App\Http\Requests\StoreRoleRequest $request
      *
      * @return \Illuminate\Http\Response
      */
     public function store(StoreRoleRequest $request)
     {
-        $role           = config('roles.models.role')::create($request->postFillData());
-        $permissions    = $request->get('permissions');
-
-        if ($permissions) {
-            $permissionIds = [];
-            foreach ($permissions as $permission) {
-                $permissionIds[] = json_decode($permission)->id;
-            }
-            $role->syncPermissions($permissionIds);
-        }
+        $roleData           = $request->roleFillData();
+        $rolePermissions    = $request->get('permissions');
+        $role               = $this->storeRoleWithPermissions($roleData, $rolePermissions);
 
         return redirect()->route('laravelroles::roles.index')
                             ->with('success', trans('laravelroles::laravelroles.flash-messages.role-create', ['role' => $role->name]));
@@ -93,7 +88,7 @@ class LaravelRolesController extends Controller
      */
     public function show($id)
     {
-        $item = config('roles.models.role')::findOrFail($id);
+        $item = $this->getRole($id);
 
         return view('laravelroles::laravelroles.crud.roles.show', compact('item'));
     }
@@ -105,9 +100,31 @@ class LaravelRolesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
+    {
+        $service = new RoleFormFields($id);
+        $data = $service->handle();
+
+        return view('laravelroles::laravelroles.crud.roles.edit', $data);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \jeremykenedy\LaravelRoles\App\Http\Requests\UpdateRoleRequest $request
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdateRoleRequest $request, $id)
     {
 
+        $roleData           = $request->roleFillData();
+        $rolePermissions    = $request->get('permissions');
+        $role               = $this->updateRoleWithPermissions($id, $roleData, $rolePermissions);
+
+        return redirect()->route('laravelroles::roles.index')
+            ->with('success', trans('laravelroles::laravelroles.flash-messages.role-updated', ['role' => $role->name]));
     }
 
     /**
@@ -119,9 +136,7 @@ class LaravelRolesController extends Controller
      */
     public function destroy($id)
     {
-        $role = config('roles.models.role')::findOrFail($id);
-        $this->removeUsersAndPermissionsFromRole($role);
-        $role->delete();
+        $role = $this->deleteRole($id);
 
         return redirect(route('laravelroles::roles.index'))
                     ->with('success', trans('laravelroles::laravelroles.flash-messages.successDeletedItem', ['type' => 'Role', 'item' => $role->name]));

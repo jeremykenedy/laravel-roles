@@ -21,6 +21,7 @@ return [
         'permissions-table' => 'Active Permissions',
         'dropdown-menu-alt' => 'Show Roles Dropdown Menu',
         'create-role'       => 'Create New Role',
+        'edit-role'         => 'Editing Role: <strong>:name</strong>',
     ],
 
     'cards' => [
@@ -28,6 +29,7 @@ return [
         'permissions-count' => '{1} :count permission|[2,*] :count permissions',
         'roles-count'       => '{1} :count role|[2,*] :count roles',
         'none-count'        => 'None',
+        'level'             => 'Level :level',
         'role-card'         => [
             'user-id'                   => 'User Id',
             'user-name'                 => 'Username',
@@ -129,7 +131,8 @@ return [
         'back-roles'                => 'Back to dashboard',
         'back-permissions-deleted'  => 'Back to deleted dashboard',
         'back-permissions'          => 'Back to dashboard',
-        'save-role'                 => "Save Role Now",
+        'save-role'                 => "Save New Role",
+        'update-role'               => "Save Role Changes",
     ],
 
     'modals' => [
@@ -153,6 +156,7 @@ return [
         'someProblems'          => 'There were some problems with your input.',
         'successDeletedItem'    => 'Successfully Deleted :type: :item',
         'role-create'           => 'Successfully Created New Role: :role',
+        'role-updated'          => 'Successfully Updated Role: :role',
     ],
 
     'forms' => [
@@ -181,7 +185,11 @@ return [
                 'save-role'     => [
                     'name'      => 'Save Role',
                     'sr-icon'   => 'Save Role Icon',
-                ]
+                ],
+                'update-role'     => [
+                    'name'      => 'Save Role Changes',
+                    'sr-icon'   => 'Save Role Changes Icon',
+                ],
             ],
         ],
     ],

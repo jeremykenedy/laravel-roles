@@ -27,10 +27,9 @@
     @endif
     @include('laravelroles::laravelroles.partials.styles')
     @include('laravelroles::laravelroles.partials.bs-visibility-css')
-
-
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.min.css">
-
+    @if(config('roles.enableSelectizeJsCssCDN'))
+        <link rel="stylesheet" type="text/css" href="{{ config('roles.SelectizeJsCssCDN') }}">
+    @endif
 @endsection
 
 @section('content')
