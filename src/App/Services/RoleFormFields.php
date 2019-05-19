@@ -46,7 +46,6 @@ class RoleFormFields
         if ($this->id) {
             $fields = $this->fieldsFromModel($this->id, $fields);
             $rolePermissionsIds = $this->getRolePermissionsIds($this->id);
-
         }
 
         foreach ($fields as $fieldName => $fieldValue) {
@@ -58,7 +57,7 @@ class RoleFormFields
 
         return array_merge(
             $fields, [
-                'allPermissions' => config('roles.models.permission')::all(),
+                'allPermissions'     => config('roles.models.permission')::all(),
                 'rolePermissionsIds' => $rolePermissionsIds,
             ],
             $roleFormFieldData

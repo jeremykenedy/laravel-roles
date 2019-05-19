@@ -3,11 +3,11 @@
 namespace jeremykenedy\LaravelRoles\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use jeremykenedy\LaravelRoles\App\Http\Requests\StoreRoleRequest;
 use jeremykenedy\LaravelRoles\App\Http\Requests\UpdateRoleRequest;
 use jeremykenedy\LaravelRoles\App\Services\RoleFormFields;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
-use Illuminate\Http\Request;
 
 class LaravelRolesController extends Controller
 {
@@ -24,9 +24,9 @@ class LaravelRolesController extends Controller
      */
     public function __construct()
     {
-        $this->_rolesGuiAuthEnabled         = config('roles.rolesGuiAuthEnabled');
-        $this->_rolesGuiMiddlewareEnabled   = config('roles.rolesGuiMiddlewareEnabled');
-        $this->_rolesGuiMiddleware          = config('roles.rolesGuiMiddleware');
+        $this->_rolesGuiAuthEnabled = config('roles.rolesGuiAuthEnabled');
+        $this->_rolesGuiMiddlewareEnabled = config('roles.rolesGuiMiddlewareEnabled');
+        $this->_rolesGuiMiddleware = config('roles.rolesGuiMiddleware');
 
         if ($this->_rolesGuiAuthEnabled) {
             $this->middleware('auth');
@@ -56,8 +56,8 @@ class LaravelRolesController extends Controller
      */
     public function create()
     {
-        $service    = new RoleFormFields();
-        $data       = $service->handle();
+        $service = new RoleFormFields();
+        $data = $service->handle();
 
         return view('laravelroles::laravelroles.crud.roles.create', $data);
     }
@@ -71,9 +71,9 @@ class LaravelRolesController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
-        $roleData           = $request->roleFillData();
-        $rolePermissions    = $request->get('permissions');
-        $role               = $this->storeRoleWithPermissions($roleData, $rolePermissions);
+        $roleData = $request->roleFillData();
+        $rolePermissions = $request->get('permissions');
+        $role = $this->storeRoleWithPermissions($roleData, $rolePermissions);
 
         return redirect()->route('laravelroles::roles.index')
                             ->with('success', trans('laravelroles::laravelroles.flash-messages.role-create', ['role' => $role->name]));
@@ -112,16 +112,15 @@ class LaravelRolesController extends Controller
      * Update the specified resource in storage.
      *
      * @param \jeremykenedy\LaravelRoles\App\Http\Requests\UpdateRoleRequest $request
-     * @param int $id
+     * @param int                                                            $id
      *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateRoleRequest $request, $id)
     {
-
-        $roleData           = $request->roleFillData();
-        $rolePermissions    = $request->get('permissions');
-        $role               = $this->updateRoleWithPermissions($id, $roleData, $rolePermissions);
+        $roleData = $request->roleFillData();
+        $rolePermissions = $request->get('permissions');
+        $role = $this->updateRoleWithPermissions($id, $roleData, $rolePermissions);
 
         return redirect()->route('laravelroles::roles.index')
             ->with('success', trans('laravelroles::laravelroles.flash-messages.role-updated', ['role' => $role->name]));
