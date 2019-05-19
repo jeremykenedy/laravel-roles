@@ -3,6 +3,8 @@
 namespace jeremykenedy\LaravelRoles\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use jeremykenedy\LaravelRoles\App\Http\Requests\StorePermissionRequest;
+use jeremykenedy\LaravelRoles\App\Http\Requests\UpdatePermissionRequest;
 use jeremykenedy\LaravelRoles\App\Services\PermissionFormFields;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
 use Illuminate\Http\Request;
@@ -61,6 +63,22 @@ class LaravelPermissionsController extends Controller
     }
 
     /**
+     * Store a newly created permission in storage.
+     *
+     * @param \jeremykenedy\LaravelRoles\App\Http\Requests\StorePermissionRequest $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StorePermissionRequest $request)
+    {
+        $permissionData = $request->permissionFillData();
+        $permission = $this->storeNewPermission($permissionData);
+
+        return redirect()->route('laravelroles::roles.index')
+                            ->with('success', trans('laravelroles::laravelroles.flash-messages.permission-create', ['permission' => $permission->name]));
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param int $id
@@ -83,14 +101,27 @@ class LaravelPermissionsController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        // $data = $this->getPermissionItemData($id);
-
         $service    = new PermissionFormFields($id);
         $data       = $service->handle();
 
-        // dd($data);
-
         return view('laravelroles::laravelroles.crud.permissions.edit', $data);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \jeremykenedy\LaravelRoles\App\Http\Requests\UpdatePermissionRequest $request
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdatePermissionRequest $request, $id)
+    {
+        $permissionData = $request->permissionFillData($id);
+        $permission     = $this->updatePermission($id, $permissionData);
+
+        return redirect()->route('laravelroles::roles.index')
+            ->with('success', trans('laravelroles::laravelroles.flash-messages.permission-updated', ['permission' => $permission->name]));
     }
 
     /**

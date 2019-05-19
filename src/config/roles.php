@@ -115,6 +115,10 @@ return [
     'rolesGuiCreateNewRolesMiddlwareType'   => env('ROLES_GUI_CREATE_ROLE_MIDDLWARE_TYPE', 'role'), //permissions or roles
     'rolesGuiCreateNewRolesMiddlware'       => env('ROLES_GUI_CREATE_ROLE_MIDDLWARE_TYPE', 'admin'), // admin, XXX. ... or perms.XXX
 
+    // User Permissions or Role needed to create a new permission
+    'rolesGuiCreateNewPermissionMiddlwareType'  => env('ROLES_GUI_CREATE_PERMISSION_MIDDLWARE_TYPE', 'role'), //permissions or roles
+    'rolesGuiCreateNewPermissionsMiddlware'     => env('ROLES_GUI_CREATE_PERMISSION_MIDDLWARE_TYPE', 'admin'), // admin, XXX. ... or perms.XXX
+
     // The parent blade file
     'bladeExtended'                 => env('ROLES_GUI_BLADE_EXTENDED', 'layouts.app'),
 

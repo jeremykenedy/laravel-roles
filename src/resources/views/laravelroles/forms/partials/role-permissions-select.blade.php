@@ -10,7 +10,6 @@
                     {{ $permission->name }}
                 </option>
             @endforeach
-
         </select>
     </div>
     @if ($errors->has('permissions'))

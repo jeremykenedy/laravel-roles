@@ -133,7 +133,8 @@ trait RolesAndPermissionsHelpersTrait
      */
     public function getPermissionModels()
     {
-        return DB::table(config('roles.permissionsTable'))->pluck('model')->unique('model');
+        $permissionModel = config('roles.models.permission');
+        return DB::table(config('roles.permissionsTable'))->pluck('model')->merge(collect(class_basename(new $permissionModel)))->unique();
     }
 
     /**
@@ -529,6 +530,35 @@ trait RolesAndPermissionsHelpersTrait
         }
 
         return $role;
+    }
+
+    /**
+     * Stores a new permission.
+     *
+     * @param array $permissionData The permission data
+     *
+     * @return collection The New Permission
+     */
+    public function storeNewPermission($permissionData)
+    {
+        return config('roles.models.permission')::create($permissionData);
+    }
+
+    /**
+     * Update a permission
+     *
+     * @param int $id               The identifier
+     * @param array $permissionData The permission data
+     *
+     * @return collection
+     */
+    public function updatePermission($id, $permissionData)
+    {
+        $permission = config('roles.models.permission')::findOrFail($id);
+        $permission->fill($permissionData);
+        $permission->save();
+
+        return $permission;
     }
 
     /**

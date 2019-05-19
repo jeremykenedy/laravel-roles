@@ -7,7 +7,7 @@
     <div class="card-footer">
         <div class="row ">
             <div class="col-md-6">
-                <span data-toggle="tooltip" title="{!! trans("laravelroles::laravelroles.tooltips.update-role") !!}">
+                <span data-toggle="tooltip" title="{!! trans('laravelroles::laravelroles.tooltips.update-role') !!}">
                     <button type="submit" class="btn btn-success btn-lg btn-block" value="save" name="action">
                         <i class="fa fa-save fa-fw">
                             <span class="sr-only">

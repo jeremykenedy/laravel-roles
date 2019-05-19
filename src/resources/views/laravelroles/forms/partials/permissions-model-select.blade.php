@@ -7,11 +7,10 @@
             <option value="">{{ trans("laravelroles::laravelroles.forms.permissions-form.permission-model.placeholder") }}</option>
 
             @foreach ($permissionModels as $permissionModel)
-                <option value="{{ $permissionModel }}">
+                <option @if ($permissionModel == $model) selected @endif value="{{ $permissionModel }}">
                     {{ $permissionModel }}
                 </option>}
             @endforeach
-
         </select>
     </div>
     @if ($errors->has('model'))

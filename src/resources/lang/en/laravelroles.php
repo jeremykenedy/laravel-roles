@@ -116,8 +116,8 @@ return [
         'create-new-permission'         => 'Create New Permission',
         'back-to-roles'                 => '<span class="hidden-xs">Back</span> <span class="hidden-xs hidden-sm">to Roles</span>',
         'back-to-roles-deleted'         => '<span class="hidden-xs">Back</span> <span class="hidden-xs hidden-sm">to Deleted Roles</span>',
-        'back-to-permissions'           => '<span class="hidden-xs">Back</span> <span class="hidden-xs hidden-sm">to Roles</span>',
-        'back-to-permissions-deleted'   => '<span class="hidden-xs">Back</span> <span class="hidden-xs hidden-sm">to Deleted Roles</span>',
+        'back-to-permissions'           => '<span class="hidden-xs">Back</span> <span class="hidden-xs hidden-sm">to Roles Dashboard</span>',
+        'back-to-permissions-deleted'   => '<span class="hidden-xs">Back</span> <span class="hidden-xs hidden-sm">to Deleted Roles Dashboard</span>',
 
     ],
 
@@ -162,6 +162,8 @@ return [
         'successDeletedItem'    => 'Successfully Deleted :type: :item',
         'role-create'           => 'Successfully Created New Role: :role',
         'role-updated'          => 'Successfully Updated Role: :role',
+        'permission-create'     => 'Successfully Created New Permission: :permission',
+        'permission-updated'    => 'Successfully Updated Permission: :permission',
     ],
 
     'forms' => [
