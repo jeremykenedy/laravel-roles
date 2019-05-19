@@ -3,11 +3,11 @@
 namespace jeremykenedy\LaravelRoles\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use jeremykenedy\LaravelRoles\App\Http\Requests\StorePermissionRequest;
 use jeremykenedy\LaravelRoles\App\Http\Requests\UpdatePermissionRequest;
 use jeremykenedy\LaravelRoles\App\Services\PermissionFormFields;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
-use Illuminate\Http\Request;
 
 class LaravelPermissionsController extends Controller
 {
@@ -24,9 +24,9 @@ class LaravelPermissionsController extends Controller
      */
     public function __construct()
     {
-        $this->_rolesGuiAuthEnabled         = config('roles.rolesGuiAuthEnabled');
-        $this->_rolesGuiMiddlewareEnabled   = config('roles.rolesGuiMiddlewareEnabled');
-        $this->_rolesGuiMiddleware          = config('roles.rolesGuiMiddleware');
+        $this->_rolesGuiAuthEnabled = config('roles.rolesGuiAuthEnabled');
+        $this->_rolesGuiMiddlewareEnabled = config('roles.rolesGuiMiddlewareEnabled');
+        $this->_rolesGuiMiddleware = config('roles.rolesGuiMiddleware');
 
         if ($this->_rolesGuiAuthEnabled) {
             $this->middleware('auth');
@@ -56,8 +56,8 @@ class LaravelPermissionsController extends Controller
      */
     public function create()
     {
-        $service    = new PermissionFormFields();
-        $data       = $service->handle();
+        $service = new PermissionFormFields();
+        $data = $service->handle();
 
         return view('laravelroles::laravelroles.crud.permissions.create', $data);
     }
@@ -101,8 +101,8 @@ class LaravelPermissionsController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $service    = new PermissionFormFields($id);
-        $data       = $service->handle();
+        $service = new PermissionFormFields($id);
+        $data = $service->handle();
 
         return view('laravelroles::laravelroles.crud.permissions.edit', $data);
     }
@@ -111,14 +111,14 @@ class LaravelPermissionsController extends Controller
      * Update the specified resource in storage.
      *
      * @param \jeremykenedy\LaravelRoles\App\Http\Requests\UpdatePermissionRequest $request
-     * @param int $id
+     * @param int                                                                  $id
      *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdatePermissionRequest $request, $id)
     {
         $permissionData = $request->permissionFillData($id);
-        $permission     = $this->updatePermission($id, $permissionData);
+        $permission = $this->updatePermission($id, $permissionData);
 
         return redirect()->route('laravelroles::roles.index')
             ->with('success', trans('laravelroles::laravelroles.flash-messages.permission-updated', ['permission' => $permission->name]));

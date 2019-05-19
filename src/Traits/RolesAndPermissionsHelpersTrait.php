@@ -19,9 +19,9 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets the role.
      *
-     * @param int $id       The identifier
+     * @param int $id The identifier
      *
-     * @return collection   The role.
+     * @return collection The role.
      */
     public function getRole($id)
     {
@@ -112,7 +112,7 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets the permission users.
      *
-     * @param int $permissionId  The permission identifier
+     * @param int $permissionId The permission identifier
      *
      * @return Collection The permission users.
      */
@@ -134,7 +134,8 @@ trait RolesAndPermissionsHelpersTrait
     public function getPermissionModels()
     {
         $permissionModel = config('roles.models.permission');
-        return DB::table(config('roles.permissionsTable'))->pluck('model')->merge(collect(class_basename(new $permissionModel)))->unique();
+
+        return DB::table(config('roles.permissionsTable'))->pluck('model')->merge(collect(class_basename(new $permissionModel())))->unique();
     }
 
     /**
@@ -182,25 +183,25 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets the permission item data.
      *
-     * @param int $id   The Permission ID
+     * @param int $id The Permission ID
      *
-     * @return array    The Permission item data.
+     * @return array The Permission item data.
      */
     public function getPermissionItemData($id)
     {
-        $permission                         = config('roles.models.permission')::findOrFail($id);
-        $users                              = $this->getUsers();
-        $roles                              = $this->getRoles();
-        $permissions                        = $this->getPermissions();
-        $sortedRolesWithUsers               = $this->getSortedUsersWithRoles($roles, $users);
-        $sortedPermissionsRolesUsers        = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions, $users);
+        $permission = config('roles.models.permission')::findOrFail($id);
+        $users = $this->getUsers();
+        $roles = $this->getRoles();
+        $permissions = $this->getPermissions();
+        $sortedRolesWithUsers = $this->getSortedUsersWithRoles($roles, $users);
+        $sortedPermissionsRolesUsers = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions, $users);
 
         $data = [];
 
         foreach ($sortedPermissionsRolesUsers as $item) {
             if ($item['permission']->id === $permission->id) {
                 $data = [
-                    'item' => $item
+                    'item' => $item,
                 ];
             }
         }
@@ -211,35 +212,35 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets the dashboard data.
      *
-     * @return array  The dashboard data and view.
+     * @return array The dashboard data and view.
      */
     public function getDashboardData()
     {
-        $roles                              = $this->getRoles();
-        $permissions                        = $this->getPermissions();
-        $deletedRoleItems                   = $this->getDeletedRoles();
-        $deletedPermissionsItems            = $this->getDeletedPermissions();
-        $users                              = $this->getUsers();
-        $sortedRolesWithUsers               = $this->getSortedUsersWithRoles($roles, $users);
+        $roles = $this->getRoles();
+        $permissions = $this->getPermissions();
+        $deletedRoleItems = $this->getDeletedRoles();
+        $deletedPermissionsItems = $this->getDeletedPermissions();
+        $users = $this->getUsers();
+        $sortedRolesWithUsers = $this->getSortedUsersWithRoles($roles, $users);
         $sortedRolesWithPermissionsAndUsers = $this->getSortedRolesWithPermissionsAndUsers($sortedRolesWithUsers, $permissions);
-        $sortedPermissionsRolesUsers        = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions, $users);
+        $sortedPermissionsRolesUsers = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions, $users);
 
         $data = [
-            'roles' => $roles,
-            'permissions' => $permissions,
-            'deletedRoleItems' => $deletedRoleItems,
-            'deletedPermissionsItems' => $deletedPermissionsItems,
-            'users' => $users,
-            'sortedRolesWithUsers' => $sortedRolesWithUsers,
+            'roles'                              => $roles,
+            'permissions'                        => $permissions,
+            'deletedRoleItems'                   => $deletedRoleItems,
+            'deletedPermissionsItems'            => $deletedPermissionsItems,
+            'users'                              => $users,
+            'sortedRolesWithUsers'               => $sortedRolesWithUsers,
             'sortedRolesWithPermissionsAndUsers' => $sortedRolesWithPermissionsAndUsers,
-            'sortedPermissionsRolesUsers' => $sortedPermissionsRolesUsers,
+            'sortedPermissionsRolesUsers'        => $sortedPermissionsRolesUsers,
         ];
 
         $view = 'laravelroles::laravelroles.crud.dashboard';
 
         $data = [
             'data' => $data,
-            'view' => $view
+            'view' => $view,
         ];
 
         return $data;
@@ -281,11 +282,10 @@ trait RolesAndPermissionsHelpersTrait
      *
      * @return Collection of Permission Users
      */
-
     public function retrievePermissionUsers($permission, $permissionsAndRolesPivot, $sortedRolesWithUsers, $permissionUsersPivot, $appUsers)
     {
-        $users      = [];
-        $userIds    = [];
+        $users = [];
+        $userIds = [];
 
         // Get Users from permissions associated with roles
         foreach ($permissionsAndRolesPivot as $permissionsAndRolesPivotItemKey => $permissionsAndRolesPivotItemValue) {
@@ -399,15 +399,15 @@ trait RolesAndPermissionsHelpersTrait
      *
      * @param collection $sortedRolesWithUsers The sorted roles with users
      * @param collection $permissions          The permissions
-     * @param colection $users                 The users
+     * @param colection  $users                The users
      *
      * @return collection The sorted permissons with roles and users.
      */
     public function getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions, $users)
     {
         $sortedPermissionsWithRoles = [];
-        $permissionsAndRolesPivot   = $this->getPermissionsWithRoles();
-        $permissionUsersPivot       = $this->getPermissionUsers();
+        $permissionsAndRolesPivot = $this->getPermissionsWithRoles();
+        $permissionUsersPivot = $this->getPermissionUsers();
 
         foreach ($permissions as $permissionKey => $permissionValue) {
             $sortedPermissionsWithRoles[] = [
@@ -429,10 +429,10 @@ trait RolesAndPermissionsHelpersTrait
      */
     public function removeUsersAndPermissionsFromRole($role)
     {
-        $users                  = $this->getUsers();
-        $roles                  = $this->getRoles();
-        $sortedRolesWithUsers   = $this->getSortedUsersWithRoles($roles, $users);
-        $roleUsers              = [];
+        $users = $this->getUsers();
+        $roles = $this->getRoles();
+        $sortedRolesWithUsers = $this->getSortedUsersWithRoles($roles, $users);
+        $roleUsers = [];
 
         // Remove Users Attached to Role
         foreach ($sortedRolesWithUsers as $sortedRolesWithUsersKey => $sortedRolesWithUsersValue) {
@@ -441,7 +441,7 @@ trait RolesAndPermissionsHelpersTrait
             }
         }
         foreach ($roleUsers as $roleUserKey => $roleUserValue) {
-            if(!empty($roleUserValue)) {
+            if (!empty($roleUserValue)) {
                 $roleUserValue[$roleUserKey]->detachRole($role);
             }
         }
@@ -453,17 +453,17 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Removes an users and permissions from permission.
      *
-     * @param Permission  $permission   The Permission
+     * @param Permission $permission The Permission
      *
      * @return void
      */
     public function removeUsersAndRolesFromPermissions($permission)
     {
-        $users                              = $this->getUsers();
-        $roles                              = $this->getRoles();
-        $permissions                        = $this->getPermissions();
-        $sortedRolesWithUsers               = $this->getSortedUsersWithRoles($roles, $users);
-        $sortedPermissionsRolesUsers        = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions, $users);
+        $users = $this->getUsers();
+        $roles = $this->getRoles();
+        $permissions = $this->getPermissions();
+        $sortedRolesWithUsers = $this->getSortedUsersWithRoles($roles, $users);
+        $sortedPermissionsRolesUsers = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions, $users);
 
         foreach ($sortedPermissionsRolesUsers as $sortedPermissionsRolesUsersKey => $sortedPermissionsRolesUsersItem) {
             if ($sortedPermissionsRolesUsersItem['permission']->id === $permission->id) {
@@ -484,10 +484,10 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Stores role with permissions.
      *
-     * @param array   $roleData         The role data
-     * @param object  $rolePermissions  The role permissions
+     * @param array  $roleData        The role data
+     * @param object $rolePermissions The role permissions
      *
-     * @return collection               The Role
+     * @return collection The Role
      */
     public function storeRoleWithPermissions($roleData, $rolePermissions)
     {
@@ -505,13 +505,13 @@ trait RolesAndPermissionsHelpersTrait
     }
 
     /**
-     * Update Role with permissions
+     * Update Role with permissions.
      *
-     * @param int    $id               The identifier
-     * @param array  $roleData         The role data
-     * @param object $rolePermissions  The role permissions
+     * @param int    $id              The identifier
+     * @param array  $roleData        The role data
+     * @param object $rolePermissions The role permissions
      *
-     * @return collection              The Role
+     * @return collection The Role
      */
     public function updateRoleWithPermissions($id, $roleData, $rolePermissions)
     {
@@ -545,9 +545,9 @@ trait RolesAndPermissionsHelpersTrait
     }
 
     /**
-     * Update a permission
+     * Update a permission.
      *
-     * @param int $id               The identifier
+     * @param int   $id             The identifier
      * @param array $permissionData The permission data
      *
      * @return collection
@@ -562,9 +562,9 @@ trait RolesAndPermissionsHelpersTrait
     }
 
     /**
-     * Delete a role
+     * Delete a role.
      *
-     * @param int $id     The identifier
+     * @param int $id The identifier
      *
      * @return collection
      */

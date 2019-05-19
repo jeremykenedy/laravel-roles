@@ -134,10 +134,10 @@ return [
         'back-roles'                => 'Back to dashboard',
         'back-permissions-deleted'  => 'Back to deleted dashboard',
         'back-permissions'          => 'Back to dashboard',
-        'save-role'                 => "Save New Role",
-        'update-role'               => "Save Role Changes",
-        'save-permission'           => "Save New Permission",
-        'update-permission'         => "Save Permission Changes",
+        'save-role'                 => 'Save New Role',
+        'update-role'               => 'Save Role Changes',
+        'save-permission'           => 'Save New Permission',
+        'update-permission'         => 'Save Permission Changes',
     ],
 
     'modals' => [

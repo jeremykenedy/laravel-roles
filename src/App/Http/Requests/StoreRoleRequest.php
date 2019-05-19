@@ -19,6 +19,7 @@ class StoreRoleRequest extends FormRequest
         if (config('roles.rolesGuiCreateNewRolesMiddlwareType') == 'permissions') {
             return $this->user()->hasPermission(config('roles.rolesGuiCreateNewRolesMiddlware'));
         }
+
         return true;
     }
 
