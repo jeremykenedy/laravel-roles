@@ -13,4 +13,9 @@ Route::group([
 ], function () {
     Route::resource('roles', 'LaravelRolesController');
     Route::resource('permissions', 'LaravelPermissionsController');
+
+
+    Route::get('roles-deleted', 'LaravelRolesDeletedController@index')->name('roles-deleted');
+
+
 });

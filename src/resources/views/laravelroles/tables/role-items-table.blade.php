@@ -1,7 +1,12 @@
 <div class="table-responsive roles-table">
     <table class="table table-sm table-striped data-table roles-table">
         <caption class="p-1 pb-0">
-            {!! trans_choice('laravelroles::laravelroles.roles-table.caption', $items->count(), ['count' => $items->count()]) !!}
+            @if($tabletype == 'normal')
+                {!! trans_choice('laravelroles::laravelroles.roles-table.caption', $items->count(), ['count' => $items->count()]) !!}
+            @endif
+            @if($tabletype == 'deleted')
+                {!! trans_choice('laravelroles::laravelroles.roles-deleted-table.caption', $items->count(), ['count' => $items->count()]) !!}
+            @endif
         </caption>
         <thead class="thead">
             <tr>
@@ -41,39 +46,84 @@
                 @foreach($items as $item)
                     <tr>
                         <td>
-                            {{ $item['role']->id }}
+                            @if($tabletype == 'normal')
+                                {{ $item['role']->id }}
+                            @endif
+                            @if($tabletype == 'deleted')
+                                {{ $item->id }}
+                            @endif
                         </td>
                         <td>
-                            {{ $item['role']->name }}
+                            @if($tabletype == 'normal')
+                                {{ $item['role']->name }}
+                            @endif
+                            @if($tabletype == 'deleted')
+                                {{ $item->name }}
+                            @endif
                         </td>
                         <td class="hidden-xs">
-                            {{ $item['role']->description }}
+                            @if($tabletype == 'normal')
+                                {{ $item['role']->description }}
+                            @endif
+                            @if($tabletype == 'deleted')
+                                {{ $item->description }}
+                            @endif
                         </td>
                         <td>
-                            {{ $item['role']->level }}
-                        </td>
-                        <td class="hidden-xs hidden-sm">
-                            @if($item['permissions']->count() > 0)
-                                @foreach($item['permissions'] as $itemPermKey => $itemPerm)
-                                    <span class="badge badge-pill badge-primary mb-1">
-                                        {{ $itemPerm->name }}
-                                    </span>
-                                @endforeach
-                            @else
-                                <span class="badge badge-pill badge-default">
-                                    {!! trans('laravelroles::laravelroles.cards.none-count') !!}
-                                </span>
+                            @if($tabletype == 'normal')
+                                {{ $item['role']->level }}
+                            @endif
+                            @if($tabletype == 'deleted')
+                                {{ $item->level }}
                             @endif
                         </td>
                         <td class="hidden-xs hidden-sm">
-                            {{ $item['role']->created_at->format(trans('laravelroles::laravelroles.date-format')) }}
+                            @if($tabletype == 'normal')
+                                @if($item['permissions']->count() > 0)
+                                    @foreach($item['permissions'] as $itemPermKey => $itemPerm)
+                                        <span class="badge badge-pill badge-primary mb-1">
+                                            {{ $itemPerm->name }}
+                                        </span>
+                                    @endforeach
+                                @else
+                                    <span class="badge badge-pill badge-default">
+                                        {!! trans('laravelroles::laravelroles.cards.none-count') !!}
+                                    </span>
+                                @endif
+                            @endif
+                            @if($tabletype == 'deleted')
+                                @if($item->permissions()->count() > 0)
+                                    @foreach($item->permissions()->get() as $itemPermKey => $itemPerm)
+                                        <span class="badge badge-pill badge-primary mb-1">
+                                            {{ $itemPerm->name }}
+                                        </span>
+                                    @endforeach
+                                @else
+                                    <span class="badge badge-pill badge-default">
+                                        {!! trans('laravelroles::laravelroles.cards.none-count') !!}
+                                    </span>
+                                @endif
+                            @endif
                         </td>
                         <td class="hidden-xs hidden-sm">
-                            {{ $item['role']->updated_at->format(trans('laravelroles::laravelroles.date-format')) }}
+                            @if($tabletype == 'normal')
+                                {{ $item['role']->created_at->format(trans('laravelroles::laravelroles.date-format')) }}
+                            @endif
+                            @if($tabletype == 'deleted')
+                                {{ $item->created_at->format(trans('laravelroles::laravelroles.date-format')) }}
+                            @endif
+                        </td>
+                        <td class="hidden-xs hidden-sm">
+                            @if($tabletype == 'normal')
+                                {{ $item['role']->updated_at->format(trans('laravelroles::laravelroles.date-format')) }}
+                            @endif
+                            @if($tabletype == 'deleted')
+                                {{ $item->updated_at->format(trans('laravelroles::laravelroles.date-format')) }}
+                            @endif
                         </td>
                         @if($tabletype == 'deleted')
                             <td class="hidden-xs hidden-sm">
-                                {{ $item['role']->deleted_at->format(trans('laravelroles::laravelroles.date-format')) }}
+                                {{ $item->deleted_at->format(trans('laravelroles::laravelroles.date-format')) }}
                             </td>
                         @endif
                         @if($tabletype == 'normal')
@@ -92,9 +142,21 @@
                             </td>
                         @endif
                         @if($tabletype == 'deleted')
-                            <td>Show :: TODO</td>
-                            <td>Restore :: TODO</td>
-                            <td>Destroy :: TODO</td>
+                            <td>
+
+                                Show :: TODO
+
+                            </td>
+                            <td>
+
+                                Restore :: TODO
+
+                            </td>
+                            <td>
+
+                                Destroy :: TODO
+
+                            </td>
                         @endif
                     </tr>
                 @endforeach

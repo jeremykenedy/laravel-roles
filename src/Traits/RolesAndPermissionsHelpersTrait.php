@@ -571,7 +571,7 @@ trait RolesAndPermissionsHelpersTrait
     public function deleteRole($id)
     {
         $role = $this->getRole($id);
-        $this->removeUsersAndPermissionsFromRole($role);
+        // $this->removeUsersAndPermissionsFromRole($role);
         $role->delete();
 
         return $role;
