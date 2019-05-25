@@ -159,6 +159,36 @@ return [
     // Flash Messaging
     'builtInFlashMessagesEnabled'   => env('ROLES_GUI_FLASH_MESSAGES_ENABLED', true),
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Laravel Roles API Settings
+    |--------------------------------------------------------------------------
+    |
+    | This is the API for Laravel Roles to be able to CRUD them
+    | easily and fast via an API. This is optional and is
+    | not needed for your application.
+    |
+    */
+    'rolesApiEnabled'               => env('ROLES_API_ENABLED', false),
+
+    // Enable `auth` middleware
+    'rolesAPIAuthEnabled'           => env('ROLES_API_AUTH_ENABLED', true),
+
+    // Enable Roles API middleware
+    'rolesAPIMiddlewareEnabled'     => env('ROLES_API_MIDDLEWARE_ENABLED', true),
+
+    // Optional Roles API Middleware
+    'rolesAPIMiddleware'            => env('ROLES_API_MIDDLEWARE', 'role:admin'),
+
+    // User Permissions or Role needed to create a new role
+    'rolesAPICreateNewRolesMiddlewareType'   => env('ROLES_API_CREATE_ROLE_MIDDLEWARE_TYPE', 'role'), //permissions or roles
+    'rolesAPICreateNewRolesMiddleware'       => env('ROLES_API_CREATE_ROLE_MIDDLEWARE_TYPE', 'admin'), // admin, XXX. ... or perms.XXX
+
+    // User Permissions or Role needed to create a new permission
+    'rolesAPICreateNewPermissionMiddlewareType'  => env('ROLES_API_CREATE_PERMISSION_MIDDLEWARE_TYPE', 'role'), //permissions or roles
+    'rolesAPICreateNewPermissionsMiddleware'     => env('ROLES_API_CREATE_PERMISSION_MIDDLEWARE_TYPE', 'admin'), // admin, XXX. ... or perms.XXX
+
     /*
     |--------------------------------------------------------------------------
     | Laravel Roles GUI Datatables Settings
