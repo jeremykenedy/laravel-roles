@@ -47,13 +47,19 @@
 
         <div class="clearfix mb-4"></div>
 
-        @include('laravelroles::laravelroles.modals.confirm-modal',[
-            'formTrigger' => 'confirmDestroy',
-            'modalClass' => 'danger',
-            'actionBtnIcon' => 'fa-trash-o'
-        ])
-
     </div>
+
+    @include('laravelroles::laravelroles.modals.confirm-modal',[
+        'formTrigger' => 'confirmDestroyRoles',
+        'modalClass' => 'danger',
+        'actionBtnIcon' => 'fa-trash-o'
+    ])
+
+    @include('laravelroles::laravelroles.modals.confirm-modal',[
+        'formTrigger' => 'confirmRestoreRoles',
+        'modalClass' => 'success',
+        'actionBtnIcon' => 'fa-check'
+    ])
 
 @endsection
 
@@ -61,7 +67,10 @@
     @if(config('roles.enablejQueryCDN'))
         <script type="text/javascript" src="{{ config('roles.JQueryCDN') }}"></script>
     @endif
-    @include('laravelroles::laravelroles.scripts.confirm-modal', ['formTrigger' => '#confirmDestroy'])
+
+    @include('laravelroles::laravelroles.scripts.confirm-modal', ['formTrigger' => '#confirmDestroyRoles'])
+    @include('laravelroles::laravelroles.scripts.confirm-modal', ['formTrigger' => '#confirmRestoreRoles'])
+
     @if (config('roles.enabledDatatablesJs'))
         @include('laravelroles::laravelroles.scripts.datatables')
     @endif

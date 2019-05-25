@@ -7,6 +7,31 @@ use Illuminate\Support\Facades\DB;
 trait RolesAndPermissionsHelpersTrait
 {
     /**
+     * Destroy all the deleted roles
+     *
+     * @return array
+     */
+    public function destroyAllTheDeletedRoles()
+    {
+        $deletedRoles       = $this->getDeletedRoles()->get();
+        $deletedRolesCount  = $deletedRoles->count();
+        $status             = 'error';
+
+        if ($deletedRolesCount > 0) {
+            foreach ($deletedRoles as $deletedRole) {
+                $this->removeUsersAndPermissionsFromRole($deletedRole);
+                $deletedRole->forceDelete();
+            }
+            $status = 'success';
+        }
+
+        return [
+            'status' => $status,
+            'count'  => $deletedRolesCount,
+        ];
+    }
+
+    /**
      * Gets the roles.
      *
      * @return collection The roles.
@@ -238,12 +263,34 @@ trait RolesAndPermissionsHelpersTrait
 
         $view = 'laravelroles::laravelroles.crud.dashboard';
 
-        $data = [
+        return [
             'data' => $data,
             'view' => $view,
         ];
+    }
 
-        return $data;
+    /**
+     * Restore all the deleted roles
+     *
+     * @return array
+     */
+    public function restoreAllTheDeletedRoles()
+    {
+        $deletedRoles       = $this->getDeletedRoles()->get();
+        $deletedRolesCount  = $deletedRoles->count();
+        $status             = 'error';
+
+        if ($deletedRolesCount > 0) {
+            foreach ($deletedRoles as $deletedRole) {
+                $deletedRole->restore();
+            }
+            $status = 'success';
+        }
+
+        return [
+            'status' => $status,
+            'count'  => $deletedRolesCount,
+        ];
     }
 
     /**
@@ -571,7 +618,6 @@ trait RolesAndPermissionsHelpersTrait
     public function deleteRole($id)
     {
         $role = $this->getRole($id);
-        // $this->removeUsersAndPermissionsFromRole($role);
         $role->delete();
 
         return $role;

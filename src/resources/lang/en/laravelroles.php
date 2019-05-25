@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Laravel Roles Language Lines - laravelblocker
+    | Laravel Roles Language Lines - laravelroles
     |--------------------------------------------------------------------------
     */
 
@@ -90,6 +90,10 @@ return [
         'none'          => 'No Role Items',
     ],
 
+    'roles-deleted-table' => [
+        'caption'       => '{1} :count deleted role total|[2,*] :count total deleted roles',
+    ],
+
     'permissions-table' => [
         'caption'       => '{1} :count permission total|[2,*] :count total permissions',
         'id'            => 'ID',
@@ -119,6 +123,9 @@ return [
         'back-to-roles-deleted'         => '<span class="hidden-xs">Back</span> <span class="hidden-xs hidden-sm">to Deleted Roles</span>',
         'back-to-permissions'           => '<span class="hidden-xs">Back</span> <span class="hidden-xs hidden-sm">to Roles Dashboard</span>',
         'back-to-permissions-deleted'   => '<span class="hidden-xs">Back</span> <span class="hidden-xs hidden-sm">to Deleted Roles Dashboard</span>',
+        'back-to-roles-dashboard'       => 'Back to Roles Dashboard',
+        'destroy-all-roles'             => 'Destroy all deleted roles',
+        'restore-all-roles'             => 'Restore all deleted roles',
 
     ],
 
@@ -142,29 +149,37 @@ return [
     ],
 
     'modals' => [
-        'delete_modal_title'         => 'Delete :type :item',
-        'destroy_role_title'         => 'Destroy :type :item',
-        'delete_modal_message'       => 'Are you sure you want to delete :type: :item?',
-        'destroy_role_message'       => 'Are you sure you want to DESTROY :item?',
-        'delete_role_btn_cancel'     => 'Cancel',
-        'delete_role_btn_confirm'    => 'Confirm Delete',
-        'destroy_all_role_title'     => 'Destroy ALL :type :items',
-        'destroy_all_role_message'   => 'Are you sure you want to DESTROY ALL Roles?',
-        'btnConfirm'                 => 'Confirm',
-        'btnCancel'                  => 'Cancel',
+        'delete_modal_title'        => 'Delete :type :item',
+        'destroy_role_title'        => 'Destroy :type :item',
+        'delete_modal_message'      => 'Are you sure you want to delete :type: :item?',
+        'destroy_role_message'      => 'Are you sure you want to DESTROY :item?',
+        'delete_role_btn_cancel'    => 'Cancel',
+        'delete_role_btn_confirm'   => 'Confirm Delete',
+        'destroy_all_role_title'    => 'Destroy ALL :type :items',
+        'destroy_all_role_message'  => 'Are you sure you want to DESTROY ALL Roles?',
+        'btnConfirm'                => 'Confirm',
+        'btnCancel'                 => 'Cancel',
+        'restoreAllRolesTitle'      => 'Restore ALL Deleted Roles',
+        'restoreAllRolesMessage'    => 'Are you sure you want to RESTORE ALL deleted roles?',
+        'destroyAllRolesTitle'      => 'Destroy ALL Deleted Roles',
+        'destroyAllRolesMessage'    => 'Are you sure you want to DESTROY ALL deleted roles?',
     ],
 
     'flash-messages' => [
-        'close'                 => 'Close',
-        'success'               => 'Success',
-        'error'                 => 'Error',
-        'whoops'                => 'Whoops! ',
-        'someProblems'          => 'There were some problems with your input.',
-        'successDeletedItem'    => 'Successfully Deleted :type: :item',
-        'role-create'           => 'Successfully Created New Role: :role',
-        'role-updated'          => 'Successfully Updated Role: :role',
-        'permission-create'     => 'Successfully Created New Permission: :permission',
-        'permission-updated'    => 'Successfully Updated Permission: :permission',
+        'close'                     => 'Close',
+        'success'                   => 'Success',
+        'error'                     => 'Error',
+        'whoops'                    => 'Whoops! ',
+        'someProblems'              => 'There were some problems with your input.',
+        'successDeletedItem'        => 'Successfully Deleted :type: :item',
+        'role-create'               => 'Successfully Created New Role: :role',
+        'role-updated'              => 'Successfully Updated Role: :role',
+        'permission-create'         => 'Successfully Created New Permission: :permission',
+        'permission-updated'        => 'Successfully Updated Permission: :permission',
+        'successRestoredAllRoles'   => '{1} Successfully Restored :count Role|[2,*] Successfully Restored :count Roles',
+        'errorRestoringAllRoles'    => 'Error Restoring Deleted Roles',
+        'successDestroyedAllRoles'  => '{1} Successfully Destroyed :count Role|[2,*] Successfully Destroyed :count Roles',
+        'errorDestroyingAllRoles'   => 'Error Destroying Deleted Roles',
     ],
 
     'forms' => [

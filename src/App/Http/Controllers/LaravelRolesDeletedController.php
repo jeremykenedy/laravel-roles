@@ -37,9 +37,6 @@ class LaravelRolesDeletedController extends Controller
         }
     }
 
-
-
-
     /**
      * Show the deleted role items.
      *
@@ -47,78 +44,52 @@ class LaravelRolesDeletedController extends Controller
      */
     public function index()
     {
+        $deletedRoleItems = $this->getDeletedRoles()->get();
+        $data = [
+            'deletedRoleItems' => $deletedRoleItems,
+        ];
 
-
-
-
-        // $roles = $this->getRoles();
-        // $permissions = $this->getPermissions();
-        // $deletedRoleItems = $this->getDeletedRoles();
-        // $deletedPermissionsItems = $this->getDeletedPermissions();
-        // $users = $this->getUsers();
-        // $sortedRolesWithUsers = $this->getSortedUsersWithRoles($roles, $users);
-        // $sortedRolesWithPermissionsAndUsers = $this->getSortedRolesWithPermissionsAndUsers($sortedRolesWithUsers, $permissions);
-        // $sortedPermissionsRolesUsers = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions, $users);
-
-        // $data = [
-        //     'roles'                              => $roles,
-        //     'permissions'                        => $permissions,
-        //     'deletedRoleItems'                   => $deletedRoleItems,
-        //     'deletedPermissionsItems'            => $deletedPermissionsItems,
-        //     'users'                              => $users,
-        //     'sortedRolesWithUsers'               => $sortedRolesWithUsers,
-        //     'sortedRolesWithPermissionsAndUsers' => $sortedRolesWithPermissionsAndUsers,
-        //     'sortedPermissionsRolesUsers'        => $sortedPermissionsRolesUsers,
-        // ];
-
-        // $view = 'laravelroles::laravelroles.crud.dashboard';
-
-        // $data = [
-        //     'data' => $data,
-        //     'view' => $view,
-        // ];
-
-        // return $data;
-
-
-
-        // if (config('laravelblocker.blockerPaginationEnabled')) {
-        //     $roles = BlockedItem::onlyTrashed()->paginate(config('laravelblocker.blockerPaginationPerPage'));
-        // } else {
-        //     $roles = BlockedItem::onlyTrashed()->get();
-        // }
-
-// $roles              = config('roles.models.role')::onlyTrashed()->get();
-// $permissions        = $this->getPermissions();
-
-$deletedRoleItems           = $this->getDeletedRoles()->get();
-// $deletedPermissionsItems    = $this->getDeletedPermissions();
-// $users                      = $this->getUsers();
-// $sortedRolesWithUsers       = $this->getSortedUsersWithRoles($deletedRoleItems, $users);
-
-// dd($deletedRoleItems);
-// dd($deletedRoleItems);
-
-// foreach ($deletedRoleItems as $deletedRoleItem) {
-
-//     dd($deletedRoleItem->permissions()->get());
-
-// }
-
-// laravelroles::roles-deleted
-
-$data = [
-    'deletedRoleItems' => $deletedRoleItems,
-];
-
-return view('laravelroles::laravelroles.crud.roles.deleted.index', $data);
-
-// return view($data['view'], $data['data']);
-
+        return view('laravelroles::laravelroles.crud.roles.deleted.index', $data);
     }
 
+    /**
+     * Dashbaord Method to restore all deleted roles
+     *
+     * @param \Illuminate\Http\Request  $request  The request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function restoreAllDeletedRoles(Request $request)
+    {
+        $deletedRoles = $this->restoreAllTheDeletedRoles();
 
+        if ($deletedRoles['status'] === 'success') {
+            return redirect()->route('laravelroles::roles.index')
+                        ->with('success', trans_choice('laravelroles::laravelroles.flash-messages.successRestoredAllRoles', $deletedRoles['count'], ['count' => $deletedRoles['count']]));
+        }
 
+        return redirect()->route('laravelroles::roles.index')
+                    ->with('error', trans('laravelroles::laravelroles.flash-messages.errorRestoringAllRoles'));
+    }
+
+    /**
+     * Destroy all the specified resource from storage.
+     *
+     * @param \Illuminate\Http\Request  $request  The request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyAllDeletedRoles(Request $request)
+    {
+        $deletedRoles = $this->destroyAllTheDeletedRoles();
+
+        if ($deletedRoles['status'] === 'success') {
+            return redirect()->route('laravelroles::roles.index')
+                        ->with('success', trans_choice('laravelroles::laravelroles.flash-messages.successDestroyedAllRoles', $deletedRoles['count'], ['count' => $deletedRoles['count']]));
+        }
+
+        return redirect()->route('laravelroles::roles.index')
+                    ->with('error', trans('laravelroles::laravelroles.flash-messages.errorDestroyingAllRoles'));
+    }
 
 }
-

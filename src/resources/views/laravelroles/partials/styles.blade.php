@@ -2,6 +2,9 @@
     .no-padding {
         padding: 0;
     }
+    .pointer {
+        cursor: pointer;
+    }
     .card {
         width: 100%;
     }

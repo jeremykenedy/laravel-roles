@@ -24,35 +24,17 @@
                         <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-ellipsis-v fa-fw" aria-hidden="true"></i>
                             <span class="sr-only">
-                                {!! trans('laravelroles::laravelroles.dropdown-menu-alt') !!}
+                                {!! trans('laravelroles::laravelroles.titles.dropdown-menu-alt') !!}
                             </span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="{{ route('laravelroles::roles.index') }}" class="dropdown-item mb-1">
                                 <i class="fa fa-fw fa-reply-all" aria-hidden="true"></i>
-
-                                Back to Roles Dashboard
-
+                                {!! trans('laravelroles::laravelroles.buttons.back-to-roles-dashboard') !!}
                             </a>
                             <hr class="mt-0 mb-0">
-                            <a class="dropdown-item text-danger mt-2" href="{{ route('laravelroles::roles.create') }}">
-                                <i class="fa fa-fw fa-trash-o" aria-hidden="true"></i>
-
-
-
-                                Destroy all deleted roles
-
-                                <!-- {!! trans('laravelroles::laravelroles.buttons.create-new-role') !!} -->
-
-                            </a>
-                            <a class="dropdown-item text-success" href="{{ route('laravelroles::roles-deleted') }}">
-                                <i class="fa fa-fw fa-refresh" aria-hidden="true"></i>
-
-                                    Restore all deleted roles
-
-                                <!-- {!! trans('laravelroles::laravelroles.buttons.show-deleted-roles') !!} -->
-
-                            </a>
+                            @include('laravelroles::laravelroles.forms.destroy-all-roles')
+                            @include('laravelroles::laravelroles.forms.restore-all-roles')
                         </div>
                     </div>
                 </div>
@@ -62,7 +44,7 @@
                         <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-ellipsis-v fa-fw" aria-hidden="true"></i>
                             <span class="sr-only">
-                                {!! trans('laravelroles::laravelroles.dropdown-menu-alt') !!}
+                                {!! trans('laravelroles::laravelroles.titles.dropdown-menu-alt') !!}
                             </span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
