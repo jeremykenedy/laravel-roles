@@ -7,6 +7,36 @@ use Illuminate\Support\Facades\DB;
 trait RolesAndPermissionsHelpersTrait
 {
     /**
+     * Delete a role.
+     *
+     * @param int $id The identifier
+     *
+     * @return collection
+     */
+    public function deleteRole($id)
+    {
+        $role = $this->getRole($id);
+        $role->delete();
+
+        return $role;
+    }
+
+    /**
+     * Destroy a role from storage
+     *
+     * @param int $id     The identifier
+     *
+     * @return collection
+     */
+    public function destroyRole($id)
+    {
+        $role = $this->getDeletedRole($id);
+        $role->forceDelete();
+
+        return $role;
+    }
+
+    /**
      * Destroy all the deleted roles
      *
      * @return array
@@ -29,6 +59,24 @@ trait RolesAndPermissionsHelpersTrait
             'status' => $status,
             'count'  => $deletedRolesCount,
         ];
+    }
+
+    /**
+     * Get Soft Deleted Role.
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response || collection
+     */
+    public function getDeletedRole($id)
+    {
+        $item = config('roles.models.role')::onlyTrashed()->where('id', $id)->get();
+        if (count($item) != 1) {
+            return abort(redirect('laravelroles::roles.index')
+                            ->with('error', trans('laravelroles::laravelroles.errors.errorDeletedRoleNotFound')));
+        }
+
+        return $item[0];
     }
 
     /**
@@ -606,20 +654,5 @@ trait RolesAndPermissionsHelpersTrait
         $permission->save();
 
         return $permission;
-    }
-
-    /**
-     * Delete a role.
-     *
-     * @param int $id The identifier
-     *
-     * @return collection
-     */
-    public function deleteRole($id)
-    {
-        $role = $this->getRole($id);
-        $role->delete();
-
-        return $role;
     }
 }

@@ -92,4 +92,19 @@ class LaravelRolesDeletedController extends Controller
                     ->with('error', trans('laravelroles::laravelroles.flash-messages.errorDestroyingAllRoles'));
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $role = $this->destroyRole($id);
+
+        return redirect()->route('laravelroles::roles.index')
+                    ->with('success', trans('laravelroles::laravelroles.flash-messages.successDestroyedRole', ['role' => $role->name]));
+    }
+
 }

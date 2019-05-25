@@ -126,12 +126,12 @@ return [
         'back-to-roles-dashboard'       => 'Back to Roles Dashboard',
         'destroy-all-roles'             => 'Destroy all deleted roles',
         'restore-all-roles'             => 'Restore all deleted roles',
-
     ],
 
     'tooltips' => [
         'view-user'                 => 'View User',
         'delete-role'               => 'Delete Role',
+        'destroy-role'              => 'Destroy Role',
         'delete-permission'         => 'Delete Permission',
         'show-role'                 => 'Show Role',
         'show-permission'           => 'Show Permission',
@@ -150,9 +150,9 @@ return [
 
     'modals' => [
         'delete_modal_title'        => 'Delete :type :item',
-        'destroy_role_title'        => 'Destroy :type :item',
+        'destroy_modal_title'       => 'Destroy :type :item',
         'delete_modal_message'      => 'Are you sure you want to delete :type: :item?',
-        'destroy_role_message'      => 'Are you sure you want to DESTROY :item?',
+        'destroy_modal_message'     => 'Are you sure you want to DESTROY :item?',
         'delete_role_btn_cancel'    => 'Cancel',
         'delete_role_btn_confirm'   => 'Confirm Delete',
         'destroy_all_role_title'    => 'Destroy ALL :type :items',
@@ -179,7 +179,9 @@ return [
         'successRestoredAllRoles'   => '{1} Successfully Restored :count Role|[2,*] Successfully Restored :count Roles',
         'errorRestoringAllRoles'    => 'Error Restoring Deleted Roles',
         'successDestroyedAllRoles'  => '{1} Successfully Destroyed :count Role|[2,*] Successfully Destroyed :count Roles',
+        'successDestroyedRole'      => 'Successfully Destroyed Role: :role',
         'errorDestroyingAllRoles'   => 'Error Destroying Deleted Roles',
+        'errorDeletedRoleNotFound'  => 'Deleted Role Not Found',
     ],
 
     'forms' => [

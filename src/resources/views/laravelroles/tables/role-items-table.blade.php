@@ -153,9 +153,7 @@
 
                             </td>
                             <td>
-
-                                Destroy :: TODO
-
+                                @include('laravelroles::laravelroles.forms.destroy-sm', ['type' => 'Role' ,'item' => $item])
                             </td>
                         @endif
                     </tr>
