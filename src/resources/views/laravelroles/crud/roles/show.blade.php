@@ -51,7 +51,7 @@
                             </span>
                             <div class="pull-right">
                                 @isset($typeDeleted)
-                                    <a href="" class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" data-placement="left" title="{{ trans('laravelroles::laravelroles.tooltips.back-roles-deleted') }}">
+                                    <a href="{{ route('laravelroles::roles-deleted') }}" class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" data-placement="left" title="{{ trans('laravelroles::laravelroles.tooltips.back-roles-deleted') }}">
                                         <i class="fa fa-fw fa-reply-all" aria-hidden="true"></i>
                                         {!! trans('laravelroles::laravelroles.buttons.back-to-roles-deleted') !!}
                                     </a>
@@ -224,7 +224,7 @@
                             <div class="col-sm-6 mt-3">
                                 @isset($typeDeleted)
 
-                                    // TODO
+@include('laravelroles::laravelroles.forms.restore-item', ['style' => 'large', 'type' => 'role', 'item' => $item])
 
                                 @else
                                     <a class="btn btn-sm btn-secondary btn-block text-white mb-0" href="{{ route('laravelroles::roles.edit', $item->id) }}" data-toggle="tooltip" title="{{ trans("laravelroles::laravelroles.tooltips.edit-role") }}">
@@ -235,7 +235,7 @@
                             <div class="col-sm-6 mt-3">
                                 @isset($typeDeleted)
 
-                                    // TODO
+@include('laravelroles::laravelroles.forms.destroy-sm', ['large' => 'large', 'type' => 'Role' ,'item' => $item])
 
                                 @else
                                      @include('laravelroles::laravelroles.forms.delete-sm', ['type' => 'Role' ,'item' => $item, 'large' => true])
@@ -260,6 +260,18 @@
         'actionBtnIcon' => 'fa-trash-o'
     ])
 
+    @include('laravelroles::laravelroles.modals.confirm-modal',[
+        'formTrigger' => 'confirmDestroyRoles',
+        'modalClass' => 'danger',
+        'actionBtnIcon' => 'fa-trash-o'
+    ])
+
+    @include('laravelroles::laravelroles.modals.confirm-modal',[
+        'formTrigger' => 'confirmRestoreRoles',
+        'modalClass' => 'success',
+        'actionBtnIcon' => 'fa-check'
+    ])
+
 @endsection
 
 @section(config('roles.bladePlacementJs'))
@@ -267,6 +279,8 @@
         <script type="text/javascript" src="{{ config('roles.JQueryCDN') }}"></script>
     @endif
     @include('laravelroles::laravelroles.scripts.confirm-modal', ['formTrigger' => '#confirmDelete'])
+    @include('laravelroles::laravelroles.scripts.confirm-modal', ['formTrigger' => '#confirmDestroyRoles'])
+    @include('laravelroles::laravelroles.scripts.confirm-modal', ['formTrigger' => '#confirmRestoreRoles'])
     @if (config('roles.enabledDatatablesJs'))
         @include('laravelroles::laravelroles.scripts.datatables')
     @endif

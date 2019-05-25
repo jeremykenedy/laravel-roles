@@ -31,6 +31,7 @@ trait RolesAndPermissionsHelpersTrait
     public function destroyRole($id)
     {
         $role = $this->getDeletedRole($id);
+        $this->removeUsersAndPermissionsFromRole($role);
         $role->forceDelete();
 
         return $role;
@@ -339,6 +340,21 @@ trait RolesAndPermissionsHelpersTrait
             'status' => $status,
             'count'  => $deletedRolesCount,
         ];
+    }
+
+    /**
+     * Restore a deleted role.
+     *
+     * @param int $id     The identifier
+     *
+     * @return collection
+     */
+    public function restoreDeletedRole($id)
+    {
+        $role = $this->getDeletedRole($id);
+        $role->restore();
+
+        return $role;
     }
 
     /**

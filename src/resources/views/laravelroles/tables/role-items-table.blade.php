@@ -143,14 +143,13 @@
                         @endif
                         @if($tabletype == 'deleted')
                             <td>
-
-                                Show :: TODO
-
+                                <a class="btn btn-sm btn-outline-info btn-block" href="{{ route('laravelroles::role-show-deleted', $item->id) }}" data-toggle="tooltip" title="{{ trans("laravelroles::laravelroles.tooltips.show-deleted-role") }}">
+                                    {!! trans("laravelroles::laravelroles.buttons.show-deleted-role") !!}
+                                    <i class="fa fa-eye fa-fw" aria-hidden="true"></i>
+                                </a>
                             </td>
                             <td>
-
-                                Restore :: TODO
-
+                                @include('laravelroles::laravelroles.forms.restore-item', ['style' => 'small', 'type' => 'role', 'item' => $item])
                             </td>
                             <td>
                                 @include('laravelroles::laravelroles.forms.destroy-sm', ['type' => 'Role' ,'item' => $item])

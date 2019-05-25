@@ -25,6 +25,7 @@ return [
         'create-permission'     => 'Create New Permission',
         'edit-permission'       => 'Editing Permission: <strong>:name</strong>',
         'roles-deleted-table'   => 'Deleted Roles',
+        'show-role-deleted'     => 'Showing Deleted Role: <strong>:name</strong>',
     ],
 
     'cards' => [
@@ -117,7 +118,8 @@ return [
         'edit-larger'                   => 'Edit <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>',
         'delete'                        => '<span class="hidden-xs hidden-sm">Delete </span><i class="fa fa-trash-o fa-fw" aria-hidden="true"></i>',
         'delete-large'                  => 'Delete <i class="fa fa-trash-o fa-fw" aria-hidden="true"></i>',
-        'destroy'                       => '<span class="hidden-xs hidden-sm">Destroy </span><i class="fa fa-trash fa-fw" aria-hidden="true"></i>',
+        'destroy'                       => '<span class="hidden-xs hidden-sm">Destroy </span>',
+        'destroy-large'                 => 'Destroy <span class="hidden-xs">Role </span>',
         'create-new-permission'         => 'Create New Permission',
         'back-to-roles'                 => '<span class="hidden-xs">Back</span> <span class="hidden-xs hidden-sm">to Roles</span>',
         'back-to-roles-deleted'         => '<span class="hidden-xs">Back</span> <span class="hidden-xs hidden-sm">to Deleted Roles</span>',
@@ -126,6 +128,9 @@ return [
         'back-to-roles-dashboard'       => 'Back to Roles Dashboard',
         'destroy-all-roles'             => 'Destroy all deleted roles',
         'restore-all-roles'             => 'Restore all deleted roles',
+        'restore-role'                  => '<span class="hidden-xs hidden-sm">Restore </span>',
+        'restore-role-large'            => 'Restore <span class="hidden-xs">Role </span>',
+        'show-deleted-role'             => '<span class="hidden-xs hidden-sm">Show </span>',
     ],
 
     'tooltips' => [
@@ -146,6 +151,8 @@ return [
         'update-role'               => 'Save Role Changes',
         'save-permission'           => 'Save New Permission',
         'update-permission'         => 'Save Permission Changes',
+        'restore-role'              => 'Restore Role',
+        'show-deleted-role'         => 'Show Role',
     ],
 
     'modals' => [
@@ -163,6 +170,8 @@ return [
         'restoreAllRolesMessage'    => 'Are you sure you want to RESTORE ALL deleted roles?',
         'destroyAllRolesTitle'      => 'Destroy ALL Deleted Roles',
         'destroyAllRolesMessage'    => 'Are you sure you want to DESTROY ALL deleted roles?',
+        'restore_modal_title'       => 'Restore :type :item',
+        'restore_modal_message'     => 'Are you sure you want to restore :type: :item?',
     ],
 
     'flash-messages' => [
@@ -180,6 +189,7 @@ return [
         'errorRestoringAllRoles'    => 'Error Restoring Deleted Roles',
         'successDestroyedAllRoles'  => '{1} Successfully Destroyed :count Role|[2,*] Successfully Destroyed :count Roles',
         'successDestroyedRole'      => 'Successfully Destroyed Role: :role',
+        'successRestoredRole'       => 'Successfully Restored Role: :role',
         'errorDestroyingAllRoles'   => 'Error Destroying Deleted Roles',
         'errorDeletedRoleNotFound'  => 'Deleted Role Not Found',
     ],

@@ -53,6 +53,21 @@ class LaravelRolesDeletedController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $item = $this->getDeletedRole($id);
+        $typeDeleted = 'deleted';
+
+        return view('laravelroles::laravelroles.crud.roles.show', compact('item', 'typeDeleted'));
+    }
+
+    /**
      * Dashbaord Method to restore all deleted roles
      *
      * @param \Illuminate\Http\Request  $request  The request
@@ -70,6 +85,22 @@ class LaravelRolesDeletedController extends Controller
 
         return redirect()->route('laravelroles::roles.index')
                     ->with('error', trans('laravelroles::laravelroles.flash-messages.errorRestoringAllRoles'));
+    }
+
+    /**
+     * Restore the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function restoreRole(Request $request, $id)
+    {
+        $role = $this->restoreDeletedRole($id);
+
+        return redirect()->route('laravelroles::roles.index')
+                    ->with('success', trans('laravelroles::laravelroles.flash-messages.successRestoredRole', ['role' => $role->name]));
     }
 
     /**

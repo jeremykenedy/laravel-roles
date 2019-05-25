@@ -50,12 +50,6 @@
     </div>
 
     @include('laravelroles::laravelroles.modals.confirm-modal',[
-        'formTrigger' => 'confirmDestroy',
-        'modalClass' => 'danger',
-        'actionBtnIcon' => 'fa-trash-o'
-    ])
-
-    @include('laravelroles::laravelroles.modals.confirm-modal',[
         'formTrigger' => 'confirmDestroyRoles',
         'modalClass' => 'danger',
         'actionBtnIcon' => 'fa-trash-o'
@@ -74,7 +68,6 @@
         <script type="text/javascript" src="{{ config('roles.JQueryCDN') }}"></script>
     @endif
 
-    @include('laravelroles::laravelroles.scripts.confirm-modal', ['formTrigger' => '#confirmDestroy'])
     @include('laravelroles::laravelroles.scripts.confirm-modal', ['formTrigger' => '#confirmDestroyRoles'])
     @include('laravelroles::laravelroles.scripts.confirm-modal', ['formTrigger' => '#confirmRestoreRoles'])
 
