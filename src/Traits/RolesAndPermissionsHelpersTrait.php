@@ -22,9 +22,9 @@ trait RolesAndPermissionsHelpersTrait
     }
 
     /**
-     * Destroy a role from storage
+     * Destroy a role from storage.
      *
-     * @param int $id     The identifier
+     * @param int $id The identifier
      *
      * @return collection
      */
@@ -38,15 +38,15 @@ trait RolesAndPermissionsHelpersTrait
     }
 
     /**
-     * Destroy all the deleted roles
+     * Destroy all the deleted roles.
      *
      * @return array
      */
     public function destroyAllTheDeletedRoles()
     {
-        $deletedRoles       = $this->getDeletedRoles()->get();
-        $deletedRolesCount  = $deletedRoles->count();
-        $status             = 'error';
+        $deletedRoles = $this->getDeletedRoles()->get();
+        $deletedRolesCount = $deletedRoles->count();
+        $status = 'error';
 
         if ($deletedRolesCount > 0) {
             foreach ($deletedRoles as $deletedRole) {
@@ -319,15 +319,15 @@ trait RolesAndPermissionsHelpersTrait
     }
 
     /**
-     * Restore all the deleted roles
+     * Restore all the deleted roles.
      *
      * @return array
      */
     public function restoreAllTheDeletedRoles()
     {
-        $deletedRoles       = $this->getDeletedRoles()->get();
-        $deletedRolesCount  = $deletedRoles->count();
-        $status             = 'error';
+        $deletedRoles = $this->getDeletedRoles()->get();
+        $deletedRolesCount = $deletedRoles->count();
+        $status = 'error';
 
         if ($deletedRolesCount > 0) {
             foreach ($deletedRoles as $deletedRole) {
@@ -345,7 +345,7 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Restore a deleted role.
      *
-     * @param int $id     The identifier
+     * @param int $id The identifier
      *
      * @return collection
      */
