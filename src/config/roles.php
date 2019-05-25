@@ -159,7 +159,6 @@ return [
     // Flash Messaging
     'builtInFlashMessagesEnabled'   => env('ROLES_GUI_FLASH_MESSAGES_ENABLED', true),
 
-
     /*
     |--------------------------------------------------------------------------
     | Laravel Roles API Settings
