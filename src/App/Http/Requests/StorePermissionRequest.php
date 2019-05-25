@@ -13,11 +13,11 @@ class StorePermissionRequest extends FormRequest
      */
     public function authorize()
     {
-        if (config('roles.rolesGuiCreateNewPermissionMiddlwareType') == 'role') {
-            return $this->user()->hasRole(config('roles.rolesGuiCreateNewPermissionsMiddlware'));
+        if (config('roles.rolesGuiCreateNewPermissionMiddlewareType') == 'role') {
+            return $this->user()->hasRole(config('roles.rolesGuiCreateNewPermissionsMiddleware'));
         }
-        if (config('roles.rolesGuiCreateNewPermissionMiddlwareType') == 'permissions') {
-            return $this->user()->hasPermission(config('roles.rolesGuiCreateNewPermissionsMiddlware'));
+        if (config('roles.rolesGuiCreateNewPermissionMiddlewareType') == 'permissions') {
+            return $this->user()->hasPermission(config('roles.rolesGuiCreateNewPermissionsMiddleware'));
         }
 
         return true;
