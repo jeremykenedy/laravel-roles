@@ -4,9 +4,6 @@ namespace jeremykenedy\LaravelRoles\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use jeremykenedy\LaravelRoles\App\Http\Requests\StoreRoleRequest;
-use jeremykenedy\LaravelRoles\App\Http\Requests\UpdateRoleRequest;
-use jeremykenedy\LaravelRoles\App\Services\RoleFormFields;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
 
 class LaravelRolesDeletedController extends Controller
@@ -68,9 +65,9 @@ class LaravelRolesDeletedController extends Controller
     }
 
     /**
-     * Dashbaord Method to restore all deleted roles
+     * Dashbaord Method to restore all deleted roles.
      *
-     * @param \Illuminate\Http\Request  $request  The request
+     * @param \Illuminate\Http\Request $request The request
      *
      * @return \Illuminate\Http\Response
      */
@@ -91,7 +88,7 @@ class LaravelRolesDeletedController extends Controller
      * Restore the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param int                      $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -106,7 +103,7 @@ class LaravelRolesDeletedController extends Controller
     /**
      * Destroy all the specified resource from storage.
      *
-     * @param \Illuminate\Http\Request  $request  The request
+     * @param \Illuminate\Http\Request $request The request
      *
      * @return \Illuminate\Http\Response
      */
@@ -137,5 +134,4 @@ class LaravelRolesDeletedController extends Controller
         return redirect()->route('laravelroles::roles.index')
                     ->with('success', trans('laravelroles::laravelroles.flash-messages.successDestroyedRole', ['role' => $role->name]));
     }
-
 }
