@@ -11,21 +11,22 @@ return [
     'date-format' => 'm/d/Y H:ia',
 
     'titles' => [
-        'dashboard'             => 'Roles Dashboard',
-        'show-role'             => 'Showing Role: <strong>:name</strong>',
-        'show-permission'       => 'Showing Permission: <strong>:name</strong>',
-        'roles-table'           => 'Active Roles',
-        'roles-card'            => 'Roles',
-        'role-card'             => 'Role: ',
-        'permissions-card'      => 'Permissions',
-        'permissions-table'     => 'Active Permissions',
-        'dropdown-menu-alt'     => 'Show Roles Dropdown Menu',
-        'create-role'           => 'Create New Role',
-        'edit-role'             => 'Editing Role: <strong>:name</strong>',
-        'create-permission'     => 'Create New Permission',
-        'edit-permission'       => 'Editing Permission: <strong>:name</strong>',
-        'roles-deleted-table'   => 'Deleted Roles',
-        'show-role-deleted'     => 'Showing Deleted Role: <strong>:name</strong>',
+        'dashboard'                 => 'Roles Dashboard',
+        'show-role'                 => 'Showing Role: <strong>:name</strong>',
+        'show-permission'           => 'Showing Permission: <strong>:name</strong>',
+        'roles-table'               => 'Active Roles',
+        'roles-card'                => 'Roles',
+        'role-card'                 => 'Role: ',
+        'permissions-card'          => 'Permissions',
+        'permissions-table'         => 'Active Permissions',
+        'dropdown-menu-alt'         => 'Show Roles Dropdown Menu',
+        'create-role'               => 'Create New Role',
+        'edit-role'                 => 'Editing Role: <strong>:name</strong>',
+        'create-permission'         => 'Create New Permission',
+        'edit-permission'           => 'Editing Permission: <strong>:name</strong>',
+        'roles-deleted-table'       => 'Deleted Roles',
+        'show-role-deleted'         => 'Showing Deleted Role: <strong>:name</strong>',
+        'permissions-deleted-table' => 'Deleted Permissions',
     ],
 
     'cards' => [
@@ -107,6 +108,10 @@ return [
         'deletedAt'     => 'Deleted',
         'actions'       => 'Actions',
         'none'          => 'No Permission Items',
+    ],
+
+    'permissions-deleted-table' => [
+        'caption'       => '{1} :count deleted permission total|[2,*] :count total deleted permissions',
     ],
 
     'buttons' => [

@@ -1,7 +1,7 @@
 @extends(config('roles.bladeExtended'))
 
 @section(config('roles.titleExtended'))
-    {!! trans('laravelroles::laravelroles.titles.delete-roles-dashboard') !!}
+    {!! trans('laravelroles::laravelroles.titles.delete-permissions-dashboard') !!}
 @endsection
 
 @php
@@ -39,7 +39,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                @include('laravelroles::laravelroles.tables.roles-table',['isDeletedRoles' => true])
+                @include('laravelroles::laravelroles.tables.permissions-table',['isDeletedPermissions' => true])
             </div>
         </div>
 
@@ -48,13 +48,13 @@
     </div>
 
     @include('laravelroles::laravelroles.modals.confirm-modal',[
-        'formTrigger' => 'confirmDestroyRoles',
+        'formTrigger' => 'confirmDestroyPermissions',
         'modalClass' => 'danger',
         'actionBtnIcon' => 'fa-trash-o'
     ])
 
     @include('laravelroles::laravelroles.modals.confirm-modal',[
-        'formTrigger' => 'confirmRestoreRoles',
+        'formTrigger' => 'confirmRestorePermissions',
         'modalClass' => 'success',
         'actionBtnIcon' => 'fa-check'
     ])
@@ -66,8 +66,8 @@
         <script type="text/javascript" src="{{ config('roles.JQueryCDN') }}"></script>
     @endif
 
-    @include('laravelroles::laravelroles.scripts.confirm-modal', ['formTrigger' => '#confirmDestroyRoles'])
-    @include('laravelroles::laravelroles.scripts.confirm-modal', ['formTrigger' => '#confirmRestoreRoles'])
+    @include('laravelroles::laravelroles.scripts.confirm-modal', ['formTrigger' => '#confirmDestroyPermissions'])
+    @include('laravelroles::laravelroles.scripts.confirm-modal', ['formTrigger' => '#confirmRestorePermissions'])
 
     @if (config('roles.enabledDatatablesJs'))
         @include('laravelroles::laravelroles.scripts.datatables')

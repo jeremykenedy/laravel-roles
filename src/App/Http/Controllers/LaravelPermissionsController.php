@@ -8,34 +8,12 @@ use jeremykenedy\LaravelRoles\App\Http\Requests\StorePermissionRequest;
 use jeremykenedy\LaravelRoles\App\Http\Requests\UpdatePermissionRequest;
 use jeremykenedy\LaravelRoles\App\Services\PermissionFormFields;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
+use jeremykenedy\LaravelRoles\Traits\RolesUsageAuthTrait;
 
 class LaravelPermissionsController extends Controller
 {
     use RolesAndPermissionsHelpersTrait;
-
-    private $_rolesGuiAuthEnabled;
-    private $_rolesGuiMiddlewareEnabled;
-    private $_rolesGuiMiddleware;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->_rolesGuiAuthEnabled = config('roles.rolesGuiAuthEnabled');
-        $this->_rolesGuiMiddlewareEnabled = config('roles.rolesGuiMiddlewareEnabled');
-        $this->_rolesGuiMiddleware = config('roles.rolesGuiMiddleware');
-
-        if ($this->_rolesGuiAuthEnabled) {
-            $this->middleware('auth');
-        }
-
-        if ($this->_rolesGuiMiddlewareEnabled) {
-            $this->middleware($this->_rolesGuiMiddleware);
-        }
-    }
+    use RolesUsageAuthTrait;
 
     /**
      * Show the roles and Permissions dashboard.
@@ -134,7 +112,7 @@ class LaravelPermissionsController extends Controller
     public function destroy($id)
     {
         $permission = config('roles.models.permission')::findOrFail($id);
-        $this->removeUsersAndRolesFromPermissions($permission);
+        // $this->removeUsersAndRolesFromPermissions($permission);
         $permission->delete();
 
         return redirect(route('laravelroles::roles.index'))

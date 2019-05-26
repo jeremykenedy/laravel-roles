@@ -8,34 +8,12 @@ use jeremykenedy\LaravelRoles\App\Http\Requests\StoreRoleRequest;
 use jeremykenedy\LaravelRoles\App\Http\Requests\UpdateRoleRequest;
 use jeremykenedy\LaravelRoles\App\Services\RoleFormFields;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
+use jeremykenedy\LaravelRoles\Traits\RolesUsageAuthTrait;
 
 class LaravelRolesController extends Controller
 {
     use RolesAndPermissionsHelpersTrait;
-
-    private $_rolesGuiAuthEnabled;
-    private $_rolesGuiMiddlewareEnabled;
-    private $_rolesGuiMiddleware;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->_rolesGuiAuthEnabled = config('roles.rolesGuiAuthEnabled');
-        $this->_rolesGuiMiddlewareEnabled = config('roles.rolesGuiMiddlewareEnabled');
-        $this->_rolesGuiMiddleware = config('roles.rolesGuiMiddleware');
-
-        if ($this->_rolesGuiAuthEnabled) {
-            $this->middleware('auth');
-        }
-
-        if ($this->_rolesGuiMiddlewareEnabled) {
-            $this->middleware($this->_rolesGuiMiddleware);
-        }
-    }
+    use RolesUsageAuthTrait;
 
     /**
      * Show the roles and Permissions dashboard.

@@ -20,4 +20,6 @@ Route::group([
     Route::delete('role-destroy/{id}', 'LaravelRolesDeletedController@destroy')->name('role-item-destroy');
 
     Route::resource('permissions', 'LaravelPermissionsController');
+    Route::get('permissions-deleted', 'LaravelpermissionsDeletedController@index')->name('permissions-deleted');
+
 });
