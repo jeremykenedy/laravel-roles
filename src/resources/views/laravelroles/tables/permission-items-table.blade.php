@@ -145,13 +145,16 @@
 
 
                             <td>
-                                Show :: TODO
+                                <a class="btn btn-sm btn-outline-info btn-block" href="{{ route('laravelroles::permission-show-deleted', $item->id) }}" data-toggle="tooltip" title="{{ trans('laravelroles::laravelroles.tooltips.show-deleted-permission') }}">
+                                    {!! trans("laravelroles::laravelroles.buttons.show-deleted-permission") !!}
+                                    <i class="fa fa-eye fa-fw" aria-hidden="true"></i>
+                                </a>
                             </td>
                             <td>
-                                Restore :: TODO
+@include('laravelroles::laravelroles.forms.restore-item', ['style' => 'small', 'type' => 'permission', 'item' => $item])
                             </td>
                             <td>
-                                Destroy :: TODO
+@include('laravelroles::laravelroles.forms.destroy-sm', ['type' => 'Permission' ,'item' => $item])
                             </td>
 
 

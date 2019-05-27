@@ -7,6 +7,62 @@ use Illuminate\Support\Facades\DB;
 trait RolesAndPermissionsHelpersTrait
 {
     /**
+     * Delete a permission.
+     *
+     * @param int $id The identifier
+     *
+     * @return collection
+     */
+    public function deletePermission($id)
+    {
+        $permission = $this->getPermission($id);
+        $permission->delete();
+
+        return $permission;
+    }
+
+    /**
+     * Destroy all the deleted roles.
+     *
+     * @return array
+     */
+    public function destroyAllTheDeletedPermissions()
+    {
+        $deletedPermissions = $this->getDeletedPermissions()->get();
+        $deletedPermissionsCount = $deletedPermissions->count();
+        $status = 'error';
+
+        if ($deletedPermissionsCount > 0) {
+            foreach ($deletedPermissions as $deletedPermission) {
+                $this->removeUsersAndRolesFromPermissions($deletedPermission);
+                $deletedPermission->forceDelete();
+            }
+            $status = 'success';
+        }
+
+        return [
+            'status' => $status,
+            'count'  => $deletedPermissionsCount,
+        ];
+    }
+
+    /**
+     * Destroy a permission from storage.
+     *
+     * @param int $id The identifier
+     *
+     * @return collection
+     */
+    public function destroyPermission($id)
+    {
+        $permission = $this->getDeletedPermission($id);
+        $this->removeUsersAndRolesFromPermissions($permission);
+        $permission->forceDelete();
+
+        return $permission;
+    }
+
+    /**
      * Delete a role.
      *
      * @param int $id The identifier
@@ -60,6 +116,24 @@ trait RolesAndPermissionsHelpersTrait
             'status' => $status,
             'count'  => $deletedRolesCount,
         ];
+    }
+
+    /**
+     * Get Soft Deleted Permission.
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response || collection
+     */
+    public function getDeletedPermission($id)
+    {
+        $item = config('roles.models.permission')::onlyTrashed()->where('id', $id)->get();
+        if (count($item) != 1) {
+            return abort(redirect('laravelroles::roles.index')
+                            ->with('error', trans('laravelroles::laravelroles.errors.errorDeletedPermissionNotFound')));
+        }
+
+        return $item[0];
     }
 
     /**
@@ -319,6 +393,30 @@ trait RolesAndPermissionsHelpersTrait
     }
 
     /**
+     * Restore all the deleted permissions.
+     *
+     * @return array
+     */
+    public function restoreAllTheDeletedPermissions()
+    {
+        $deletedPermissions = $this->getDeletedPermissions()->get();
+        $deletedPermissionsCount = $deletedPermissions->count();
+        $status = 'error';
+
+        if ($deletedPermissionsCount > 0) {
+            foreach ($deletedPermissions as $deletedPermission) {
+                $deletedPermission->restore();
+            }
+            $status = 'success';
+        }
+
+        return [
+            'status' => $status,
+            'count'  => $deletedPermissionsCount,
+        ];
+    }
+
+    /**
      * Restore all the deleted roles.
      *
      * @return array
@@ -340,6 +438,21 @@ trait RolesAndPermissionsHelpersTrait
             'status' => $status,
             'count'  => $deletedRolesCount,
         ];
+    }
+
+    /**
+     * Restore a deleted permission.
+     *
+     * @param int $id The identifier
+     *
+     * @return collection
+     */
+    public function restoreDeletedPermission($id)
+    {
+        $permission = $this->getDeletedPermission($id);
+        $permission->restore();
+
+        return $permission;
     }
 
     /**

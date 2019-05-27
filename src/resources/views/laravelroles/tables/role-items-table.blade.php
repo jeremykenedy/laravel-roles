@@ -143,7 +143,7 @@
                         @endif
                         @if($tabletype == 'deleted')
                             <td>
-                                <a class="btn btn-sm btn-outline-info btn-block" href="{{ route('laravelroles::role-show-deleted', $item->id) }}" data-toggle="tooltip" title="{{ trans("laravelroles::laravelroles.tooltips.show-deleted-role") }}">
+                                <a class="btn btn-sm btn-outline-info btn-block" href="{{ route('laravelroles::role-show-deleted', $item->id) }}" data-toggle="tooltip" title="{{ trans('laravelroles::laravelroles.tooltips.show-deleted-role') }}">
                                     {!! trans("laravelroles::laravelroles.buttons.show-deleted-role") !!}
                                     <i class="fa fa-eye fa-fw" aria-hidden="true"></i>
                                 </a>

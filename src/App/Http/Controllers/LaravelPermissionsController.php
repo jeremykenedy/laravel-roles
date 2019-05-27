@@ -111,9 +111,7 @@ class LaravelPermissionsController extends Controller
      */
     public function destroy($id)
     {
-        $permission = config('roles.models.permission')::findOrFail($id);
-        // $this->removeUsersAndRolesFromPermissions($permission);
-        $permission->delete();
+        $permission = $this->deletePermission($id);
 
         return redirect(route('laravelroles::roles.index'))
                     ->with('success', trans('laravelroles::laravelroles.flash-messages.successDeletedItem', ['type' => 'Permission', 'item' => $permission->name]));

@@ -6,6 +6,7 @@
     $formAction     = '';
     $modalTitle     = '';
     $modalMessage   = '';
+    $dataTarget     = '';
 
     if($type == 'role') {
         $formAction     = route('laravelroles::role-restore', $item->id);
@@ -13,6 +14,15 @@
         $btnText        = trans("laravelroles::laravelroles.buttons.restore-role");
         $modalTitle     = trans('laravelroles::laravelroles.modals.restore_modal_title', ['type' => $type, 'item' => $item->name]);
         $modalMessage   = trans('laravelroles::laravelroles.modals.restore_modal_message', ['type' => $type, 'item' => $item->name]);
+        $dataTarget     = '#confirmRestoreRoles';
+    }
+    if($type == 'permission') {
+        $formAction     = route('laravelroles::permission-restore', $item->id);
+        $btnTooltip     = trans('laravelroles::laravelroles.tooltips.restore-permission');
+        $btnText        = trans("laravelroles::laravelroles.buttons.restore-permission");
+        $modalTitle     = trans('laravelroles::laravelroles.modals.restore_modal_title', ['type' => $type, 'item' => $item->name]);
+        $modalMessage   = trans('laravelroles::laravelroles.modals.restore_modal_message', ['type' => $type, 'item' => $item->name]);
+        $dataTarget     = '#confirmRestorePermissions';
     }
     if($style == 'small') {
         $btnClass .= ' btn-sm';
@@ -28,7 +38,7 @@
 <form action="{{ $formAction }}" method="POST" accept-charset="utf-8" data-toggle="tooltip" title="{{ $btnTooltip }}" class="{{ $formClass }}" >
     {{ csrf_field() }}
     {{ method_field('PUT') }}
-    <button class="btn btn-block {{ $btnClass }}" type="button" style="width: 100%;" data-toggle="modal" data-target="#confirmRestoreRoles" data-title="{!! $modalTitle !!}" data-message="{!! $modalMessage !!}" >
+    <button class="btn btn-block {{ $btnClass }}" type="button" style="width: 100%;" data-toggle="modal" data-target="{{ $dataTarget }}" data-title="{!! $modalTitle !!}" data-message="{!! $modalMessage !!}" >
         {!! $btnText !!}
         <i class="fa fa-fw fa-history" aria-hidden="true"></i>
     </button>
