@@ -564,7 +564,7 @@ You can catch these exceptions inside `app/Exceptions/Handler.php` file and do w
 * You can change connection for models, slug separator, models path and there is also a handy pretend feature.
 * There are many configurable options which have been extended to be able to configured via `.env` file variables.
 * Editing the configuration file directly may not needed becuase of this.
-* See config file: [roles.php](https://github.com/jeremykenedy/laravel-roles/blob/master/config/roles.php).
+* See config file: [roles.php](https://github.com/jeremykenedy/laravel-roles/blob/master/src/config/roles.php).
 
 ```php
 
