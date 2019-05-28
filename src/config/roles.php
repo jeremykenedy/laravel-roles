@@ -111,6 +111,14 @@ return [
     // Optional Roles GUI Middleware
     'rolesGuiMiddleware'            => env('ROLES_GUI_MIDDLEWARE', 'role:admin'),
 
+    // User Permissions or Role needed to create a new role
+    'rolesGuiCreateNewRolesMiddlewareType'   => env('ROLES_GUI_CREATE_ROLE_MIDDLEWARE_TYPE', 'role'), //permissions or roles
+    'rolesGuiCreateNewRolesMiddleware'       => env('ROLES_GUI_CREATE_ROLE_MIDDLEWARE_TYPE', 'admin'), // admin, XXX. ... or perms.XXX
+
+    // User Permissions or Role needed to create a new permission
+    'rolesGuiCreateNewPermissionMiddlewareType'  => env('ROLES_GUI_CREATE_PERMISSION_MIDDLEWARE_TYPE', 'role'), //permissions or roles
+    'rolesGuiCreateNewPermissionsMiddleware'     => env('ROLES_GUI_CREATE_PERMISSION_MIDDLEWARE_TYPE', 'admin'), // admin, XXX. ... or perms.XXX
+
     // The parent blade file
     'bladeExtended'                 => env('ROLES_GUI_BLADE_EXTENDED', 'layouts.app'),
 
@@ -137,12 +145,48 @@ return [
     'enablejQueryCDN'               => env('ROLES_GUI_JQUERY_CDN_ENABLED', true),
     'JQueryCDN'                     => env('ROLES_GUI_JQUERY_CDN_URL', 'https://code.jquery.com/jquery-3.3.1.min.js'),
 
+    // Selectize JS
+    'enableSelectizeJsCDN'          => env('ROLES_GUI_SELECTIZEJS_CDN_ENABLED', true),
+    'SelectizeJsCDN'                => env('ROLES_GUI_SELECTIZEJS_CDN_URL', 'https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js'),
+    'enableSelectizeJs'             => env('ROLES_GUI_SELECTIZEJS_ENABLED', true),
+    'enableSelectizeJsCssCDN'       => env('ROLES_GUI_SELECTIZEJS_CSS_CDN_ENABLED', true),
+    'SelectizeJsCssCDN'             => env('ROLES_GUI_SELECTIZEJS_CSS_CDN_URL', 'https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.min.css'),
+
     // Font Awesome
     'enableFontAwesomeCDN'          => env('ROLES_GUI_FONT_AWESOME_CDN_ENABLED', true),
     'fontAwesomeCDN'                => env('ROLES_GUI_FONT_AWESOME_CDN_URL', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'),
 
     // Flash Messaging
     'builtInFlashMessagesEnabled'   => env('ROLES_GUI_FLASH_MESSAGES_ENABLED', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Laravel Roles API Settings
+    |--------------------------------------------------------------------------
+    |
+    | This is the API for Laravel Roles to be able to CRUD them
+    | easily and fast via an API. This is optional and is
+    | not needed for your application.
+    |
+    */
+    'rolesApiEnabled'               => env('ROLES_API_ENABLED', false),
+
+    // Enable `auth` middleware
+    'rolesAPIAuthEnabled'           => env('ROLES_API_AUTH_ENABLED', true),
+
+    // Enable Roles API middleware
+    'rolesAPIMiddlewareEnabled'     => env('ROLES_API_MIDDLEWARE_ENABLED', true),
+
+    // Optional Roles API Middleware
+    'rolesAPIMiddleware'            => env('ROLES_API_MIDDLEWARE', 'role:admin'),
+
+    // User Permissions or Role needed to create a new role
+    'rolesAPICreateNewRolesMiddlewareType'   => env('ROLES_API_CREATE_ROLE_MIDDLEWARE_TYPE', 'role'), //permissions or roles
+    'rolesAPICreateNewRolesMiddleware'       => env('ROLES_API_CREATE_ROLE_MIDDLEWARE_TYPE', 'admin'), // admin, XXX. ... or perms.XXX
+
+    // User Permissions or Role needed to create a new permission
+    'rolesAPICreateNewPermissionMiddlewareType'  => env('ROLES_API_CREATE_PERMISSION_MIDDLEWARE_TYPE', 'role'), //permissions or roles
+    'rolesAPICreateNewPermissionsMiddleware'     => env('ROLES_API_CREATE_PERMISSION_MIDDLEWARE_TYPE', 'admin'), // admin, XXX. ... or perms.XXX
 
     /*
     |--------------------------------------------------------------------------
@@ -163,5 +207,4 @@ return [
     */
 
     'laravelUsersEnabled'           => env('ROLES_GUI_LARAVEL_ROLES_ENABLED', false),
-
 ];

@@ -42,7 +42,7 @@ class Role extends Model implements RoleHasRelationsContract
         'name',
         'slug',
         'description',
-        'level'
+        'level',
     ];
 
     /**

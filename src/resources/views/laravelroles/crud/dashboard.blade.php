@@ -1,21 +1,21 @@
 @extends(config('roles.bladeExtended'))
 
 @section(config('roles.titleExtended'))
-    {!! trans('roles::roles.titles.dashboard') !!}
+    {!! trans('laravelroles::laravelroles.titles.dashboard') !!}
 @endsection
 
 @php
     switch (config('roles.bootstapVersion')) {
         case '3':
-            $rolesContainerClass = 'panel panel-success';
+            $rolesContainerClass = 'panel';
             $rolesContainerHeaderClass = 'panel-heading';
-            $rolesContainerBodyClass = 'panel-body';
+            $rolesContainerBodyClass = 'panel-body padding-0';
             break;
         case '4':
         default:
             $rolesContainerClass = 'card';
-            $rolesContainerHeaderClass = 'card-header bg-success text-white';
-            $rolesContainerBodyClass = 'card-body';
+            $rolesContainerHeaderClass = 'card-header';
+            $rolesContainerBodyClass = 'card-body p-0';
             break;
     }
 
@@ -34,7 +34,6 @@
         $cardColClass = 'col-sm-6';
     }
     */
-
 @endphp
 
 @section(config('roles.bladePlacementCss'))
@@ -46,7 +45,6 @@
     @endif
     @include('laravelroles::laravelroles.partials.styles')
     @include('laravelroles::laravelroles.partials.bs-visibility-css')
-
 @endsection
 
 @section('content')
@@ -58,8 +56,27 @@
             @include('laravelroles::laravelroles.cards.roles-card', ['items' => $sortedRolesWithPermissionsAndUsers])
             @include('laravelroles::laravelroles.cards.permissions-card', ['items' => $sortedPermissionsRolesUsers])
         </div>
+        <div class="row">
+            <div class="col-sm-12">
+                @include('laravelroles::laravelroles.tables.roles-table')
+            </div>
+        </div>
 
         <div class="clearfix mb-4"></div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                @include('laravelroles::laravelroles.tables.permissions-table')
+            </div>
+        </div>
+
+        <div class="clearfix mb-4"></div>
+
+        @include('laravelroles::laravelroles.modals.confirm-modal',[
+            'formTrigger' => 'confirmDelete',
+            'modalClass' => 'danger',
+            'actionBtnIcon' => 'fa-trash-o'
+        ])
 
     </div>
 
@@ -69,6 +86,7 @@
     @if(config('roles.enablejQueryCDN'))
         <script type="text/javascript" src="{{ config('roles.JQueryCDN') }}"></script>
     @endif
+    @include('laravelroles::laravelroles.scripts.confirm-modal', ['formTrigger' => '#confirmDelete'])
     @if (config('roles.enabledDatatablesJs'))
         @include('laravelroles::laravelroles.scripts.datatables')
     @endif
