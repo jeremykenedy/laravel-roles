@@ -3,10 +3,7 @@
 namespace jeremykenedy\LaravelRoles\App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use jeremykenedy\LaravelRoles\App\Http\Requests\StoreRoleRequest;
-use jeremykenedy\LaravelRoles\App\Http\Requests\UpdateRoleRequest;
-use jeremykenedy\LaravelRoles\App\Services\RoleFormFields;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
 use jeremykenedy\LaravelRoles\Traits\RolesUsageAuthTrait;
 
@@ -39,9 +36,9 @@ class LaravelRolesApiController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
-        $roleData           = $request->roleFillData();
-        $rolePermissions    = $request->get('permissions');
-        $role               = $this->storeRoleWithPermissions($roleData, $rolePermissions);
+        $roleData = $request->roleFillData();
+        $rolePermissions = $request->get('permissions');
+        $role = $this->storeRoleWithPermissions($roleData, $rolePermissions);
 
         return response()->json([
             'code'      => 201,
@@ -50,5 +47,4 @@ class LaravelRolesApiController extends Controller
             'role'      => $role,
         ], 201);
     }
-
 }
