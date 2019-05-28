@@ -32,6 +32,11 @@
         $btnClass   .= ' btn-md mb-0';
         $formClass  = 'mb-0';
     }
+    if($style == 'large' && $type == 'permission') {
+        $btnText    = trans("laravelroles::laravelroles.buttons.restore-permission-large");
+        $btnClass   .= ' btn-md mb-0';
+        $formClass  = 'mb-0';
+    }
 
 @endphp
 

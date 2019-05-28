@@ -36,8 +36,8 @@ class LaravelpermissionsDeletedController extends Controller
      */
     public function show($id)
     {
-        $item = $this->getDeletedPermission($id);
-        $typeDeleted = 'deleted';
+        $item           = $this->getDeletedPermissionAndDetails($id);
+        $typeDeleted    = 'deleted';
 
         return view('laravelroles::laravelroles.crud.permissions.show', compact('item', 'typeDeleted'));
     }

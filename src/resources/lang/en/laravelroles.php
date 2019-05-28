@@ -27,6 +27,7 @@ return [
         'roles-deleted-table'       => 'Deleted Roles',
         'show-role-deleted'         => 'Showing Deleted Role: <strong>:name</strong>',
         'permissions-deleted-table' => 'Deleted Permissions',
+        'show-permission-deleted'   => 'Showing Deleted Permission: <strong>:name</strong>',
     ],
 
     'cards' => [

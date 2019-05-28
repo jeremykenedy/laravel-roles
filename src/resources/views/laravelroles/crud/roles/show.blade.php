@@ -223,9 +223,7 @@
                         <div class="row">
                             <div class="col-sm-6 mt-3">
                                 @isset($typeDeleted)
-
-@include('laravelroles::laravelroles.forms.restore-item', ['style' => 'large', 'type' => 'role', 'item' => $item])
-
+                                    @include('laravelroles::laravelroles.forms.restore-item', ['style' => 'large', 'type' => 'role', 'item' => $item])
                                 @else
                                     <a class="btn btn-sm btn-secondary btn-block text-white mb-0" href="{{ route('laravelroles::roles.edit', $item->id) }}" data-toggle="tooltip" title="{{ trans("laravelroles::laravelroles.tooltips.edit-role") }}">
                                         {!! trans("laravelroles::laravelroles.buttons.edit-larger") !!}
@@ -234,9 +232,7 @@
                             </div>
                             <div class="col-sm-6 mt-3">
                                 @isset($typeDeleted)
-
-@include('laravelroles::laravelroles.forms.destroy-sm', ['large' => 'large', 'type' => 'Role' ,'item' => $item])
-
+                                    @include('laravelroles::laravelroles.forms.destroy-sm', ['large' => 'large', 'type' => 'Role' ,'item' => $item])
                                 @else
                                      @include('laravelroles::laravelroles.forms.delete-sm', ['type' => 'Role' ,'item' => $item, 'large' => true])
                                 @endisset

@@ -287,6 +287,35 @@ trait RolesAndPermissionsHelpersTrait
     }
 
     /**
+     * Gets the permission item data.
+     *
+     * @param int $id The Permission ID
+     *
+     * @return array The Permission item data.
+     */
+    public function getPermissionItemData($id)
+    {
+        $permission = config('roles.models.permission')::findOrFail($id);
+        $users = $this->getUsers();
+        $roles = $this->getRoles();
+        $permissions = $this->getPermissions();
+        $sortedRolesWithUsers = $this->getSortedUsersWithRoles($roles, $users);
+        $sortedPermissionsRolesUsers = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions, $users);
+
+        $data = [];
+
+        foreach ($sortedPermissionsRolesUsers as $item) {
+            if ($item['permission']->id === $permission->id) {
+                $data = [
+                    'item' => $item,
+                ];
+            }
+        }
+
+        return $data;
+    }
+
+    /**
      * Gets the role permissions.
      *
      * @param int $id The Role Id
@@ -329,32 +358,71 @@ trait RolesAndPermissionsHelpersTrait
     }
 
     /**
-     * Gets the permission item data.
+     * Gets the role users.
      *
-     * @param int $id The Permission ID
+     * @param int $roleId   The role identifier
      *
-     * @return array The Permission item data.
+     * @return array        The role users.
      */
-    public function getPermissionItemData($id)
+    public function getRoleUsers($roleId)
     {
-        $permission = config('roles.models.permission')::findOrFail($id);
-        $users = $this->getUsers();
-        $roles = $this->getRoles();
-        $permissions = $this->getPermissions();
-        $sortedRolesWithUsers = $this->getSortedUsersWithRoles($roles, $users);
-        $sortedPermissionsRolesUsers = $this->getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions, $users);
+        $queryRolesPivot = DB::table(config('roles.roleUserTable'));
+        $users = [];
 
-        $data = [];
+        if ($roleId) {
+            $queryRolesPivot->where('role_id', '=', $roleId);
+        }
 
-        foreach ($sortedPermissionsRolesUsers as $item) {
-            if ($item['permission']->id === $permission->id) {
-                $data = [
-                    'item' => $item,
-                ];
+        $pivots = $queryRolesPivot->get();
+
+        if ($pivots->count() > 0) {
+            foreach ($pivots as $pivot) {
+                $users[] = $this->getUser($pivot->user_id);
             }
         }
 
-        return $data;
+        return $users;
+    }
+
+    /**
+     * Gets the deleted permission and details (Roles and Users).
+     *
+     * @param int $id     The identifier
+     *
+     * @return Permission The permission and details.
+     */
+    public function getDeletedPermissionAndDetails($id)
+    {
+        $permission             = $this->getDeletedPermission($id);
+        $users                  = $this->getAllUsersForPermission($permission);
+        $permission['users']    = $users;
+
+        return $permission;
+    }
+
+    /**
+     * Gets all users for permission.
+     *
+     * @param collection $permission    The permission
+     *
+     * @return collection               All users for permission.
+     */
+    public function getAllUsersForPermission($permission)
+    {
+        $roles = $permission->roles()->get();
+        $users = [];
+        foreach ($roles as $role) {
+            $users[] = $this->getRoleUsers($role->id);
+        }
+        $users = array_shift($users);
+        $permissionUserPivots = $this->getPermissionUsers($permission->id);
+        if ($permissionUserPivots->count() > 0) {
+            foreach ($permissionUserPivots as $permissionUserPivot) {
+                $users[] = $this->getUser($permissionUserPivot->user_id);
+            }
+        }
+
+        return collect($users)->unique();
     }
 
     /**
