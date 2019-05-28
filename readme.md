@@ -14,6 +14,7 @@
 
 #### Table of contents
 - [About](#about)
+- [Features](#features)
 - [Installation](#installation)
     - [Composer](#composer)
     - [Service Provider](#service-provider)
@@ -38,13 +39,27 @@
 - [Configuration](#configuration)
     - [Environment File](#environment-file)
 - [More Information](#more-information)
+- [Optional GUI Routes](#optional-gui-routes)
+- [Screen Shots](#screen-shots)
 - [File Tree](#file-tree)
 - [Opening an Issue](#opening-an-issue)
 - [License](#license)
 
-### About
+## About
 A Powerful package for handling roles and permissions in Laravel.
 Supports Laravel 5.3, 5.4, 5.5, 5.6, 5.7 and 5.8.
+
+## Features
+| Laravel Roles Features  |
+| :------------ |
+|Built in migrations with ability to publish and modify your own.|
+|Built in seed with ability to publish and modify your own.|
+|Roles with levels and relationships to users, permissions|
+|Permissions with relationships to users and levels|
+|Soft deletes with full restore and destroy|
+|Optional CRUD of Roles and Permissions|
+|Lots of [configuration](#configuration) options|
+|All Extendable from [.env](#environment-file)
 
 ## Installation
 This package is very easy to set up. There are only couple of steps.
@@ -583,7 +598,12 @@ return [
     |
     */
 
-    'connection' => null,
+    'connection'            => env('ROLES_DATABASE_CONNECTION', null),
+    'rolesTable'            => env('ROLES_ROLES_DATABASE_TABLE', 'roles'),
+    'roleUserTable'         => env('ROLES_ROLE_USER_DATABASE_TABLE', 'role_user'),
+    'permissionsTable'      => env('ROLES_PERMISSIONS_DATABASE_TABLE', 'permissions'),
+    'permissionsRoleTable'  => env('ROLES_PERMISSION_ROLE_DATABASE_TABLE', 'permission_role'),
+    'permissionsUserTable'  => env('ROLES_PERMISSION_USER_DATABASE_TABLE', 'permission_user'),
 
     /*
     |--------------------------------------------------------------------------
@@ -596,7 +616,7 @@ return [
     |
     */
 
-    'separator' => '.',
+    'separator' => env('ROLES_DEFAULT_SEPARATOR', '.'),
 
     /*
     |--------------------------------------------------------------------------
@@ -610,8 +630,9 @@ return [
     */
 
     'models' => [
-        'role'       => jeremykenedy\LaravelRoles\Models\Role::class,
-        'permission' => jeremykenedy\LaravelRoles\Models\Permission::class,
+        'role'          => env('ROLES_DEFAULT_ROLE_MODEL', jeremykenedy\LaravelRoles\Models\Role::class),
+        'permission'    => env('ROLES_DEFAULT_PERMISSION_MODEL', jeremykenedy\LaravelRoles\Models\Permission::class),
+        'defaultUser'   => env('ROLES_DEFAULT_USER_MODEL', config('auth.providers.users.model')),
     ],
 
     /*
@@ -626,27 +647,13 @@ return [
     */
 
     'pretend' => [
-
         'enabled' => false,
-
         'options' => [
             'hasRole'       => true,
             'hasPermission' => true,
             'allowed'       => true,
         ],
-
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Laravel Default User Model
-    |--------------------------------------------------------------------------
-    |
-    | This is the applications default user model.
-    |
-    */
-
-    'defaultUserModel' => env('ROLES_DEFAULT_USER_MODEL', config('auth.providers.users.model')),
 
     /*
     |--------------------------------------------------------------------------
@@ -665,6 +672,126 @@ return [
         'ConnectRelationshipsSeeder'    => env('ROLES_SEED_DEFAULT_RELATIONSHIPS', true),
         'UsersTableSeeder'              => env('ROLES_SEED_DEFAULT_USERS', false),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Laravel Roles GUI Settings
+    |--------------------------------------------------------------------------
+    |
+    | This is the GUI for Laravel Roles to be able to CRUD them
+    | easily and fast. This is optional and is not needed
+    | for your application.
+    |
+    */
+
+    // Enable Optional Roles Gui
+    'rolesGuiEnabled'               => env('ROLES_GUI_ENABLED', false),
+
+    // Enable `auth` middleware
+    'rolesGuiAuthEnabled'           => env('ROLES_GUI_AUTH_ENABLED', true),
+
+    // Enable Roles GUI middleware
+    'rolesGuiMiddlewareEnabled'     => env('ROLES_GUI_MIDDLEWARE_ENABLED', true),
+
+    // Optional Roles GUI Middleware
+    'rolesGuiMiddleware'            => env('ROLES_GUI_MIDDLEWARE', 'role:admin'),
+
+    // User Permissions or Role needed to create a new role
+    'rolesGuiCreateNewRolesMiddlewareType'   => env('ROLES_GUI_CREATE_ROLE_MIDDLEWARE_TYPE', 'role'), //permissions or roles
+    'rolesGuiCreateNewRolesMiddleware'       => env('ROLES_GUI_CREATE_ROLE_MIDDLEWARE_TYPE', 'admin'), // admin, XXX. ... or perms.XXX
+
+    // User Permissions or Role needed to create a new permission
+    'rolesGuiCreateNewPermissionMiddlewareType'  => env('ROLES_GUI_CREATE_PERMISSION_MIDDLEWARE_TYPE', 'role'), //permissions or roles
+    'rolesGuiCreateNewPermissionsMiddleware'     => env('ROLES_GUI_CREATE_PERMISSION_MIDDLEWARE_TYPE', 'admin'), // admin, XXX. ... or perms.XXX
+
+    // The parent blade file
+    'bladeExtended'                 => env('ROLES_GUI_BLADE_EXTENDED', 'layouts.app'),
+
+    // Blade Extension Placement
+    'bladePlacement'                => env('ROLES_GUI_BLADE_PLACEMENT', 'yield'),
+    'bladePlacementCss'             => env('ROLES_GUI_BLADE_PLACEMENT_CSS', 'inline_template_linked_css'),
+    'bladePlacementJs'              => env('ROLES_GUI_BLADE_PLACEMENT_JS', 'inline_footer_scripts'),
+
+    // Titles placement extend
+    'titleExtended'                 => env('ROLES_GUI_TITLE_EXTENDED', 'template_title'),
+
+    // Switch Between bootstrap 3 `panel` and bootstrap 4 `card` classes
+    'bootstapVersion'               => env('ROLES_GUI_BOOTSTRAP_VERSION', '4'),
+
+    // Additional Card classes for styling -
+    // See: https://getbootstrap.com/docs/4.0/components/card/#background-and-color
+    // Example classes: 'text-white bg-primary mb-3'
+    'bootstrapCardClasses'          => env('ROLES_GUI_CARD_CLASSES', ''),
+
+    // Bootstrap Tooltips
+    'tooltipsEnabled'               => env('ROLES_GUI_TOOLTIPS_ENABLED', true),
+
+    // jQuery
+    'enablejQueryCDN'               => env('ROLES_GUI_JQUERY_CDN_ENABLED', true),
+    'JQueryCDN'                     => env('ROLES_GUI_JQUERY_CDN_URL', 'https://code.jquery.com/jquery-3.3.1.min.js'),
+
+    // Selectize JS
+    'enableSelectizeJsCDN'          => env('ROLES_GUI_SELECTIZEJS_CDN_ENABLED', true),
+    'SelectizeJsCDN'                => env('ROLES_GUI_SELECTIZEJS_CDN_URL', 'https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js'),
+    'enableSelectizeJs'             => env('ROLES_GUI_SELECTIZEJS_ENABLED', true),
+    'enableSelectizeJsCssCDN'       => env('ROLES_GUI_SELECTIZEJS_CSS_CDN_ENABLED', true),
+    'SelectizeJsCssCDN'             => env('ROLES_GUI_SELECTIZEJS_CSS_CDN_URL', 'https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.min.css'),
+
+    // Font Awesome
+    'enableFontAwesomeCDN'          => env('ROLES_GUI_FONT_AWESOME_CDN_ENABLED', true),
+    'fontAwesomeCDN'                => env('ROLES_GUI_FONT_AWESOME_CDN_URL', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'),
+
+    // Flash Messaging
+    'builtInFlashMessagesEnabled'   => env('ROLES_GUI_FLASH_MESSAGES_ENABLED', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Laravel Roles API Settings
+    |--------------------------------------------------------------------------
+    |
+    | This is the API for Laravel Roles to be able to CRUD them
+    | easily and fast via an API. This is optional and is
+    | not needed for your application.
+    |
+    */
+    'rolesApiEnabled'               => env('ROLES_API_ENABLED', false),
+
+    // Enable `auth` middleware
+    'rolesAPIAuthEnabled'           => env('ROLES_API_AUTH_ENABLED', true),
+
+    // Enable Roles API middleware
+    'rolesAPIMiddlewareEnabled'     => env('ROLES_API_MIDDLEWARE_ENABLED', true),
+
+    // Optional Roles API Middleware
+    'rolesAPIMiddleware'            => env('ROLES_API_MIDDLEWARE', 'role:admin'),
+
+    // User Permissions or Role needed to create a new role
+    'rolesAPICreateNewRolesMiddlewareType'   => env('ROLES_API_CREATE_ROLE_MIDDLEWARE_TYPE', 'role'), //permissions or roles
+    'rolesAPICreateNewRolesMiddleware'       => env('ROLES_API_CREATE_ROLE_MIDDLEWARE_TYPE', 'admin'), // admin, XXX. ... or perms.XXX
+
+    // User Permissions or Role needed to create a new permission
+    'rolesAPICreateNewPermissionMiddlewareType'  => env('ROLES_API_CREATE_PERMISSION_MIDDLEWARE_TYPE', 'role'), //permissions or roles
+    'rolesAPICreateNewPermissionsMiddleware'     => env('ROLES_API_CREATE_PERMISSION_MIDDLEWARE_TYPE', 'admin'), // admin, XXX. ... or perms.XXX
+
+    /*
+    |--------------------------------------------------------------------------
+    | Laravel Roles GUI Datatables Settings
+    |--------------------------------------------------------------------------
+    */
+
+    'enabledDatatablesJs'           => env('ROLES_GUI_DATATABLES_JS_ENABLED', false),
+    'datatablesJsStartCount'        => env('ROLES_GUI_DATATABLES_JS_START_COUNT', 25),
+    'datatablesCssCDN'              => env('ROLES_GUI_DATATABLES_CSS_CDN', 'https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css'),
+    'datatablesJsCDN'               => env('ROLES_GUI_DATATABLES_JS_CDN', 'https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'),
+    'datatablesJsPresetCDN'         => env('ROLES_GUI_DATATABLES_JS_PRESET_CDN', 'https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Laravel Roles Package Integration Settings
+    |--------------------------------------------------------------------------
+    */
+
+    'laravelUsersEnabled'           => env('ROLES_GUI_LARAVEL_ROLES_ENABLED', false),
 ];
 
 
@@ -672,34 +799,158 @@ return [
 
 ### Environment File
 ```
-# Default User Model
+# Roles Default Models
 ROLES_DEFAULT_USER_MODEL=App\User
+ROLES_DEFAULT_ROLE_MODEL=jeremykenedy\LaravelRoles\Models\Role
+ROLES_DEFAULT_PERMISSION_MODEL=jeremykenedy\LaravelRoles\Models\Permission
+
+# Roles database information
+ROLES_DATABASE_CONNECTION=null
+ROLES_ROLES_DATABASE_TABLE=roles
+ROLES_ROLE_USER_DATABASE_TABLE=role_user
+ROLES_PERMISSIONS_DATABASE_TABLE=permissions
+ROLES_PERMISSION_ROLE_DATABASE_TABLE=permission_role
+ROLES_PERMISSION_USER_DATABASE_TABLE=permission_user
+
+# Roles Misc Settings
+ROLES_DEFAULT_SEPARATOR='.'
 
 # Roles Database Seeder Settings
 ROLES_SEED_DEFAULT_PERMISSIONS=true
 ROLES_SEED_DEFAULT_ROLES=true
 ROLES_SEED_DEFAULT_RELATIONSHIPS=true
 ROLES_SEED_DEFAULT_USERS=false
+
+# Roles GUI Settings
+ROLES_GUI_ENABLED=false
+ROLES_GUI_AUTH_ENABLED=true
+ROLES_GUI_MIDDLEWARE_ENABLED=true
+ROLES_GUI_MIDDLEWARE='role:admin'
+ROLES_GUI_CREATE_ROLE_MIDDLEWARE_TYPE='role'
+ROLES_GUI_CREATE_ROLE_MIDDLEWARE_TYPE='admin'
+ROLES_GUI_CREATE_PERMISSION_MIDDLEWARE_TYPE='role'
+ROLES_GUI_CREATE_PERMISSION_MIDDLEWARE_TYPE='admin'
+ROLES_GUI_BLADE_EXTENDED='layouts.app'
+ROLES_GUI_TITLE_EXTENDED='template_title'
+ROLES_GUI_LARAVEL_ROLES_ENABLED=false
+ROLES_GUI_TOOLTIPS_ENABLED=true
+ROLES_GUI_DATATABLES_JS_ENABLED=false
+
 ```
 
 ## More Information
 For more information, please have a look at [HasRoleAndPermission](https://github.com/jeremykenedy/laravel-roles/blob/master/src/Contracts/HasRoleAndPermission.php) contract.
 
+## Optional GUI Routes
+```
++--------+-----------+---------------------------------+-----------------------------------------------+-----------------------------------------------------------------------------------------------------------------+---------------------+
+| Domain | Method    | URI                             | Name                                          | Action                                                                                                          | Middleware          |
++--------+-----------+---------------------------------+-----------------------------------------------+-----------------------------------------------------------------------------------------------------------------+---------------------+
+|        | GET|HEAD  | permission-deleted/{id}         | laravelroles::permission-show-deleted         | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelpermissionsDeletedController@show                         | web,auth,role:admin |
+|        | DELETE    | permission-destroy/{id}         | laravelroles::permission-item-destroy         | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelpermissionsDeletedController@destroy                      | web,auth,role:admin |
+|        | PUT       | permission-restore/{id}         | laravelroles::permission-restore              | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelpermissionsDeletedController@restorePermission            | web,auth,role:admin |
+|        | POST      | permissions                     | laravelroles::permissions.store               | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelPermissionsController@store                               | web,auth,role:admin |
+|        | GET|HEAD  | permissions                     | laravelroles::permissions.index               | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelPermissionsController@index                               | web,auth,role:admin |
+|        | GET|HEAD  | permissions-deleted             | laravelroles::permissions-deleted             | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelpermissionsDeletedController@index                        | web,auth,role:admin |
+|        | DELETE    | permissions-deleted-destroy-all | laravelroles::destroy-all-deleted-permissions | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelpermissionsDeletedController@destroyAllDeletedPermissions | web,auth,role:admin |
+|        | POST      | permissions-deleted-restore-all | laravelroles::permissions-deleted-restore-all | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelpermissionsDeletedController@restoreAllDeletedPermissions | web,auth,role:admin |
+|        | GET|HEAD  | permissions/create              | laravelroles::permissions.create              | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelPermissionsController@create                              | web,auth,role:admin |
+|        | PUT|PATCH | permissions/{permission}        | laravelroles::permissions.update              | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelPermissionsController@update                              | web,auth,role:admin |
+|        | GET|HEAD  | permissions/{permission}        | laravelroles::permissions.show                | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelPermissionsController@show                                | web,auth,role:admin |
+|        | DELETE    | permissions/{permission}        | laravelroles::permissions.destroy             | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelPermissionsController@destroy                             | web,auth,role:admin |
+|        | GET|HEAD  | permissions/{permission}/edit   | laravelroles::permissions.edit                | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelPermissionsController@edit                                | web,auth,role:admin |
+|        | GET|HEAD  | role-deleted/{id}               | laravelroles::role-show-deleted               | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelRolesDeletedController@show                               | web,auth,role:admin |
+|        | DELETE    | role-destroy/{id}               | laravelroles::role-item-destroy               | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelRolesDeletedController@destroy                            | web,auth,role:admin |
+|        | PUT       | role-restore/{id}               | laravelroles::role-restore                    | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelRolesDeletedController@restoreRole                        | web,auth,role:admin |
+|        | POST      | roles                           | laravelroles::roles.store                     | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelRolesController@store                                     | web,auth,role:admin |
+|        | GET|HEAD  | roles                           | laravelroles::roles.index                     | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelRolesController@index                                     | web,auth,role:admin |
+|        | GET|HEAD  | roles-deleted                   | laravelroles::roles-deleted                   | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelRolesDeletedController@index                              | web,auth,role:admin |
+|        | DELETE    | roles-deleted-destroy-all       | laravelroles::destroy-all-deleted-roles       | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelRolesDeletedController@destroyAllDeletedRoles             | web,auth,role:admin |
+|        | POST      | roles-deleted-restore-all       | laravelroles::roles-deleted-restore-all       | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelRolesDeletedController@restoreAllDeletedRoles             | web,auth,role:admin |
+|        | GET|HEAD  | roles/create                    | laravelroles::roles.create                    | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelRolesController@create                                    | web,auth,role:admin |
+|        | DELETE    | roles/{role}                    | laravelroles::roles.destroy                   | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelRolesController@destroy                                   | web,auth,role:admin |
+|        | PUT|PATCH | roles/{role}                    | laravelroles::roles.update                    | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelRolesController@update                                    | web,auth,role:admin |
+|        | GET|HEAD  | roles/{role}                    | laravelroles::roles.show                      | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelRolesController@show                                      | web,auth,role:admin |
+|        | GET|HEAD  | roles/{role}/edit               | laravelroles::roles.edit                      | jeremykenedy\LaravelRoles\App\Http\Controllers\LaravelRolesController@edit                                      | web,auth,role:admin |
++--------+-----------+---------------------------------+-----------------------------------------------+-----------------------------------------------------------------------------------------------------------------+---------------------+
+
+```
+
+
+## Screen Shots
+![Laravel Roles GUI Dashboard](https://s3-us-west-2.amazonaws.com/github-project-images/laravel-roles/screenshots/roles-gui-1.png)
+![Laravel Roles GUI Create New Role](https://s3-us-west-2.amazonaws.com/github-project-images/laravel-roles/screenshots/roles-gui-2.png)
+![Laravel Roles GUI Edit Role](https://s3-us-west-2.amazonaws.com/github-project-images/laravel-roles/screenshots/roles-gui-3.png)
+![Laravel Roles GUI Show Role](https://s3-us-west-2.amazonaws.com/github-project-images/laravel-roles/screenshots/roles-gui-4.png)
+![Laravel Roles GUI Delete Role](https://s3-us-west-2.amazonaws.com/github-project-images/laravel-roles/screenshots/roles-gui-5.png)
+![Laravel Roles GUI Success Deleted](https://s3-us-west-2.amazonaws.com/github-project-images/laravel-roles/screenshots/roles-gui-6.png)
+![Laravel Roles GUI Deleted Role Show](https://s3-us-west-2.amazonaws.com/github-project-images/laravel-roles/screenshots/roles-gui-7.png)
+![Laravel Roles GUI Restore Role](https://s3-us-west-2.amazonaws.com/github-project-images/laravel-roles/screenshots/roles-gui-8.png)
+![Laravel Roles GUI Delete Permission](https://s3-us-west-2.amazonaws.com/github-project-images/laravel-roles/screenshots/roles-gui-9.png)
+![Laravel Roles GUI Show Permission](https://s3-us-west-2.amazonaws.com/github-project-images/laravel-roles/screenshots/roles-gui-10.png)
+![Laravel Roles GUI Permissions Dashboard](https://s3-us-west-2.amazonaws.com/github-project-images/laravel-roles/screenshots/roles-gui-11.png)
+![Laravel Roles GUI Create New Permission](https://s3-us-west-2.amazonaws.com/github-project-images/laravel-roles/screenshots/roles-gui-12.png)
+![Laravel Roles GUI Roles Soft Deletes Dashboard](https://s3-us-west-2.amazonaws.com/github-project-images/laravel-roles/screenshots/roles-gui-13.png)
+![Laravel Roles GUI Permissions Soft Deletes Dashboard](https://s3-us-west-2.amazonaws.com/github-project-images/laravel-roles/screenshots/roles-gui-14.png)
+![Laravel Roles GUI Success Restore](https://s3-us-west-2.amazonaws.com/github-project-images/laravel-roles/screenshots/roles-gui-15.png)
+
 ## File Tree
 ```bash
 ├── .env.example
+├── .env.travis
 ├── .gitignore
+├── .travis.yml
 ├── LICENSE
 ├── composer.json
-├── config
-│   └── roles.php
+├── phpunit.xml
 ├── readme.md
 └── src
+    ├── App
+    │   ├── Exceptions
+    │   │   ├── AccessDeniedException.php
+    │   │   ├── LevelDeniedException.php
+    │   │   ├── PermissionDeniedException.php
+    │   │   └── RoleDeniedException.php
+    │   ├── Http
+    │   │   ├── Controllers
+    │   │   │   ├── Api
+    │   │   │   │   └── LaravelRolesApiController.php
+    │   │   │   ├── LaravelPermissionsController.php
+    │   │   │   ├── LaravelRolesController.php
+    │   │   │   ├── LaravelRolesDeletedController.php
+    │   │   │   └── LaravelpermissionsDeletedController.php
+    │   │   ├── Middleware
+    │   │   │   ├── VerifyLevel.php
+    │   │   │   ├── VerifyPermission.php
+    │   │   │   └── VerifyRole.php
+    │   │   └── Requests
+    │   │       ├── StorePermissionRequest.php
+    │   │       ├── StoreRoleRequest.php
+    │   │       ├── UpdatePermissionRequest.php
+    │   │       └── UpdateRoleRequest.php
+    │   └── Services
+    │       ├── PermissionFormFields.php
+    │       └── RoleFormFields.php
     ├── Contracts
     │   ├── HasRoleAndPermission.php
     │   ├── PermissionHasRelations.php
     │   └── RoleHasRelations.php
-    ├── Database
+    ├── Models
+    │   ├── Permission.php
+    │   └── Role.php
+    ├── RolesFacade.php
+    ├── RolesServiceProvider.php
+    ├── Traits
+    │   ├── DatabaseTraits.php
+    │   ├── HasRoleAndPermission.php
+    │   ├── PermissionHasRelations.php
+    │   ├── RoleHasRelations.php
+    │   ├── RolesAndPermissionsHelpersTrait.php
+    │   ├── RolesUsageAuthTrait.php
+    │   └── Slugable.php
+    ├── config
+    │   └── roles.php
+    ├── database
     │   ├── Migrations
     │   │   ├── 2016_01_15_105324_create_roles_table.php
     │   │   ├── 2016_01_15_114412_create_role_user_table.php
@@ -716,25 +967,75 @@ For more information, please have a look at [HasRoleAndPermission](https://githu
     │           ├── PermissionsTableSeeder.php
     │           ├── RolesTableSeeder.php
     │           └── UsersTableSeeder.php
-    ├── Exceptions
-    │   ├── AccessDeniedException.php
-    │   ├── LevelDeniedException.php
-    │   ├── PermissionDeniedException.php
-    │   └── RoleDeniedException.php
-    ├── Middleware
-    │   ├── VerifyLevel.php
-    │   ├── VerifyPermission.php
-    │   └── VerifyRole.php
-    ├── Models
-    │   ├── Permission.php
-    │   └── Role.php
-    ├── RolesFacade.php
-    ├── RolesServiceProvider.php
-    └── Traits
-        ├── HasRoleAndPermission.php
-        ├── PermissionHasRelations.php
-        ├── RoleHasRelations.php
-        └── Slugable.php
+    ├── resources
+    │   ├── lang
+    │   │   └── en
+    │   │       └── laravelroles.php
+    │   └── views
+    │       └── laravelroles
+    │           ├── cards
+    │           │   ├── permissions-card.blade.php
+    │           │   └── roles-card.blade.php
+    │           ├── crud
+    │           │   ├── dashboard.blade.php
+    │           │   ├── permissions
+    │           │   │   ├── create.blade.php
+    │           │   │   ├── deleted
+    │           │   │   │   └── index.blade.php
+    │           │   │   ├── edit.blade.php
+    │           │   │   └── show.blade.php
+    │           │   └── roles
+    │           │       ├── create.blade.php
+    │           │       ├── deleted
+    │           │       │   └── index.blade.php
+    │           │       ├── edit.blade.php
+    │           │       └── show.blade.php
+    │           ├── forms
+    │           │   ├── create-permission-form.blade.php
+    │           │   ├── create-role-form.blade.php
+    │           │   ├── delete-sm.blade.php
+    │           │   ├── destroy-all-permissions.blade.php
+    │           │   ├── destroy-all-roles.blade.php
+    │           │   ├── destroy-sm.blade.php
+    │           │   ├── edit-permission-form.blade.php
+    │           │   ├── edit-role-form.blade.php
+    │           │   ├── partials
+    │           │   │   ├── permission-desc-input.blade.php
+    │           │   │   ├── permission-name-input.blade.php
+    │           │   │   ├── permission-slug-input.blade.php
+    │           │   │   ├── permissions-model-select.blade.php
+    │           │   │   ├── role-desc-input.blade.php
+    │           │   │   ├── role-level-input.blade.php
+    │           │   │   ├── role-name-input.blade.php
+    │           │   │   ├── role-permissions-select.blade.php
+    │           │   │   └── role-slug-input.blade.php
+    │           │   ├── permission-form.blade.php
+    │           │   ├── restore-all-permissions.blade.php
+    │           │   ├── restore-all-roles.blade.php
+    │           │   ├── restore-item.blade.php
+    │           │   └── role-form.blade.php
+    │           ├── modals
+    │           │   └── confirm-modal.blade.php
+    │           ├── partials
+    │           │   ├── bs-visibility-css.blade.php
+    │           │   ├── flash-messages.blade.php
+    │           │   ├── form-status.blade.php
+    │           │   └── styles.blade.php
+    │           ├── scripts
+    │           │   ├── confirm-modal.blade.php
+    │           │   ├── datatables.blade.php
+    │           │   ├── form-inputs-helpers.blade.php
+    │           │   ├── selectize.blade.php
+    │           │   ├── selectizePermission.blade.php
+    │           │   └── tooltips.blade.php
+    │           └── tables
+    │               ├── permission-items-table.blade.php
+    │               ├── permissions-table.blade.php
+    │               ├── role-items-table.blade.php
+    │               └── roles-table.blade.php
+    └── routes
+        ├── api.php
+        └── web.php
 ```
 
 * Tree command can be installed using brew: `brew install tree`
@@ -752,10 +1053,10 @@ Before opening an issue there are a couple of considerations:
 * **Following these instructions show me that you have tried.**
 * If you have a questions send me an email to jeremykenedy@gmail.com
 * Need some help, I can do my best on Slack: https://opensourcehelpgroup.slack.com
-* Please be considerate that this is an open source project that I provide to the community for FREE when opening an issue. 
+* Please be considerate that this is an open source project that I provide to the community for FREE when opening an issue.
 
 #### Credit Note
-This package is an adaptation of [romanbican/roles](https://github.com/romanbican/roles) and [ultraware/roles](https://github.com/ultraware/roles/).
+This package is an adaptation of [romanbican/roles](https://github.com/romanbican/roles) and [ultraware/roles](https://github.com/ultraware/roles/). Many features have been upgraded and added since.
 
 ## License
 This package is free software distributed under the terms of the [MIT license](https://opensource.org/licenses/MIT). Enjoy!

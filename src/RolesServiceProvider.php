@@ -37,9 +37,6 @@ class RolesServiceProvider extends ServiceProvider
         if (config('roles.rolesGuiEnabled')) {
             $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         }
-        if (config('roles.rolesApiEnabled')) {
-            $this->loadRoutesFrom(__DIR__.'/routes/api.php');
-        }
         $this->loadTranslationsFrom(__DIR__.'/resources/lang/', $this->_packageTag);
         $this->registerBladeExtensions();
     }

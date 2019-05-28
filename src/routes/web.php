@@ -11,11 +11,12 @@ Route::group([
     'as'            => 'laravelroles::',
     'namespace'     => 'jeremykenedy\LaravelRoles\App\Http\Controllers',
 ], function () {
-    // Dashboards
+
+    // Dashboards and CRUD Routes
     Route::resource('roles', 'LaravelRolesController');
     Route::resource('permissions', 'LaravelPermissionsController');
 
-    // Deleted Roles Routes
+    // Deleted Roles Dashboard and CRUD Routes
     Route::get('roles-deleted', 'LaravelRolesDeletedController@index')->name('roles-deleted');
     Route::get('role-deleted/{id}', 'LaravelRolesDeletedController@show')->name('role-show-deleted');
     Route::put('role-restore/{id}', 'LaravelRolesDeletedController@restoreRole')->name('role-restore');
@@ -23,7 +24,7 @@ Route::group([
     Route::delete('roles-deleted-destroy-all', 'LaravelRolesDeletedController@destroyAllDeletedRoles')->name('destroy-all-deleted-roles');
     Route::delete('role-destroy/{id}', 'LaravelRolesDeletedController@destroy')->name('role-item-destroy');
 
-    // Deleted Permissions Routes
+    // Deleted Permissions Dashboard and CRUD Routes
     Route::get('permissions-deleted', 'LaravelpermissionsDeletedController@index')->name('permissions-deleted');
     Route::get('permission-deleted/{id}', 'LaravelpermissionsDeletedController@show')->name('permission-show-deleted');
     Route::put('permission-restore/{id}', 'LaravelpermissionsDeletedController@restorePermission')->name('permission-restore');
