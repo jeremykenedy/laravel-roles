@@ -49,7 +49,7 @@ class RolesServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/config/roles.php', 'roles');
-        $this->loadMigrationsFrom(__DIR__.'/database/Migrations');
+        $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
         if (config('roles.rolesGuiEnabled')) {
             $this->loadViewsFrom(__DIR__.'/resources/views/', $this->_packageTag);
         }
@@ -103,17 +103,17 @@ class RolesServiceProvider extends ServiceProvider
         ], $publishTag.'-config');
 
         $this->publishes([
-            __DIR__.'/database/Migrations' => database_path('migrations'),
+            __DIR__.'/Database/Migrations' => database_path('migrations'),
         ], $publishTag.'-migrations');
 
         $this->publishes([
-            __DIR__.'/database/Seeds/publish' => database_path('seeds'),
+            __DIR__.'/Database/Seeds/publish' => database_path('seeds'),
         ], $publishTag.'-seeds');
 
         $this->publishes([
             __DIR__.'/config/roles.php'       => config_path('roles.php'),
-            __DIR__.'/database/Migrations'    => database_path('migrations'),
-            __DIR__.'/database/Seeds/publish' => database_path('seeds'),
+            __DIR__.'/Database/Migrations'    => database_path('migrations'),
+            __DIR__.'/Database/Seeds/publish' => database_path('seeds'),
         ], $publishTag);
     }
 
