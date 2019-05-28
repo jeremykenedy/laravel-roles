@@ -14,7 +14,7 @@ class CreatePermissionsTable extends Migration
     public function up()
     {
         $connection = config('roles.connection');
-        $table      = config('roles.permissionsTable');
+        $table = config('roles.permissionsTable');
         $tableCheck = Schema::connection($connection)->hasTable($table);
 
         if (!$tableCheck) {
@@ -38,7 +38,7 @@ class CreatePermissionsTable extends Migration
     public function down()
     {
         $connection = config('roles.connection');
-        $table      = config('roles.permissionsTable');
+        $table = config('roles.permissionsTable');
         Schema::connection($connection)->dropIfExists($table);
     }
 }
