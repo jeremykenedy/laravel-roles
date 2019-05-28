@@ -360,9 +360,9 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets the role users.
      *
-     * @param int $roleId   The role identifier
+     * @param int $roleId The role identifier
      *
-     * @return array        The role users.
+     * @return array The role users.
      */
     public function getRoleUsers($roleId)
     {
@@ -387,15 +387,15 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets the deleted permission and details (Roles and Users).
      *
-     * @param int $id     The identifier
+     * @param int $id The identifier
      *
      * @return Permission The permission and details.
      */
     public function getDeletedPermissionAndDetails($id)
     {
-        $permission             = $this->getDeletedPermission($id);
-        $users                  = $this->getAllUsersForPermission($permission);
-        $permission['users']    = $users;
+        $permission = $this->getDeletedPermission($id);
+        $users = $this->getAllUsersForPermission($permission);
+        $permission['users'] = $users;
 
         return $permission;
     }
@@ -403,9 +403,9 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets all users for permission.
      *
-     * @param collection $permission    The permission
+     * @param collection $permission The permission
      *
-     * @return collection               All users for permission.
+     * @return collection All users for permission.
      */
     public function getAllUsersForPermission($permission)
     {
