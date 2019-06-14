@@ -2,7 +2,6 @@
 
 namespace jeremykenedy\LaravelRoles\Database\Seeds;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 
 class DefaultPermissionsTableSeeder extends Seeder
