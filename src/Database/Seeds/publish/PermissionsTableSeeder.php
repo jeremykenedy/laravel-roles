@@ -2,7 +2,6 @@
 
 namespace Database\Seeds;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 
 class PermissionsTableSeeder extends Seeder
