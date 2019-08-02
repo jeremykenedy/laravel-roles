@@ -1058,5 +1058,8 @@ Before opening an issue there are a couple of considerations:
 * Need some help, I can do my best on Slack: https://opensourcehelpgroup.slack.com
 * Please be considerate that this is an open source project that I provide to the community for FREE when opening an issue.
 
+## Credit Note:
+The [HasRoleAndPermission Trait And Contract](#hasroleandpermission-trait-and-contract) is and an adaptation of [romanbican/roles](https://github.com/romanbican/roles). I liked the method he made so I used them.
+
 ## License
 This package is free software distributed under the terms of the [MIT license](https://opensource.org/licenses/MIT). Enjoy!
