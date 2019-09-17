@@ -34,7 +34,7 @@ trait HasRoleAndPermission
      */
     public function roles()
     {
-        return $this->belongsToMany(config('roles.models.role'))->withTimestamps();
+        return $this->belongsToMany(config('roles.models.role'))->withTimestamps('created_at', 'updated_at');
     }
 
     /**
@@ -214,7 +214,7 @@ trait HasRoleAndPermission
      */
     public function userPermissions()
     {
-        return $this->belongsToMany(config('roles.models.permission'))->withTimestamps();
+        return $this->belongsToMany(config('roles.models.permission'))->withTimestamps('created_at', 'updated_at');
     }
 
     /**
