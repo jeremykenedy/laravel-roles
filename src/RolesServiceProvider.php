@@ -49,7 +49,7 @@ class RolesServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/config/roles.php', 'roles');
-        $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
+        $this->loadMigrations();
         if (config('roles.rolesGuiEnabled')) {
             $this->loadViewsFrom(__DIR__.'/resources/views/', $this->_packageTag);
         }
@@ -57,6 +57,11 @@ class RolesServiceProvider extends ServiceProvider
         $this->loadSeedsFrom();
     }
 
+    private function loadMigrations() {
+        if (config('roles.defaultMigrations.enabled')) {
+            $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
+        }
+    }
     /**
      * Loads a seeds.
      *
