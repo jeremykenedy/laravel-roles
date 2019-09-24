@@ -57,7 +57,8 @@ class RolesServiceProvider extends ServiceProvider
         $this->loadSeedsFrom();
     }
 
-    private function loadMigrations() {
+    private function loadMigrations() 
+    {
         if (config('roles.defaultMigrations.enabled')) {
             $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
         }
