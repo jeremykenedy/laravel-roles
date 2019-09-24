@@ -81,7 +81,7 @@ return [
     */
 
     'defaultMigrations' => [
-        'enabled'        => env('ROLES_MIGRATION_DEFAULT_ENABLED', false)
+        'enabled'        => env('ROLES_MIGRATION_DEFAULT_ENABLED', false),
     ],
     /*
     |--------------------------------------------------------------------------
