@@ -74,7 +74,7 @@ return [
     | Default Migrations
     |--------------------------------------------------------------------------
     |
-    | These are the default package migrations. If you publish the migrations 
+    | These are the default package migrations. If you publish the migrations
     | to your project, then this is not necessary and should be disabled. This
     | will enable our default migrations.
     |
