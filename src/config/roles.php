@@ -69,7 +69,20 @@ return [
             'allowed'       => true,
         ],
     ],
+    /*
+    |--------------------------------------------------------------------------
+    | Default Migrations
+    |--------------------------------------------------------------------------
+    |
+    | These are the default package migrations. If you publish the migrations
+    | to your project, then this is not necessary and should be disabled. This
+    | will enable our default migrations.
+    |
+    */
 
+    'defaultMigrations' => [
+        'enabled'        => env('ROLES_MIGRATION_DEFAULT_ENABLED', false),
+    ],
     /*
     |--------------------------------------------------------------------------
     | Default Seeds
