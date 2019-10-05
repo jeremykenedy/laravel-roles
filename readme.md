@@ -661,6 +661,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Default Migrations
+    |--------------------------------------------------------------------------
+    |
+    | These are the default package migrations. If you publish the migrations
+    | to your project, then this is not necessary and should be disabled. This
+    | will enable our default migrations.
+    |
+    */
+    'defaultMigrations' => [
+        'enabled'        => env('ROLES_MIGRATION_DEFAULT_ENABLED', false),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Default Seeds
     |--------------------------------------------------------------------------
     |
@@ -818,6 +832,9 @@ ROLES_PERMISSION_USER_DATABASE_TABLE=permission_user
 
 # Roles Misc Settings
 ROLES_DEFAULT_SEPARATOR='.'
+
+# Roles Database Migrations Settings
+ROLES_MIGRATION_DEFAULT_ENABLED=true
 
 # Roles Database Seeder Settings
 ROLES_SEED_DEFAULT_PERMISSIONS=true
