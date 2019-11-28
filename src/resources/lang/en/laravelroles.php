@@ -8,7 +8,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'date-format' => 'm/d/Y H:ia',
+    'date-format' => 'm/d/Y h:ia',
 
     'titles' => [
         'dashboard'                 => 'Roles Dashboard',
