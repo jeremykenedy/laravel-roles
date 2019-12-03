@@ -44,7 +44,6 @@ class DefaultUsersTableSeeder extends Seeder
                 'password' => bcrypt('password'),
             ]);
 
-            $newUser;
             $newUser->attachRole($userRole);
             echo "\e[32mSeeding:\e[0m DefaultUsersTableSeeder - User:user@user.com\r\n";
         }
