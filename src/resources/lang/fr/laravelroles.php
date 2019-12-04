@@ -1,5 +1,6 @@
 <?php
-#from : vendor/jeremykenedy/laravel-roles/src/resources/lang/en/laravelroles.php
+
+//from : vendor/jeremykenedy/laravel-roles/src/resources/lang/en/laravelroles.php
 return [
 
     /*
