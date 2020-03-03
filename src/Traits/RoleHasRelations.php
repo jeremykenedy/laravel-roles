@@ -24,7 +24,7 @@ trait RoleHasRelations
      */
     public function users()
     {
-        return $this->belongsToMany(config('roles.models.defaultUser'))->withTimestamps();
+        return $this->belongsToMany(config('roles.models.defaultUser'), config('roles.roleUserTable'))->withTimestamps();
     }
 
     /**
