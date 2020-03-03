@@ -11,8 +11,10 @@ use jeremykenedy\LaravelRoles\Traits\Slugable;
 
 class Role extends Model implements RoleHasRelationsContract
 {
-    use DatabaseTraits, RoleHasRelations, Slugable, SoftDeletes;
-
+    use DatabaseTraits;
+    use RoleHasRelations;
+    use Slugable;
+    use SoftDeletes;
     /**
      * The attributes that are not mass assignable.
      *

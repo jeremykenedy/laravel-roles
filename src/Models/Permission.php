@@ -11,8 +11,10 @@ use jeremykenedy\LaravelRoles\Traits\Slugable;
 
 class Permission extends Model implements PermissionHasRelationsContract
 {
-    use DatabaseTraits, PermissionHasRelations, Slugable, SoftDeletes;
-
+    use DatabaseTraits;
+    use PermissionHasRelations;
+    use Slugable;
+    use SoftDeletes;
     /**
      * The attributes that are not mass assignable.
      *
