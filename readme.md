@@ -1,4 +1,7 @@
+![Laravel Roles](https://github-project-images.s3-us-west-2.amazonaws.com/laravel-blocker/laravel-roles-logo.png)
+
 # Laravel Roles
+A Powerful package for handling roles and permissions in Laravel. Supports Laravel 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 6.0, and 7.0.
 
 [![Total Downloads](https://poser.pugx.org/jeremykenedy/laravel-roles/d/total.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
 [![Latest Stable Version](https://poser.pugx.org/jeremykenedy/laravel-roles/v/stable.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
@@ -14,7 +17,6 @@
 </a>
 
 #### Table of contents
-- [About](#about)
 - [Features](#features)
 - [Installation](#installation)
     - [Composer](#composer)
@@ -45,10 +47,6 @@
 - [File Tree](#file-tree)
 - [Opening an Issue](#opening-an-issue)
 - [License](#license)
-
-## About
-A Powerful package for handling roles and permissions in Laravel.
-Supports Laravel 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 6.0, and 7.0.
 
 ## Features
 | Laravel Roles Features  |
