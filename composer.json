@@ -30,10 +30,10 @@
         "laravel/helpers": "^1.1"
     },
     "require-dev": {
-        "illuminate/support": "^5.8",
-        "orchestra/testbench": "~3.0",
-        "phpunit/phpunit": "^7.5",
-        "laravel/laravel": "5.8.*"
+        "orchestra/testbench": "^5.2",
+        "laravel/tinker": "^2.4",
+        "illuminate/support": "^7.12",
+        "laravel/laravel": "^7.12"
     },
     "autoload": {
         "psr-4": {
