@@ -249,7 +249,8 @@ trait RolesAndPermissionsHelpersTrait
      */
     public function getPermissionsWithRoles($roleId = null)
     {
-        $query = DB::table(config('roles.permissionsRoleTable'));
+        $query = DB::connection(config('roles.connection'))->table(config('roles.permissionsRoleTable'));
+
         if ($roleId) {
             $query->where('role_id', '=', $roleId);
         }
@@ -266,7 +267,8 @@ trait RolesAndPermissionsHelpersTrait
      */
     public function getPermissionUsers($permissionId = null)
     {
-        $query = DB::table(config('roles.permissionsUserTable'));
+        $query = DB::connection(config('roles.connection'))->table(config('roles.permissionsUserTable'));
+
         if ($permissionId) {
             $query->where('permission_id', '=', $permissionId);
         }
