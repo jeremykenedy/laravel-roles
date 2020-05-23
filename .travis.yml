@@ -36,3 +36,5 @@ before_install:
 
 install:
   - travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest
+
+script: vendor/bin/phpunit
