@@ -107,6 +107,8 @@ Add the package to your application service providers in `config/app.php` file.
     php artisan vendor:publish --tag=laravelroles-config
     php artisan vendor:publish --tag=laravelroles-migrations
     php artisan vendor:publish --tag=laravelroles-seeds
+    php artisan vendor:publish --tag=laravelroles-views
+    php artisan vendor:publish --tag=laravelroles-lang
 ```
 
 ### HasRoleAndPermission Trait And Contract
