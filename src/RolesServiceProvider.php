@@ -122,6 +122,14 @@ class RolesServiceProvider extends ServiceProvider
             __DIR__.'/Database/Migrations'    => database_path('migrations'),
             __DIR__.'/Database/Seeds/publish' => database_path('seeds'),
         ], $publishTag);
+
+        $this->publishes([
+            __DIR__.'/resources/views' => base_path('resources/views/vendor/'.$publishTag),
+        ], $publishTag.'-views');
+
+        $this->publishes([
+            __DIR__.'/resources/lang' => base_path('resources/lang/vendor/'.$publishTag),
+        ], $publishTag.'-lang');
     }
 
     /**
