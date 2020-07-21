@@ -17,14 +17,15 @@ class CreatePermissionUserTable extends Migration
         $table = config('roles.permissionsUserTable');
         $permissionsTable = config('roles.permissionsTable');
         $tableCheck = Schema::connection($connection)->hasTable($table);
+        $userTable = app(config('auth.providers.users.model'))->getTable();
 
         if (!$tableCheck) {
-            Schema::connection($connection)->create($table, function (Blueprint $table) use ($permissionsTable) {
+            Schema::connection($connection)->create($table, function (Blueprint $table) use ($permissionsTable, $userTable) {
                 $table->increments('id')->unsigned();
                 $table->integer('permission_id')->unsigned()->index();
                 $table->foreign('permission_id')->references('id')->on($permissionsTable)->onDelete('cascade');
                 $table->unsignedBigInteger('user_id')->unsigned()->index();
-                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->foreign('user_id')->references('id')->on($userTable)->onDelete('cascade');
                 $table->timestamps();
                 $table->softDeletes();
             });
