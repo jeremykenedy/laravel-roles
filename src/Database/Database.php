@@ -1,8 +1,10 @@
 <?php
 
-namespace jeremykenedy\LaravelRoles\Traits;
+namespace jeremykenedy\LaravelRoles\Database;
 
-trait DatabaseTraits
+use Illuminate\Database\Eloquent\Model;
+
+abstract class Database extends Model
 {
     /**
      * The table associated with the model.
