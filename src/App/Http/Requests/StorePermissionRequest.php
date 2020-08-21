@@ -31,7 +31,7 @@ class StorePermissionRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'          => 'required|max:60|unique:'.config('roles.permissionsTable').',name,'.$this->id,
+            'name'          => 'required|max:60|unique:'.config('roles.permissionsTable').',name'.($this->id ? ','.$this->id . ',id' : ''),
             'slug'          => 'required|max:60|unique:'.config('roles.permissionsTable').',slug,'.$this->id,
             'description'   => 'nullable|string|max:255',
             'model'         => 'required|string|max:60',
