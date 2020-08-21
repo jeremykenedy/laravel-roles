@@ -32,7 +32,7 @@ class StoreRoleRequest extends FormRequest
     {
         return [
             'name'          => 'required|unique:'.config('roles.rolesTable').',name'.($this->id ? ','.$this->id . ',id' : ''),
-            'slug'          => 'required|unique:'.config('roles.rolesTable').',slug,'.$this->id,
+            'slug'          => 'required|unique:'.config('roles.rolesTable').',slug'.($this->id ? ','.$this->id . ',id' : ''),
             'description'   => 'nullable|string|max:255',
             'level'         => 'required|integer',
         ];
