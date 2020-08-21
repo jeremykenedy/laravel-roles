@@ -32,7 +32,7 @@ class StorePermissionRequest extends FormRequest
     {
         return [
             'name'          => 'required|max:60|unique:'.config('roles.permissionsTable').',name'.($this->id ? ','.$this->id . ',id' : ''),
-            'slug'          => 'required|max:60|unique:'.config('roles.permissionsTable').',slug,'.$this->id,
+            'slug'          => 'required|max:60|unique:'.config('roles.permissionsTable').',slug'.($this->id ? ','.$this->id . ',id' : ''),
             'description'   => 'nullable|string|max:255',
             'model'         => 'required|string|max:60',
         ];
