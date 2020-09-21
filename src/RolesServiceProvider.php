@@ -6,10 +6,10 @@ use Illuminate\Support\ServiceProvider;
 use jeremykenedy\LaravelRoles\App\Http\Middleware\VerifyLevel;
 use jeremykenedy\LaravelRoles\App\Http\Middleware\VerifyPermission;
 use jeremykenedy\LaravelRoles\App\Http\Middleware\VerifyRole;
-use jeremykenedy\LaravelRoles\Database\Seeds\DefaultConnectRelationshipsSeeder;
-use jeremykenedy\LaravelRoles\Database\Seeds\DefaultPermissionsTableSeeder;
-use jeremykenedy\LaravelRoles\Database\Seeds\DefaultRolesTableSeeder;
-use jeremykenedy\LaravelRoles\Database\Seeds\DefaultUsersTableSeeder;
+use jeremykenedy\LaravelRoles\Database\Seeders\DefaultConnectRelationshipsSeeder;
+use jeremykenedy\LaravelRoles\Database\Seeders\DefaultPermissionsTableSeeder;
+use jeremykenedy\LaravelRoles\Database\Seeders\DefaultRolesTableSeeder;
+use jeremykenedy\LaravelRoles\Database\Seeders\DefaultUsersTableSeeder;
 
 class RolesServiceProvider extends ServiceProvider
 {
@@ -117,13 +117,13 @@ class RolesServiceProvider extends ServiceProvider
         ], $publishTag.'-migrations');
 
         $this->publishes([
-            __DIR__.'/Database/Seeds/publish' => database_path('seeds'),
+            __DIR__.'/Database/Seeders/publish' => database_path('seeds'),
         ], $publishTag.'-seeds');
 
         $this->publishes([
             __DIR__.'/config/roles.php'       => config_path('roles.php'),
             __DIR__.'/Database/Migrations'    => database_path('migrations'),
-            __DIR__.'/Database/Seeds/publish' => database_path('seeds'),
+            __DIR__.'/Database/Seeders/publish' => database_path('seeds'),
         ], $publishTag);
 
         $this->publishes([
