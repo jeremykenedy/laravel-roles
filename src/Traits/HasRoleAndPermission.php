@@ -199,7 +199,7 @@ trait HasRoleAndPermission
             throw new InvalidArgumentException('[roles.models.permission] must be an instance of \Illuminate\Database\Eloquent\Model');
         }
 
-        if(config('roles.inheritance')) {
+        if (config('roles.inheritance')) {
             return $permissionModel
                 ::select(['permissions.*', 'permission_role.created_at as pivot_created_at', 'permission_role.updated_at as pivot_updated_at'])
                 ->join('permission_role', 'permission_role.permission_id', '=', 'permissions.id')
