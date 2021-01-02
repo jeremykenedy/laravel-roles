@@ -41,7 +41,6 @@ class UsersTableSeeder extends Seeder
                 'password' => bcrypt('password'),
             ]);
 
-            $newUser;
             $newUser->attachRole($userRole);
         }
     }
