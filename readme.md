@@ -155,9 +155,9 @@ class User extends Authenticatable
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
-use Database\Seeds\PermissionsTableSeeder;
-use Database\Seeds\RolesTableSeeder;
-use Database\Seeds\ConnectRelationshipsSeeder;
+use Database\Seeders\PermissionsTableSeeder
+use Database\Seeders\RolesTableSeeder;
+use Database\Seeders\ConnectRelationshipsSeeder;
 
 class DatabaseSeeder extends Seeder
 {
