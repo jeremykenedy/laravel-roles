@@ -199,13 +199,24 @@ trait HasRoleAndPermission
             throw new InvalidArgumentException('[roles.models.permission] must be an instance of \Illuminate\Database\Eloquent\Model');
         }
 
-        return $permissionModel
-            ::select(['permissions.*', 'permission_role.created_at as pivot_created_at', 'permission_role.updated_at as pivot_updated_at'])
-            ->join('permission_role', 'permission_role.permission_id', '=', 'permissions.id')
-            ->join($roleTable, $roleTable.'.id', '=', 'permission_role.role_id')
-            ->whereIn($roleTable.'.id', $this->getRoles()->pluck('id')->toArray())
-            ->orWhere($roleTable.'.level', '<', $this->level())
-            ->groupBy(['permissions.id', 'permissions.name', 'permissions.slug', 'permissions.description', 'permissions.model', 'permissions.created_at', 'permissions.updated_at', 'permissions.deleted_at', 'pivot_created_at', 'pivot_updated_at']);
+        if (config('roles.inheritance')) {
+            return $permissionModel
+                ::select(['permissions.*', 'permission_role.created_at as pivot_created_at', 'permission_role.updated_at as pivot_updated_at'])
+                ->join('permission_role', 'permission_role.permission_id', '=', 'permissions.id')
+                ->join($roleTable, $roleTable . '.id', '=', 'permission_role.role_id')
+                ->whereIn($roleTable . '.id', $this->getRoles()->pluck('id')->toArray())
+                ->orWhere($roleTable . '.level', '<', $this->level())
+                ->groupBy(['permissions.id', 'permissions.name', 'permissions.slug', 'permissions.description', 'permissions.model', 'permissions.created_at', 'permissions.updated_at', 'permissions.deleted_at', 'pivot_created_at', 'pivot_updated_at']);
+        } 
+        else 
+        {
+            return $permissionModel
+                ::select(['permissions.*', 'permission_role.created_at as pivot_created_at', 'permission_role.updated_at as pivot_updated_at'])
+                ->join('permission_role', 'permission_role.permission_id', '=', 'permissions.id')
+                ->join($roleTable, $roleTable . '.id', '=', 'permission_role.role_id')
+                ->whereIn($roleTable . '.id', $this->getRoles()->pluck('id')->toArray())
+                ->groupBy(['permissions.id', 'permissions.name', 'permissions.slug', 'permissions.description', 'permissions.model', 'permissions.created_at', 'permissions.updated_at', 'permissions.deleted_at', 'pivot_created_at', 'pivot_updated_at']);
+        }
     }
 
     /**

@@ -32,7 +32,7 @@ A Powerful package for handling roles and permissions in Laravel. Supports Larav
     - [Creating Permissions](#creating-permissions)
     - [Attaching, Detaching and Syncing Permissions](#attaching-detaching-and-syncing-permissions)
     - [Checking For Permissions](#checking-for-permissions)
-    - [Permissions Inheriting](#permissions-inheriting)
+    - [Permissions Inheritance](#permissions-inheritance)
     - [Entity Check](#entity-check)
     - [Blade Extensions](#blade-extensions)
     - [Middleware](#middleware)
@@ -418,15 +418,15 @@ if ($user->canDeleteUsers()) {
 
 You can check for multiple permissions the same way as roles. You can make use of additional methods like `hasOnePermission` or `hasAllPermissions`.
 
-### Permissions Inheriting
+### Permissions Inheritance
 
-Role with higher level is inheriting permission from roles with lower level.
+By default, roles with higher level inherit all permissions from roles with lower level.
 
-There is an example of this `magic`:
+For example:
 
-You have three roles: `user`, `moderator` and `admin`. User has a permission to read articles, moderator can manage comments and admin can create articles. User has a level 1, moderator level 2 and admin level 3. It means, moderator and administrator has also permission to read articles, but administrator can manage comments as well.
+You have three roles: `user`, `moderator` and `admin`. User has a permission to read articles, moderator can manage comments and admin can create articles. User has a level 1, moderator level 2 and admin level 3. With inheritance enabled, moderator and administrator also have the permission to read articles, and administrator can manage comments as well.
 
-> If you don't want permissions inheriting feature in you application, simply ignore `level` parameter when you're creating roles.
+> If you don't want the permissions inheritance feature enabled in you application, set the config value roles.inheritance (or its corresponding .env parameter, ROLES_INHERITANCE) to false. Alternatively, simply ignore the `level` parameter when you're creating roles.
 
 ### Entity Check
 
