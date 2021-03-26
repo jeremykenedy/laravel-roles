@@ -37,12 +37,12 @@ class VerifyRole
      */
     public function handle($request, Closure $next, $role)
     {
-        $roles = explode("|", $role);
-        for($i = 0; $i < count($roles); ++$i) {
+        $roles = explode('|', $role);
+        for ($i = 0; $i < count($roles); $i++) {
             if ($this->auth->check() && $this->auth->user()->hasRole($roles[$i])) {
                 return $next($request);
-            }            
-        }      
+            }
+        }
 
         throw new RoleDeniedException($role);
     }
