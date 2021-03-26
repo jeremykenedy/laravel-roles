@@ -123,7 +123,7 @@ class RolesServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/config/roles.php'         => config_path('roles.php'),
             __DIR__.'/Database/Migrations'      => database_path('migrations'),
-            __DIR__.'/Database/Seeders/publish' => database_path('seeds'),
+            __DIR__.'/Database/Seeders/publish' => database_path('seeders'),
         ], $publishTag);
 
         $this->publishes([
