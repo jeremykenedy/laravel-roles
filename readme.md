@@ -554,7 +554,6 @@ You can catch these exceptions inside `app/Exceptions/Handler.php` file and do w
     {
 
         $userLevelCheck = $exception instanceof \jeremykenedy\LaravelRoles\App\Exceptions\RoleDeniedException ||
-            $exception instanceof \jeremykenedy\LaravelRoles\App\Exceptions\RoleDeniedException ||
             $exception instanceof \jeremykenedy\LaravelRoles\App\Exceptions\PermissionDeniedException ||
             $exception instanceof \jeremykenedy\LaravelRoles\App\Exceptions\LevelDeniedException;
 
