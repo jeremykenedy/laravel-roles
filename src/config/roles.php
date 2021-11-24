@@ -19,6 +19,18 @@ return [
     'permissionsTable'      => env('ROLES_PERMISSIONS_DATABASE_TABLE', 'permissions'),
     'permissionsRoleTable'  => env('ROLES_PERMISSION_ROLE_DATABASE_TABLE', 'permission_role'),
     'permissionsUserTable'  => env('ROLES_PERMISSION_USER_DATABASE_TABLE', 'permission_user'),
+    
+    /*
+    |--------------------------------------------------------------------------
+    | GUI routes custom prefix
+    |--------------------------------------------------------------------------
+    |
+    | Here you can add custom prefix to web routes accessing the GUI CRUD
+    | interface.
+    |
+    */
+
+    'GUIRoutesPrefix'           => env('ROLES_GUI_ROUTES_PREFIX', ''),
 
     /*
     |--------------------------------------------------------------------------
