@@ -35,8 +35,9 @@ class VerifyPermission
      *
      * @return mixed
      */
-    public function handle($request, Closure $next, $permission)
+    public function handle($request, Closure $next, ...$permission)
     {
+        $permission = join(',', $permission);
         if ($this->auth->check() && $this->auth->user()->hasPermission($permission)) {
             return $next($request);
         }
