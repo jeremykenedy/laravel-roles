@@ -44,7 +44,11 @@ trait HasRoleAndPermission
      */
     public function getRoles()
     {
-        return (!$this->roles) ? $this->roles = $this->roles()->get() : $this->roles;
+        if (!$this->roles) {
+            $this->loadMissing('roles');
+            $this->roles = $this->getRelation('roles');
+        }
+        return $this->roles;
     }
 
     /**
@@ -131,6 +135,7 @@ trait HasRoleAndPermission
             return true;
         }
         $this->roles = null;
+        $this->unsetRelation('roles');
 
         return $this->roles()->attach($role);
     }
@@ -145,6 +150,7 @@ trait HasRoleAndPermission
     public function detachRole($role)
     {
         $this->roles = null;
+        $this->unsetRelation('roles');
 
         return $this->roles()->detach($role);
     }
@@ -157,6 +163,7 @@ trait HasRoleAndPermission
     public function detachAllRoles()
     {
         $this->roles = null;
+        $this->unsetRelation('roles');
 
         return $this->roles()->detach();
     }
@@ -171,6 +178,7 @@ trait HasRoleAndPermission
     public function syncRoles($roles)
     {
         $this->roles = null;
+        $this->unsetRelation('roles');
 
         return $this->roles()->sync($roles);
     }
