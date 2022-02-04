@@ -48,6 +48,7 @@ trait HasRoleAndPermission
             $this->loadMissing('roles');
             $this->roles = $this->getRelation('roles');
         }
+
         return $this->roles;
     }
 
