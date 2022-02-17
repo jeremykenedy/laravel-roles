@@ -1,11 +1,10 @@
 language: php
 sudo: required
-dist: trusty
+dist: focal
 group: edge
 
 php:
-  - 7.3
-  - 7.4
+  - 8.1
 
 sudo: false
 

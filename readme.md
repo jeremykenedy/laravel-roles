@@ -547,30 +547,29 @@ You can catch these exceptions inside `app/Exceptions/Handler.php` file and do w
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param  \Throwable  $e
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception)
-    {
-
-        $userLevelCheck = $exception instanceof \jeremykenedy\LaravelRoles\App\Exceptions\RoleDeniedException ||
-            $exception instanceof \jeremykenedy\LaravelRoles\App\Exceptions\PermissionDeniedException ||
-            $exception instanceof \jeremykenedy\LaravelRoles\App\Exceptions\LevelDeniedException;
-
-        if ($userLevelCheck) {
-
-            if ($request->expectsJson()) {
-                return Response::json(array(
-                    'error'    =>  403,
-                    'message'   =>  'Unauthorized.'
-                ), 403);
-            }
-
-            abort(403);
-        }
-
-        return parent::render($request, $exception);
-    }
+    public function render($request, Throwable $e)
+	{
+		$userLevelCheck = $e instanceof \jeremykenedy\LaravelRoles\App\Exceptions\RoleDeniedException ||
+			$e instanceof \jeremykenedy\LaravelRoles\App\Exceptions\PermissionDeniedException ||
+			$e instanceof \jeremykenedy\LaravelRoles\App\Exceptions\LevelDeniedException;
+		
+		if ($userLevelCheck) {
+			
+			if ($request->expectsJson()) {
+				return Response::json(array(
+					'error'    =>  403,
+					'message'   =>  'Unauthorized.'
+				), 403);
+			}
+			
+			abort(403);
+		}
+		
+		return parent::render($request, $e);
+	}
 ```
 
 ---
