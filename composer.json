@@ -1,6 +1,6 @@
 {
     "name": "jeremykenedy/laravel-roles",
-    "description": "A Powerful package for handling roles and permissions in Laravel. Supports Laravel 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 6.0, and 7.0.",
+    "description": "A Powerful package for handling roles and permissions in Laravel. Supports Laravel 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 6.0, 7.0, and 8.0+.",
     "keywords": [
         "laravel-roles",
         "laravel-permissions",
