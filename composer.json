@@ -1,6 +1,6 @@
 {
     "name": "jeremykenedy/laravel-roles",
-    "description": "A Powerful package for handling roles and permissions in Laravel. Supports Laravel 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 6.0, 7.0, and 8.0+.",
+    "description": "A Powerful package for handling roles and permissions in Laravel. Supports Laravel 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 6.0, 7.0, 8.0 and 9.0.",
     "keywords": [
         "laravel-roles",
         "laravel-permissions",
@@ -24,17 +24,23 @@
         }
     ],
     "require": {
-        "php": "^7.2|^8.0",
-        "laravel/framework": "5.3.*|5.4.*|5.5.*|5.6.*|5.7.*|5.8.*|6.*|7.*|8.*",
-        "eklundkristoffer/seedster": "^4.0",
-        "laravel/helpers": "^1.3"
+        "php": "^8.0.2|^8.1",
+        "laravel/framework": "5.3.*|5.4.*|5.5.*|5.6.*|5.7.*|5.8.*|6.*|7.*|8.*|9.*",
+        "eklundkristoffer/seedster": "dev-l9-support",
+        "laravel/helpers": "^1.5"
     },
     "require-dev": {
-        "orchestra/testbench": "^6.0",
-        "laravel/tinker": "^2.4",
-        "illuminate/support": "^8.5",
-        "laravel/laravel": "^8.0"
+        "orchestra/testbench": "^7.0",
+        "laravel/tinker": "^2.7",
+        "illuminate/support": "^9.0",
+        "laravel/laravel": "^9.0"
     },
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/rafaelqm/seedster.git"
+		}
+	],
     "autoload": {
         "psr-4": {
             "jeremykenedy\\LaravelRoles\\": "src/"
