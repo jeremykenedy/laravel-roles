@@ -1,6 +1,6 @@
 language: php
 sudo: required
-dist: trusty
+dist: focal
 group: edge
 
 php:
