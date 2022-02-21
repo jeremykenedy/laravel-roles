@@ -26,7 +26,7 @@
     "require": {
         "php": "^8.0.2|^8.1",
         "laravel/framework": "5.3.*|5.4.*|5.5.*|5.6.*|5.7.*|5.8.*|6.*|7.*|8.*|9.*",
-        "eklundkristoffer/seedster": "dev-l9-support",
+        "eklundkristoffer/seedster": "^5.0",
         "laravel/helpers": "^1.5"
     },
     "require-dev": {
@@ -35,12 +35,6 @@
         "illuminate/support": "^9.0",
         "laravel/laravel": "^9.0"
     },
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/rafaelqm/seedster.git"
-		}
-	],
     "autoload": {
         "psr-4": {
             "jeremykenedy\\LaravelRoles\\": "src/"
