@@ -44,7 +44,22 @@ trait HasRoleAndPermission
      */
     public function getRoles()
     {
-        return (!$this->roles) ? $this->roles = $this->roles()->get() : $this->roles;
+        if (!$this->roles) {
+            if (method_exists($this, 'loadMissing')) {
+                $this->loadMissing('roles');
+            } else {
+                if (!array_key_exists('roles', $this->relations)) {
+                    $this->load('roles');
+                }
+            }
+            if (method_exists($this, 'getRelation')) {
+                $this->roles = $this->getRelation('roles');
+            } else {
+                $this->roles = $this->relations['roles'];
+            }
+        }
+
+        return $this->roles;
     }
 
     /**
@@ -130,7 +145,7 @@ trait HasRoleAndPermission
         if ($this->getRoles()->contains($role)) {
             return true;
         }
-        $this->roles = null;
+        $this->resetRoles();
 
         return $this->roles()->attach($role);
     }
@@ -144,7 +159,7 @@ trait HasRoleAndPermission
      */
     public function detachRole($role)
     {
-        $this->roles = null;
+        $this->resetRoles();
 
         return $this->roles()->detach($role);
     }
@@ -156,7 +171,7 @@ trait HasRoleAndPermission
      */
     public function detachAllRoles()
     {
-        $this->roles = null;
+        $this->resetRoles();
 
         return $this->roles()->detach();
     }
@@ -170,7 +185,7 @@ trait HasRoleAndPermission
      */
     public function syncRoles($roles)
     {
-        $this->roles = null;
+        $this->resetRoles();
 
         return $this->roles()->sync($roles);
     }
@@ -440,6 +455,16 @@ trait HasRoleAndPermission
     private function getArrayFrom($argument)
     {
         return (!is_array($argument)) ? preg_split('/ ?[,|] ?/', $argument) : $argument;
+    }
+
+    protected function resetRoles()
+    {
+        $this->roles = null;
+        if (method_exists($this, 'unsetRelation')) {
+            $this->unsetRelation('roles');
+        } else {
+            unset($this->relations['roles']);
+        }
     }
 
     public function callMagic($method, $parameters)
