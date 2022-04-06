@@ -117,7 +117,7 @@ class RolesServiceProvider extends ServiceProvider
         ], $publishTag.'-migrations');
 
         $this->publishes([
-            __DIR__.'/Database/Seeders/publish' => database_path('seeds'),
+            __DIR__.'/Database/Seeders/publish' => database_path('seeders'),
         ], $publishTag.'-seeds');
 
         $this->publishes([
