@@ -31,9 +31,12 @@ class RolesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app['router']->aliasMiddleware('role', VerifyRole::class);
-        $this->app['router']->aliasMiddleware('permission', VerifyPermission::class);
-        $this->app['router']->aliasMiddleware('level', VerifyLevel::class);
+        if (config('roles.route_middlewares', true)) {
+            $this->app['router']->aliasMiddleware('role', VerifyRole::class);
+            $this->app['router']->aliasMiddleware('permission', VerifyPermission::class);
+            $this->app['router']->aliasMiddleware('level', VerifyLevel::class);
+        }
+
         if (config('roles.rolesGuiEnabled')) {
             $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         }
