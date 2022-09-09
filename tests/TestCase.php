@@ -5,32 +5,51 @@ namespace jeremykenedy\LaravelRoles\Test;
 use jeremykenedy\LaravelRoles\RolesFacade;
 use jeremykenedy\LaravelRoles\RolesServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Seedster\Handlers\SeedHandler;
 
 class TestCase extends OrchestraTestCase
 {
     /**
-     * Load package service provider.
+     * Get package providers.
      *
-     * @param \Illuminate\Foundation\Application $app
+     * @param  \Illuminate\Foundation\Application  $app
      *
-     * @return jeremykenedy\LaravelRoles\RolesServiceProvider
+     * @return array<int, class-string>
      */
-    protected function getPackageProviders($app): void
+    protected function getPackageProviders($app)
     {
         return [RolesServiceProvider::class];
     }
 
     /**
-     * Load package alias.
+     * Get package aliases.
      *
-     * @param \Illuminate\Foundation\Application $app
+     * @param  \Illuminate\Foundation\Application  $app
      *
-     * @return array
+     * @return array<string, class-string>
      */
-    protected function getPackageAliases($app): void
+    protected function getPackageAliases($app)
     {
         return [
             'laravelroles' => RolesFacade::class,
         ];
+    }
+
+    /**
+     * Define environment setup.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     *
+     * @return void
+     */
+    public function getEnvironmentSetUp($app)
+    {
+        $app->singleton('seed.handler', function ($app) {
+            return new SeedHandler($app, collect());
+        });
+
+        include_once __DIR__ . '/../src/Database/TestMigrations/create_users_table.php';
+
+        (new \CreateUsersTable())->up();
     }
 }
