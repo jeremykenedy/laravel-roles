@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\TestMigrations;
+namespace jeremykenedy\LaravelRoles\Database\TestMigrations;
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
