@@ -246,4 +246,12 @@ return [
     */
 
     'laravelUsersEnabled'           => env('ROLES_GUI_LARAVEL_ROLES_ENABLED', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Register 'role', 'permission', 'level' route middlewares
+    |--------------------------------------------------------------------------
+    */
+
+    'route_middlewares' => true,
 ];
