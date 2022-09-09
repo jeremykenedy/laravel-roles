@@ -33,7 +33,7 @@ class NPlusOneQueriesTest extends TestCase
     }
 
     /** @test */
-    public function can_preload_roles_on_collection(): void
+    public function canPreloadRolesOnCollection(): void
     {
         $roleIds = config('roles.models.role')::pluck('id');
 
@@ -65,7 +65,7 @@ class NPlusOneQueriesTest extends TestCase
     }
 
     /** @test */
-    public function can_attach_roles()
+    public function canAttachRoles()
     {
         /** @var User $user */
         $user = User::factory()->create();
@@ -84,7 +84,7 @@ class NPlusOneQueriesTest extends TestCase
     }
 
     /** @test */
-    public function it_caches_roles()
+    public function itCachesRoles()
     {
         /** @var User $user */
         $user = User::factory()->create();
@@ -101,7 +101,7 @@ class NPlusOneQueriesTest extends TestCase
     }
 
     /** @test */
-    public function it_caches_permissions()
+    public function itCachesPermissions()
     {
         /** @var User $user */
         $user = User::factory()->create();
@@ -131,7 +131,7 @@ class NPlusOneQueriesTest extends TestCase
     }
 
     /** @test */
-    public function can_preload_permissions_on_collection(): void
+    public function canPreloadPermissionsOnCollection(): void
     {
         $roleIds = config('roles.models.role')::pluck('id');
 
@@ -161,7 +161,7 @@ class NPlusOneQueriesTest extends TestCase
         $users->each(function (User $user) {
             $user->getPermissions();
         });
-        // TODO: optimize via rolePermissions
+        // TODO: optimize via relations: userPermissions and rolePermissions
         $this->assertQueries(20);
         // $this->assertQueries(0);
     }

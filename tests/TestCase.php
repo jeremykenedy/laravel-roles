@@ -50,6 +50,6 @@ class TestCase extends OrchestraTestCase
 
         include_once __DIR__ . '/../src/Database/TestMigrations/create_users_table.php';
 
-        (new \CreateUsersTable())->up();
+        (new \Database\TestMigrations\CreateUsersTable())->up();
     }
 }

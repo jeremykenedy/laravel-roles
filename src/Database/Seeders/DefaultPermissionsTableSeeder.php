@@ -61,7 +61,7 @@ class DefaultPermissionsTableSeeder extends Seeder
                 ]);
                 $this->command->getOutput()->writeln(
                     "<info>Seeding:</info> DefaultPermissionitemsTableSeeder - Permission:"
-                        . $Permissionitem['slug']
+                    . $Permissionitem['slug']
                 );
             }
         }

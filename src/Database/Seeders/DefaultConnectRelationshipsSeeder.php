@@ -29,7 +29,7 @@ class DefaultConnectRelationshipsSeeder extends Seeder
             $roleAdmin->attachPermission($permission);
             $this->command->getOutput()->writeln(
                 "<info>Seeding:</info> DefaultConnectRelationshipsSeeder - Role:Admin attached to Permission:"
-                    . $permission->slug
+                . $permission->slug
             );
         }
     }
