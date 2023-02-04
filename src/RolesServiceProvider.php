@@ -77,29 +77,32 @@ class RolesServiceProvider extends ServiceProvider
      */
     private function loadSeedsFrom()
     {
-        if (config('roles.defaultSeeds.PermissionsTableSeeder')) {
-            $this->app['seed.handler']->register(
-                DefaultPermissionsTableSeeder::class
-            );
-        }
+        $this->app->afterResolving('seed.handler', function ($handler) {
+            if (config('roles.defaultSeeds.PermissionsTableSeeder')) {
+                $handler->register(
+                    DefaultPermissionsTableSeeder::class
+                );
+            }
 
-        if (config('roles.defaultSeeds.RolesTableSeeder')) {
-            $this->app['seed.handler']->register(
-                DefaultRolesTableSeeder::class
-            );
-        }
+            if (config('roles.defaultSeeds.RolesTableSeeder')) {
+                $handler->register(
+                    DefaultRolesTableSeeder::class
+                );
+            }
 
-        if (config('roles.defaultSeeds.ConnectRelationshipsSeeder')) {
-            $this->app['seed.handler']->register(
-                DefaultConnectRelationshipsSeeder::class
-            );
-        }
+            if (config('roles.defaultSeeds.ConnectRelationshipsSeeder')) {
+                $handler->register(
+                    DefaultConnectRelationshipsSeeder::class
+                );
+            }
 
-        if (config('roles.defaultSeeds.UsersTableSeeder')) {
-            $this->app['seed.handler']->register(
-                DefaultUsersTableSeeder::class
-            );
-        }
+            if (config('roles.defaultSeeds.UsersTableSeeder')) {
+                $handler->register(
+                    DefaultUsersTableSeeder::class
+                );
+            }
+        });
+
     }
 
     /**

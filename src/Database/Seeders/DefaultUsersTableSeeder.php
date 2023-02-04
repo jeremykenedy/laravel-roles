@@ -21,7 +21,7 @@ class DefaultUsersTableSeeder extends Seeder
          * Add Users
          *
          */
-        echo "\e[32mSeeding:\e[0m DefaultUsersTableSeeder\r\n";
+        $this->command->getOutput()->writeln("<info>Seeding:</info> DefaultUsersTableSeeder");
 
         if (config('roles.models.defaultUser')::where('email', '=', 'admin@admin.com')->first() === null) {
             $newUser = config('roles.models.defaultUser')::create([
@@ -34,7 +34,9 @@ class DefaultUsersTableSeeder extends Seeder
             foreach ($permissions as $permission) {
                 $newUser->attachPermission($permission);
             }
-            echo "\e[32mSeeding:\e[0m DefaultUsersTableSeeder - User:admin@admin.com\r\n";
+            $this->command->getOutput()->writeln(
+                "<info>Seeding:</info> DefaultUsersTableSeeder - User:admin@admin.com"
+            );
         }
 
         if (config('roles.models.defaultUser')::where('email', '=', 'user@user.com')->first() === null) {
@@ -45,7 +47,7 @@ class DefaultUsersTableSeeder extends Seeder
             ]);
 
             $newUser->attachRole($userRole);
-            echo "\e[32mSeeding:\e[0m DefaultUsersTableSeeder - User:user@user.com\r\n";
+            $this->command->getOutput()->writeln("<info>Seeding:</info> DefaultUsersTableSeeder - User:user@user.com");
         }
     }
 }

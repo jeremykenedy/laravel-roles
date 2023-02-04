@@ -48,9 +48,10 @@ class DefaultPermissionsTableSeeder extends Seeder
          * Add Permission Items
          *
          */
-        echo "\e[32mSeeding:\e[0m DefaultPermissionitemsTableSeeder\r\n";
+        $this->command->getOutput()->writeln("<info>Seeding:</info> DefaultPermissionitemsTableSeeder");
         foreach ($Permissionitems as $Permissionitem) {
-            $newPermissionitem = config('roles.models.permission')::where('slug', '=', $Permissionitem['slug'])->first();
+            $newPermissionitem = config('roles.models.permission')::where('slug', '=', $Permissionitem['slug'])
+                ->first();
             if ($newPermissionitem === null) {
                 $newPermissionitem = config('roles.models.permission')::create([
                     'name'          => $Permissionitem['name'],
@@ -58,7 +59,10 @@ class DefaultPermissionsTableSeeder extends Seeder
                     'description'   => $Permissionitem['description'],
                     'model'         => $Permissionitem['model'],
                 ]);
-                echo "\e[32mSeeding:\e[0m DefaultPermissionitemsTableSeeder - Permission:".$Permissionitem['slug']."\r\n";
+                $this->command->getOutput()->writeln(
+                    "<info>Seeding:</info> DefaultPermissionitemsTableSeeder - Permission:"
+                    . $Permissionitem['slug']
+                );
             }
         }
     }
