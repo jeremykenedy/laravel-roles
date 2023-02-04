@@ -42,7 +42,7 @@ class DefaultRolesTableSeeder extends Seeder
          * Add Role Items
          *
          */
-        $this->command->getOutput()->writeln("<info>Seeding:</info> DefaultRoleItemsTableSeeder");
+        $this->command->getOutput()->writeln('<info>Seeding:</info> DefaultRoleItemsTableSeeder');
         foreach ($RoleItems as $RoleItem) {
             $newRoleItem = config('roles.models.role')::where('slug', '=', $RoleItem['slug'])->first();
             if ($newRoleItem === null) {
@@ -53,7 +53,7 @@ class DefaultRolesTableSeeder extends Seeder
                     'level'         => $RoleItem['level'],
                 ]);
                 $this->command->getOutput()->writeln(
-                    "<info>Seeding:</info> DefaultRoleItemsTableSeeder - Role:" . $RoleItem['slug']
+                    '<info>Seeding:</info> DefaultRoleItemsTableSeeder - Role:'.$RoleItem['slug']
                 );
             }
         }

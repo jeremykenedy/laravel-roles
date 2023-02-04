@@ -12,7 +12,7 @@ class TestCase extends OrchestraTestCase
     /**
      * Get package providers.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param \Illuminate\Foundation\Application $app
      *
      * @return array<int, class-string>
      */
@@ -24,7 +24,7 @@ class TestCase extends OrchestraTestCase
     /**
      * Get package aliases.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param \Illuminate\Foundation\Application $app
      *
      * @return array<string, class-string>
      */
@@ -38,7 +38,7 @@ class TestCase extends OrchestraTestCase
     /**
      * Define environment setup.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param \Illuminate\Foundation\Application $app
      *
      * @return void
      */
@@ -48,7 +48,7 @@ class TestCase extends OrchestraTestCase
             return new SeedHandler($app, collect());
         });
 
-        include_once __DIR__ . '/../src/Database/TestMigrations/create_users_table.php';
+        include_once __DIR__.'/../src/Database/TestMigrations/create_users_table.php';
 
         (new \jeremykenedy\LaravelRoles\Database\TestMigrations\CreateUsersTable())->up();
     }

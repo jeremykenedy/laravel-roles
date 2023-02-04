@@ -54,14 +54,14 @@ trait RefreshDatabase
     {
         return [
             /**
-             * Non standard path
+             * Non standard path.
              *
              * $this->laravel->databasePath().DIRECTORY_SEPARATOR.'migrations'
              * with `vendor/orchestra/testbench-core/laravel` as basePath
              *
              * @see \Illuminate\Database\Console\Migrations\BaseCommand
              */
-            '--path' => realpath(__DIR__ . '/../src/Database/Migrations'),
+            '--path'     => realpath(__DIR__.'/../src/Database/Migrations'),
             '--realpath' => true,
         ];
     }
