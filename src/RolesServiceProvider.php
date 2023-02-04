@@ -102,7 +102,6 @@ class RolesServiceProvider extends ServiceProvider
                 );
             }
         });
-
     }
 
     /**

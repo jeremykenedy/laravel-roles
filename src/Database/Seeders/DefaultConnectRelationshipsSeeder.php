@@ -24,12 +24,12 @@ class DefaultConnectRelationshipsSeeder extends Seeder
         $roleAdmin = config('roles.models.role')::where('slug', '=', 'admin')->first()
             ?? config('roles.models.role')::where('name', '=', 'Admin')->first();
 
-        $this->command->getOutput()->writeln("<info>Seeding:</info> DefaultConnectRelationshipsSeeder");
+        $this->command->getOutput()->writeln('<info>Seeding:</info> DefaultConnectRelationshipsSeeder');
         foreach ($permissions as $permission) {
             $roleAdmin->attachPermission($permission);
             $this->command->getOutput()->writeln(
-                "<info>Seeding:</info> DefaultConnectRelationshipsSeeder - Role:Admin attached to Permission:"
-                . $permission->slug
+                '<info>Seeding:</info> DefaultConnectRelationshipsSeeder - Role:Admin attached to Permission:'
+                .$permission->slug
             );
         }
     }
