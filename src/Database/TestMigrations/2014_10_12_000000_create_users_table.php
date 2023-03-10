@@ -31,8 +31,8 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up(): void
+    public function down(): void
     {
         Schema::dropIfExists('users');
     }
-}
+};
