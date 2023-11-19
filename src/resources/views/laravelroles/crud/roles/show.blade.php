@@ -81,8 +81,8 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 {!! trans('laravelroles::laravelroles.cards.role-info-card.role-desc') !!}
                                 <span class="badge badge-pill">
-                                    @if($item->desc)
-                                        {{ $item->desc }}
+                                    @if($item->description)
+                                        {{ $item->description }}
                                     @else
                                         <span class="text-muted">
                                             {!! trans('laravelroles::laravelroles.cards.role-info-card.none') !!}

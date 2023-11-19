@@ -110,16 +110,16 @@
                                 {!! trans('laravelroles::laravelroles.cards.permission-info-card.permission-desc') !!}
                                 <span class="badge badge-pill">
                                     @isset($typeDeleted)
-                                        @if($item->desc)
-                                            {{ $item->desc }}
+                                        @if($item->description)
+                                            {{ $item->description }}
                                         @else
                                             <span class="text-muted">
                                                 {!! trans('laravelroles::laravelroles.cards.permission-info-card.none') !!}
                                             </span>
                                         @endif
                                     @else
-                                        @if($item['permission']->desc)
-                                            {{ $item['permission']->desc }}
+                                        @if($item['permission']->description)
+                                            {{ $item['permission']->description }}
                                         @else
                                             <span class="text-muted">
                                                 {!! trans('laravelroles::laravelroles.cards.permission-info-card.none') !!}
