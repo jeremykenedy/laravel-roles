@@ -46,8 +46,7 @@ class NPlusOneQueriesTest extends TestCase
             ->each(function (User $user) use ($roleIds) {
                 $user->roles()->attach($roleIds);
             });
-        $this->assertEquals($this->usersCount,
-            User::count() - $this->usersCountCorrection);
+        $this->assertEquals($this->usersCount, User::count() - $this->usersCountCorrection);
 
         $this->queries = 0;
 
