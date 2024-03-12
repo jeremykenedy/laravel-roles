@@ -15,8 +15,13 @@ class NPlusOneQueriesTest extends TestCase
     protected $seed = true;
 
     protected $usersCount = 10;
-    protected $rolesCount = 3;
-    protected $permissionsCount = 4;
+    /**
+     * @var int $usersCountCorrection in case UsersTableSeeder seeds your users,
+     * please indicate their number here
+     */
+    protected $usersCountCorrection = 0;
+    protected $rolesCount = 3;//correct according to your data
+    protected $permissionsCount = 4;//correct according to your data
 
     protected $queries = 0;
 
@@ -41,7 +46,8 @@ class NPlusOneQueriesTest extends TestCase
             ->each(function (User $user) use ($roleIds) {
                 $user->roles()->attach($roleIds);
             });
-        $this->assertEquals($this->usersCount, User::count());
+        $this->assertEquals($this->usersCount,
+            User::count() - $this->usersCountCorrection);
 
         $this->queries = 0;
 
@@ -52,6 +58,7 @@ class NPlusOneQueriesTest extends TestCase
         $users->each(function (User $user) {
             $user->getRoles();
         });
+        $this->queries = $this->queries - $this->usersCountCorrection;
         $this->assertQueries($this->usersCount);
 
         // with eager load
@@ -139,7 +146,7 @@ class NPlusOneQueriesTest extends TestCase
             ->each(function (User $user) use ($roleIds) {
                 $user->roles()->attach($roleIds);
             });
-        $this->assertEquals($this->usersCount, User::count());
+        $this->assertEquals($this->usersCount, User::count() - $this->usersCountCorrection);
 
         $this->queries = 0;
 
@@ -151,7 +158,7 @@ class NPlusOneQueriesTest extends TestCase
             $user->getPermissions();
         });
         // rolePermissions(+getRoles) + userPermissions
-        $this->assertQueries($this->usersCount * 3);
+        $this->assertQueries(($this->usersCount + $this->usersCountCorrection) * 3);
 
         // with eager load
         // TODO: 'rolePermissions' relation
@@ -162,7 +169,7 @@ class NPlusOneQueriesTest extends TestCase
             $user->getPermissions();
         });
         // TODO: optimize via relations: userPermissions and rolePermissions
-        $this->assertQueries(20);
+        $this->assertQueries(20 + $this->usersCountCorrection * 2);
         // $this->assertQueries(0);
     }
 
