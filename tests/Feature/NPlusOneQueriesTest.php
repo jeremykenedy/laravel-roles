@@ -16,12 +16,12 @@ class NPlusOneQueriesTest extends TestCase
 
     protected $usersCount = 10;
     /**
-     * @var int $usersCountCorrection in case UsersTableSeeder seeds your users,
-     * please indicate their number here
+     * @var int in case UsersTableSeeder seeds your users,
+     *          please indicate their number here
      */
     protected $usersCountCorrection = 0;
-    protected $rolesCount = 3;//correct according to your data
-    protected $permissionsCount = 4;//correct according to your data
+    protected $rolesCount = 3; //correct according to your data
+    protected $permissionsCount = 4; //correct according to your data
 
     protected $queries = 0;
 
