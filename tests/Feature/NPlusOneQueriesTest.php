@@ -32,7 +32,7 @@ class NPlusOneQueriesTest extends TestCase
         $this->assertEquals($this->rolesCount, config('roles.models.role')::count());
         $this->assertEquals($this->permissionsCount, config('roles.models.permission')::count());
 
-        DB::listen(function (QueryExecuted $query) {
+        DB::listen(function(QueryExecuted $query) {
             $this->queries++;
         });
     }
@@ -43,7 +43,7 @@ class NPlusOneQueriesTest extends TestCase
         $roleIds = config('roles.models.role')::pluck('id');
 
         User::factory($this->usersCount)->create()
-            ->each(function (User $user) use ($roleIds) {
+            ->each(function(User $user) use ($roleIds) {
                 $user->roles()->attach($roleIds);
             });
         $this->assertEquals($this->usersCount, User::count() - $this->usersCountCorrection);
@@ -54,7 +54,7 @@ class NPlusOneQueriesTest extends TestCase
         $users = User::get();
         $this->assertQueries(1);
 
-        $users->each(function (User $user) {
+        $users->each(function(User $user) {
             $user->getRoles();
         });
         $this->queries = $this->queries - $this->usersCountCorrection;
@@ -64,7 +64,7 @@ class NPlusOneQueriesTest extends TestCase
         $users = User::with('roles')->get();
         $this->assertQueries(2);
 
-        $users->each(function (User $user) {
+        $users->each(function(User $user) {
             $user->getRoles();
         });
         $this->assertQueries(0);
@@ -142,7 +142,7 @@ class NPlusOneQueriesTest extends TestCase
         $roleIds = config('roles.models.role')::pluck('id');
 
         User::factory($this->usersCount)->create()
-            ->each(function (User $user) use ($roleIds) {
+            ->each(function(User $user) use ($roleIds) {
                 $user->roles()->attach($roleIds);
             });
         $this->assertEquals($this->usersCount, User::count() - $this->usersCountCorrection);
@@ -153,7 +153,7 @@ class NPlusOneQueriesTest extends TestCase
         $users = User::get();
         $this->assertQueries(1);
 
-        $users->each(function (User $user) {
+        $users->each(function(User $user) {
             $user->getPermissions();
         });
         // rolePermissions(+getRoles) + userPermissions
@@ -164,7 +164,7 @@ class NPlusOneQueriesTest extends TestCase
         $users = User::with('roles', 'userPermissions')->get();
         $this->assertQueries(3);
 
-        $users->each(function (User $user) {
+        $users->each(function(User $user) {
             $user->getPermissions();
         });
         // TODO: optimize via relations: userPermissions and rolePermissions
