@@ -12,7 +12,6 @@ Route::group([
     'namespace'     => 'jeremykenedy\LaravelRoles\App\Http\Controllers',
     'prefix'        => config('roles.GUIRoutesPrefix'),
 ], function () {
-
     // Dashboards and CRUD Routes
     Route::resource('roles', 'LaravelRolesController');
     Route::resource('permissions', 'LaravelPermissionsController');
