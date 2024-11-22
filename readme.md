@@ -5,7 +5,6 @@ A Powerful package for handling roles and permissions in Laravel. Supports Larav
 
 [![Total Downloads](https://poser.pugx.org/jeremykenedy/laravel-roles/d/total.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
 [![Latest Stable Version](https://poser.pugx.org/jeremykenedy/laravel-roles/v/stable.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
-[![Travis-CI Build Status](https://travis-ci.org/jeremykenedy/laravel-roles.svg?branch=master)](https://travis-ci.org/jeremykenedy/laravel-roles)
 [![Scrutinizer-CI Build Status](https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/badges/build.png?b=master)](https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/build-status/master)
 [![StyleCI](https://github.styleci.io/repos/82768379/shield?branch=master)](https://github.styleci.io/repos/82768379)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/?branch=master)
