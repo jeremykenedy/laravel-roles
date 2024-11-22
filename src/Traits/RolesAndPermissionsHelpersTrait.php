@@ -717,7 +717,7 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Removes an users and permissions from role.
      *
-     * @param Role$role   The role
+     * @param Role $role The role
      *
      * @return void
      */
@@ -761,7 +761,6 @@ trait RolesAndPermissionsHelpersTrait
 
         foreach ($sortedPermissionsRolesUsers as $sortedPermissionsRolesUsersKey => $sortedPermissionsRolesUsersItem) {
             if ($sortedPermissionsRolesUsersItem['permission']->id === $permission->id) {
-
                 // Remove Permission from roles
                 foreach ($sortedPermissionsRolesUsersItem['roles'] as $permissionRoleKey => $permissionRoleItem) {
                     $permissionRoleItem->detachPermission($permission);
