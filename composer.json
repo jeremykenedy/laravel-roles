@@ -26,7 +26,7 @@
     "require": {
         "php": "^7.2|^8.0|^8.1|^8.2|^8.3",
         "laravel/framework": "5.3.*|5.4.*|5.5.*|5.6.*|5.7.*|5.8.*|6.*|7.*|8.*|^9.0|^10.0|^11.0|^12.0",
-        "eklundkristoffer/seedster": "^8.0",
+        "eklundkristoffer/seedster": "^8.0|^9.0",
         "laravel/helpers": "^1.7"
     },
     "require-dev": {
