@@ -571,6 +571,28 @@ You can catch these exceptions inside `app/Exceptions/Handler.php` file and do w
 	}
 ```
 
+Or in Laravel version 11+ edit your `bootstrap/app.php` file:
+
+```php
+use Illuminate\Http\Response;
+use Illuminate\Http\Request;
+return Application::configure(basePath: dirname(__DIR__))
+    // the rest of the code
+    ->withExceptions(function (Exceptions $exceptions) {
+
+        // laravel-roles exceptions
+        $exceptions->render(function (\jeremykenedy\LaravelRoles\App\Exceptions\AccessDeniedException $e, Request $request) {
+            if ($request->expectsJson()) {
+                return Response::json(array(
+                    'error'    =>  403,
+                    'message'   =>  "Unauthorized.",
+                ), 403);
+            }
+            abort(403, "Unauthorized.");
+        });
+    })->create();
+```
+
 ---
 
 ## Configuration
