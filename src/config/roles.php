@@ -1,5 +1,8 @@
 <?php
 
+use jeremykenedy\LaravelRoles\Models\Permission;
+use jeremykenedy\LaravelRoles\Models\Role;
+
 return [
 
     /*
@@ -57,8 +60,8 @@ return [
     */
 
     'models' => [
-        'role'          => env('ROLES_DEFAULT_ROLE_MODEL', jeremykenedy\LaravelRoles\Models\Role::class),
-        'permission'    => env('ROLES_DEFAULT_PERMISSION_MODEL', jeremykenedy\LaravelRoles\Models\Permission::class),
+        'role'          => env('ROLES_DEFAULT_ROLE_MODEL', Role::class),
+        'permission'    => env('ROLES_DEFAULT_PERMISSION_MODEL', Permission::class),
         'defaultUser'   => env('ROLES_DEFAULT_USER_MODEL', config('auth.providers.users.model')),
     ],
 
@@ -129,6 +132,35 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | GUI CSS Framework
+    |--------------------------------------------------------------------------
+    |
+    | Which set of views the GUI renders. Supported values are `bootstrap4`,
+    | `bootstrap5` and `tailwind`. The default stays on `bootstrap4` so that
+    | upgrading the package does not change the look of an existing install.
+    | Use `php artisan roles:switch` to change it.
+    |
+    */
+
+    'cssFramework'                  => env('ROLES_CSS_FRAMEWORK', 'bootstrap4'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Laravel UI Kit Integration
+    |--------------------------------------------------------------------------
+    |
+    | Optional. When enabled and jeremykenedy/laravel-ui-kit is installed, the
+    | GUI follows the CSS framework already configured in `ui-kit.css_framework`
+    | instead of the value above, so both packages render the same way.
+    |
+    */
+
+    'uiKit' => [
+        'enabled' => env('ROLES_UI_KIT_ENABLED', false),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Laravel Roles GUI Settings
     |--------------------------------------------------------------------------
     |
@@ -151,11 +183,11 @@ return [
     'rolesGuiMiddleware'            => env('ROLES_GUI_MIDDLEWARE', 'role:admin'),
 
     // User Permissions or Role needed to create a new role
-    'rolesGuiCreateNewRolesMiddlewareType'   => env('ROLES_GUI_CREATE_ROLE_MIDDLEWARE_TYPE', 'role'), //permissions or roles
+    'rolesGuiCreateNewRolesMiddlewareType'   => env('ROLES_GUI_CREATE_ROLE_MIDDLEWARE_TYPE', 'role'), // permissions or roles
     'rolesGuiCreateNewRolesMiddleware'       => env('ROLES_GUI_CREATE_ROLE_MIDDLEWARE', 'admin'), // admin, XXX. ... or perms.XXX
 
     // User Permissions or Role needed to create a new permission
-    'rolesGuiCreateNewPermissionMiddlewareType'  => env('ROLES_GUI_CREATE_PERMISSION_MIDDLEWARE_TYPE', 'role'), //permissions or roles
+    'rolesGuiCreateNewPermissionMiddlewareType'  => env('ROLES_GUI_CREATE_PERMISSION_MIDDLEWARE_TYPE', 'role'), // permissions or roles
     'rolesGuiCreateNewPermissionsMiddleware'     => env('ROLES_GUI_CREATE_PERMISSION_MIDDLEWARE', 'admin'), // admin, XXX. ... or perms.XXX
 
     // The parent blade file
@@ -180,9 +212,13 @@ return [
     // Bootstrap Tooltips
     'tooltipsEnabled'               => env('ROLES_GUI_TOOLTIPS_ENABLED', true),
 
-    // jQuery
+    // jQuery (Bootstrap views only)
     'enablejQueryCDN'               => env('ROLES_GUI_JQUERY_CDN_ENABLED', true),
-    'JQueryCDN'                     => env('ROLES_GUI_JQUERY_CDN_URL', 'https://code.jquery.com/jquery-3.3.1.min.js'),
+    'JQueryCDN'                     => env('ROLES_GUI_JQUERY_CDN_URL', 'https://code.jquery.com/jquery-3.7.1.min.js'),
+
+    // Alpine.js (Tailwind views only)
+    'enableAlpineJsCDN'             => env('ROLES_GUI_ALPINEJS_CDN_ENABLED', true),
+    'alpineJsCDN'                   => env('ROLES_GUI_ALPINEJS_CDN_URL', 'https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js'),
 
     // Selectize JS
     'enableSelectizeJsCDN'          => env('ROLES_GUI_SELECTIZEJS_CDN_ENABLED', true),
@@ -191,9 +227,13 @@ return [
     'enableSelectizeJsCssCDN'       => env('ROLES_GUI_SELECTIZEJS_CSS_CDN_ENABLED', true),
     'SelectizeJsCssCDN'             => env('ROLES_GUI_SELECTIZEJS_CSS_CDN_URL', 'https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.min.css'),
 
-    // Font Awesome
+    // Font Awesome. The Bootstrap 4 views use Font Awesome 4 icon names and the
+    // Bootstrap 5 views use Font Awesome 6 names, so the default follows the
+    // selected framework. The Tailwind views use inline SVG and load neither.
     'enableFontAwesomeCDN'          => env('ROLES_GUI_FONT_AWESOME_CDN_ENABLED', true),
-    'fontAwesomeCDN'                => env('ROLES_GUI_FONT_AWESOME_CDN_URL', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'),
+    'fontAwesomeCDN'                => env('ROLES_GUI_FONT_AWESOME_CDN_URL', env('ROLES_CSS_FRAMEWORK', 'bootstrap4') === 'bootstrap4'
+        ? 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
+        : 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css'),
 
     // Flash Messaging
     'builtInFlashMessagesEnabled'   => env('ROLES_GUI_FLASH_MESSAGES_ENABLED', true),
@@ -220,11 +260,11 @@ return [
     'rolesAPIMiddleware'            => env('ROLES_API_MIDDLEWARE', 'role:admin'),
 
     // User Permissions or Role needed to create a new role
-    'rolesAPICreateNewRolesMiddlewareType'   => env('ROLES_API_CREATE_ROLE_MIDDLEWARE_TYPE', 'role'), //permissions or roles
+    'rolesAPICreateNewRolesMiddlewareType'   => env('ROLES_API_CREATE_ROLE_MIDDLEWARE_TYPE', 'role'), // permissions or roles
     'rolesAPICreateNewRolesMiddleware'       => env('ROLES_API_CREATE_ROLE_MIDDLEWARE', 'admin'), // admin, XXX. ... or perms.XXX
 
     // User Permissions or Role needed to create a new permission
-    'rolesAPICreateNewPermissionMiddlewareType'  => env('ROLES_API_CREATE_PERMISSION_MIDDLEWARE_TYPE', 'role'), //permissions or roles
+    'rolesAPICreateNewPermissionMiddlewareType'  => env('ROLES_API_CREATE_PERMISSION_MIDDLEWARE_TYPE', 'role'), // permissions or roles
     'rolesAPICreateNewPermissionsMiddleware'     => env('ROLES_API_CREATE_PERMISSION_MIDDLEWARE', 'admin'), // admin, XXX. ... or perms.XXX
 
     /*

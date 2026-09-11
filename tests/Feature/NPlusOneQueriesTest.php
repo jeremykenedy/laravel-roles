@@ -1,180 +1,128 @@
 <?php
 
-namespace jeremykenedy\LaravelRoles\Test\Feature;
+declare(strict_types=1);
 
-use Illuminate\Database\Events\QueryExecuted;
-use Illuminate\Support\Facades\DB;
+use jeremykenedy\LaravelRoles\Test\Concerns\CountsQueries;
 use jeremykenedy\LaravelRoles\Test\RefreshDatabase;
-use jeremykenedy\LaravelRoles\Test\TestCase;
 use jeremykenedy\LaravelRoles\Test\User;
 
-class NPlusOneQueriesTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class, CountsQueries::class);
 
-    protected $seed = true;
+const USERS_COUNT = 10;
 
-    protected $usersCount = 10;
-    /**
-     * @var int in case UsersTableSeeder seeds your users,
-     *          please indicate their number here
-     */
-    protected $usersCountCorrection = 0;
-    protected $rolesCount = 3; //correct according to your data
-    protected $permissionsCount = 4; //correct according to your data
+beforeEach(function (): void {
+    expect(config('roles.models.role')::count())->toBe(3);
+    expect(config('roles.models.permission')::count())->toBe(4);
 
-    protected $queries = 0;
+    $this->countQueries();
+});
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+it('can preload roles on a collection', function (): void {
+    $roleIds = config('roles.models.role')::pluck('id');
 
-        $this->assertEquals($this->rolesCount, config('roles.models.role')::count());
-        $this->assertEquals($this->permissionsCount, config('roles.models.permission')::count());
+    User::factory(USERS_COUNT)->create()
+        ->each(fn (User $user) => $user->roles()->attach($roleIds));
 
-        DB::listen(function (QueryExecuted $query) {
-            $this->queries++;
-        });
-    }
+    expect(User::count())->toBe(USERS_COUNT);
 
-    /** @test */
-    public function canPreloadRolesOnCollection(): void
-    {
-        $roleIds = config('roles.models.role')::pluck('id');
+    $this->resetQueryCount();
 
-        User::factory($this->usersCount)->create()
-            ->each(function (User $user) use ($roleIds) {
-                $user->roles()->attach($roleIds);
-            });
-        $this->assertEquals($this->usersCount, User::count() - $this->usersCountCorrection);
+    // Without eager loading, every user resolves its own roles relation.
+    $users = User::get();
+    $this->assertQueries(1);
 
-        $this->queries = 0;
+    $users->each(fn (User $user) => $user->getRoles());
+    $this->assertQueries(USERS_COUNT);
 
-        // without eager load
-        $users = User::get();
-        $this->assertQueries(1);
+    // With eager loading, the roles come back in a single extra query.
+    $users = User::with('roles')->get();
+    $this->assertQueries(2);
 
-        $users->each(function (User $user) {
-            $user->getRoles();
-        });
-        $this->queries = $this->queries - $this->usersCountCorrection;
-        $this->assertQueries($this->usersCount);
+    $users->each(fn (User $user) => $user->getRoles());
+    $this->assertQueries(0);
+});
 
-        // with eager load
-        $users = User::with('roles')->get();
-        $this->assertQueries(2);
+it('attaches roles without redundant queries', function (): void {
+    $user = User::factory()->create();
+    $roleId = config('roles.models.role')::value('id');
 
-        $users->each(function (User $user) {
-            $user->getRoles();
-        });
-        $this->assertQueries(0);
-    }
+    $this->resetQueryCount();
 
-    /** @test */
-    public function canAttachRoles()
-    {
-        /** @var User $user */
-        $user = User::factory()->create();
-        $roleId = config('roles.models.role')::value('id');
+    // getRoles + attach
+    $user->attachRole($roleId);
+    $this->assertQueries(2);
 
-        $this->queries = 0;
-        $user->attachRole($roleId);
-        // getRoles + attach
-        $this->assertQueries(2);
+    // detach + getRoles + attach
+    $user->detachAllRoles();
+    $user->attachRole($roleId);
+    $this->assertQueries(3);
+});
 
-        $this->queries = 0;
-        $user->detachAllRoles();
-        $user->attachRole($roleId);
-        // detach + getRoles + attach
-        $this->assertQueries(3);
-    }
+it('caches roles on the model instance', function (): void {
+    $user = User::factory()->create();
 
-    /** @test */
-    public function itCachesRoles()
-    {
-        /** @var User $user */
-        $user = User::factory()->create();
+    $this->resetQueryCount();
 
-        $this->queries = 0;
-        $user->getRoles();
-        $this->assertQueries(1);
+    $user->getRoles();
+    $this->assertQueries(1);
 
-        $user->getRoles();
-        $this->assertQueries(0);
+    $user->getRoles();
+    $this->assertQueries(0);
 
-        $user->roles;
-        $this->assertQueries(0);
-    }
+    $user->roles;
+    $this->assertQueries(0);
+});
 
-    /** @test */
-    public function itCachesPermissions()
-    {
-        /** @var User $user */
-        $user = User::factory()->create();
-        $roleIds = config('roles.models.role')::pluck('id');
-        $user->roles()->attach($roleIds);
+it('caches permissions on the model instance', function (): void {
+    $user = User::factory()->create();
+    $user->roles()->attach(config('roles.models.role')::pluck('id'));
 
-        $this->queries = 0;
-        $user->getPermissions();
-        // rolePermissions(+getRoles) + userPermissions
-        $this->assertQueries(3);
+    $this->resetQueryCount();
 
-        $user->getPermissions();
-        $this->assertQueries(0);
+    // rolePermissions (which loads roles) + userPermissions
+    $user->getPermissions();
+    $this->assertQueries(3);
 
-        $user->permissions;
-        $this->assertQueries(0);
+    $user->getPermissions();
+    $this->assertQueries(0);
 
-        /** @var User $user */
-        $user = User::find($user->id);
+    $user->permissions;
+    $this->assertQueries(0);
 
-        $this->queries = 0;
-        $user->getRoles();
-        $this->assertQueries(1);
-        $user->getPermissions();
-        // rolePermissions + userPermissions
-        $this->assertQueries(2);
-    }
+    $user = User::find($user->id);
 
-    /** @test */
-    public function canPreloadPermissionsOnCollection(): void
-    {
-        $roleIds = config('roles.models.role')::pluck('id');
+    $this->resetQueryCount();
 
-        User::factory($this->usersCount)->create()
-            ->each(function (User $user) use ($roleIds) {
-                $user->roles()->attach($roleIds);
-            });
-        $this->assertEquals($this->usersCount, User::count() - $this->usersCountCorrection);
+    $user->getRoles();
+    $this->assertQueries(1);
 
-        $this->queries = 0;
+    // rolePermissions + userPermissions
+    $user->getPermissions();
+    $this->assertQueries(2);
+});
 
-        // without eager load
-        $users = User::get();
-        $this->assertQueries(1);
+it('can preload permissions on a collection', function (): void {
+    $roleIds = config('roles.models.role')::pluck('id');
 
-        $users->each(function (User $user) {
-            $user->getPermissions();
-        });
-        // rolePermissions(+getRoles) + userPermissions
-        $this->assertQueries(($this->usersCount + $this->usersCountCorrection) * 3);
+    User::factory(USERS_COUNT)->create()
+        ->each(fn (User $user) => $user->roles()->attach($roleIds));
 
-        // with eager load
-        // TODO: 'rolePermissions' relation
-        $users = User::with('roles', 'userPermissions')->get();
-        $this->assertQueries(3);
+    expect(User::count())->toBe(USERS_COUNT);
 
-        $users->each(function (User $user) {
-            $user->getPermissions();
-        });
-        // TODO: optimize via relations: userPermissions and rolePermissions
-        $this->assertQueries(20 + $this->usersCountCorrection * 2);
-        // $this->assertQueries(0);
-    }
+    $this->resetQueryCount();
 
-    protected function assertQueries(int $count): void
-    {
-        $this->assertEquals($count, $this->queries);
-        $this->queries = 0;
-    }
-}
+    $users = User::get();
+    $this->assertQueries(1);
+
+    // rolePermissions (which loads roles) + userPermissions, per user
+    $users->each(fn (User $user) => $user->getPermissions());
+    $this->assertQueries(USERS_COUNT * 3);
+
+    $users = User::with('roles', 'userPermissions')->get();
+    $this->assertQueries(3);
+
+    // Eager loading roles and userPermissions removes two of the three
+    // queries per user; rolePermissions is still resolved per model.
+    $users->each(fn (User $user) => $user->getPermissions());
+    $this->assertQueries(USERS_COUNT * 2);
+});

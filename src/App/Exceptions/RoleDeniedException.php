@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace jeremykenedy\LaravelRoles\App\Exceptions;
 
 class RoleDeniedException extends AccessDeniedException
@@ -11,6 +13,6 @@ class RoleDeniedException extends AccessDeniedException
      */
     public function __construct($role)
     {
-        $this->message = sprintf("You don't have a required ['%s'] role.", $role);
+        parent::__construct(sprintf("You don't have a required ['%s'] role.", $role));
     }
 }

@@ -1,0 +1,14 @@
+{
+    "preset": "laravel",
+    "rules": {
+        "braces_position": false,
+        "binary_operator_spaces": false,
+        "single_line_empty_body": false,
+        "not_operator_with_successor_space": false,
+        "new_with_parentheses": false,
+        "phpdoc_align": false,
+        "concat_space": false,
+        "class_attributes_separation": false,
+        "ordered_imports": false
+    }
+}

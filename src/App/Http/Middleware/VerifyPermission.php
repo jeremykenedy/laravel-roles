@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace jeremykenedy\LaravelRoles\App\Http\Middleware;
 
 use Closure;
@@ -16,8 +18,6 @@ class VerifyPermission
 
     /**
      * Create a new filter instance.
-     *
-     * @param Guard $auth
      */
     public function __construct(Guard $auth)
     {
@@ -28,16 +28,14 @@ class VerifyPermission
      * Handle an incoming request.
      *
      * @param Request    $request
-     * @param \Closure   $next
      * @param int|string $permission
-     *
-     * @throws \jeremykenedy\LaravelRoles\App\Exceptions\PermissionDeniedException
-     *
      * @return mixed
+     *
+     * @throws PermissionDeniedException
      */
     public function handle($request, Closure $next, ...$permission)
     {
-        $permission = join(',', $permission);
+        $permission = implode(',', $permission);
         if ($this->auth->check() && $this->auth->user()->hasPermission($permission)) {
             return $next($request);
         }

@@ -1,8 +1,9 @@
 ![Laravel Roles](https://github-project-images.s3-us-west-2.amazonaws.com/laravel-blocker/laravel-roles-logo.png)
 
 # Laravel Roles
-A Powerful package for handling roles and permissions in Laravel. Supports Laravel 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 6.0, 7.0, and 8.0+.
+A Powerful package for handling roles and permissions in Laravel. Supports Laravel 5.3 through 13.
 
+[![Tests](https://github.com/jeremykenedy/laravel-roles/actions/workflows/tests.yml/badge.svg)](https://github.com/jeremykenedy/laravel-roles/actions/workflows/tests.yml)
 [![Total Downloads](https://poser.pugx.org/jeremykenedy/laravel-roles/d/total.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
 [![Latest Stable Version](https://poser.pugx.org/jeremykenedy/laravel-roles/v/stable.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
 [![Scrutinizer-CI Build Status](https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/badges/build.png?b=master)](https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/build-status/master)
@@ -37,6 +38,8 @@ A Powerful package for handling roles and permissions in Laravel. Supports Larav
     - [Entity Check](#entity-check)
     - [Blade Extensions](#blade-extensions)
     - [Middleware](#middleware)
+- [Choosing a CSS Framework](#choosing-a-css-framework)
+- [Artisan Commands](#artisan-commands)
 - [Configuration](#configuration)
     - [Environment File](#environment-file)
 - [More Information](#more-information)
@@ -110,6 +113,15 @@ Add the package to your application service providers in `config/app.php` file.
     php artisan vendor:publish --tag=laravelroles-seeds
     php artisan vendor:publish --tag=laravelroles-views
     php artisan vendor:publish --tag=laravelroles-lang
+```
+
+`laravelroles-views` publishes the view set for the CSS framework you are
+currently using. To publish a specific one instead:
+
+```bash
+    php artisan vendor:publish --tag=laravelroles-views-bootstrap4
+    php artisan vendor:publish --tag=laravelroles-views-bootstrap5
+    php artisan vendor:publish --tag=laravelroles-views-tailwind
 ```
 
 ### HasRoleAndPermission Trait And Contract
@@ -597,6 +609,60 @@ return Application::configure(basePath: dirname(__DIR__))
 
 ---
 
+## Choosing a CSS Framework
+
+The optional GUI ships three complete view sets: Bootstrap 4, Bootstrap 5 and
+Tailwind CSS. Exactly one is active at a time.
+
+The default is `bootstrap4`, which is the markup this package has always
+shipped, so upgrading does not change how an existing install looks. Switch
+frameworks when you are ready:
+
+```bash
+    php artisan roles:switch --css=bootstrap5
+```
+
+| Framework | Config value | Front end it expects |
+| :-------- | :----------- | :------------------- |
+| Bootstrap 4 | `bootstrap4` | Bootstrap 4 CSS and JS, jQuery |
+| Bootstrap 5 | `bootstrap5` | Bootstrap 5 CSS and JS, no jQuery required |
+| Tailwind CSS | `tailwind` | Tailwind CSS, Alpine.js |
+
+The Tailwind views use Alpine.js for the modals, dropdowns and collapsible
+panels, and support dark mode through Tailwind's class based `dark:` variants.
+Set `ROLES_GUI_ALPINEJS_CDN_ENABLED=false` if your application already bundles
+Alpine.
+
+If you publish the views, republish them after switching so the published copies
+match the framework you moved to:
+
+```bash
+    php artisan vendor:publish --tag=laravelroles-views-tailwind --force
+```
+
+### Using the framework configured for Laravel UI Kit
+
+If you also use [jeremykenedy/laravel-ui-kit](https://github.com/jeremykenedy/laravel-ui-kit),
+set `ROLES_UI_KIT_ENABLED=true` and this package follows `ui-kit.css_framework`
+instead of its own setting, so both render the same way. This is optional and
+off by default; laravel-ui-kit is not a dependency.
+
+## Artisan Commands
+
+| Command | Description | Options |
+| :------ | :---------- | :------ |
+| `roles:install` | Publishes the config and walks you through picking a CSS framework. Warns before overwriting an existing install. | `--css=`, `--force` |
+| `roles:update` | Changes the CSS framework without touching your config or published views. | `--css=` |
+| `roles:switch` | Changes the CSS framework straight from a flag, with no prompts. | `--css=` |
+
+All three accept `--css=bootstrap4`, `--css=bootstrap5` or `--css=tailwind`, and
+write `ROLES_CSS_FRAMEWORK` to your `.env`. Passing `--css` skips the prompts, so
+the commands work unattended in a deploy script:
+
+```bash
+    php artisan roles:install --css=tailwind --force
+```
+
 ## Configuration
 * You can change connection for models, slug separator, models path and there is also a handy pretend feature.
 * There are many configurable options which have been extended to be able to configured via `.env` file variables.
@@ -707,6 +773,34 @@ return [
         'RolesTableSeeder'              => env('ROLES_SEED_DEFAULT_ROLES', true),
         'ConnectRelationshipsSeeder'    => env('ROLES_SEED_DEFAULT_RELATIONSHIPS', true),
         'UsersTableSeeder'              => env('ROLES_SEED_DEFAULT_USERS', false),
+    ],
+    /*
+    |--------------------------------------------------------------------------
+    | GUI CSS Framework
+    |--------------------------------------------------------------------------
+    |
+    | Which set of views the GUI renders. Supported values are `bootstrap4`,
+    | `bootstrap5` and `tailwind`. The default stays on `bootstrap4` so that
+    | upgrading the package does not change the look of an existing install.
+    | Use `php artisan roles:switch` to change it.
+    |
+    */
+
+    'cssFramework'                  => env('ROLES_CSS_FRAMEWORK', 'bootstrap4'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Laravel UI Kit Integration
+    |--------------------------------------------------------------------------
+    |
+    | Optional. When enabled and jeremykenedy/laravel-ui-kit is installed, the
+    | GUI follows the CSS framework already configured in `ui-kit.css_framework`
+    | instead of the value above, so both packages render the same way.
+    |
+    */
+
+    'uiKit' => [
+        'enabled' => env('ROLES_UI_KIT_ENABLED', false),
     ],
 
     /*
@@ -833,6 +927,14 @@ return [
 
 ```
 
+> The `defaultSeeds` options register the package's own seeders with `db:seed`
+> so they run without being published. That hand off needs
+> [eklundkristoffer/seedster](https://packagist.org/packages/eklundkristoffer/seedster),
+> which is a suggested package rather than a required one. Add it to your
+> application if you rely on these options. Publishing the seeders and calling
+> them from your `DatabaseSeeder`, as shown above, needs nothing extra.
+
+
 ### Environment File
 ```
 # Roles Default Models
@@ -874,6 +976,16 @@ ROLES_GUI_TITLE_EXTENDED='template_title'
 ROLES_GUI_LARAVEL_ROLES_ENABLED=false
 ROLES_GUI_TOOLTIPS_ENABLED=true
 ROLES_GUI_DATATABLES_JS_ENABLED=false
+
+# Roles GUI CSS framework: bootstrap4, bootstrap5 or tailwind
+ROLES_CSS_FRAMEWORK=bootstrap4
+
+# Follow the CSS framework configured for jeremykenedy/laravel-ui-kit
+ROLES_UI_KIT_ENABLED=false
+
+# Front end assets used by the GUI
+ROLES_GUI_JQUERY_CDN_ENABLED=true
+ROLES_GUI_ALPINEJS_CDN_ENABLED=true
 
 ```
 
@@ -935,150 +1047,331 @@ For more information, please have a look at [HasRoleAndPermission](https://githu
 
 ## File Tree
 ```bash
+├── _config.yml
 ├── .env.example
-├── .env.travis
+├── .github
+│   ├── dependabot.yml
+│   ├── FUNDING.yml
+│   ├── ISSUE_TEMPLATE
+│   │   ├── bug_report.md
+│   │   ├── feature_request.md
+│   │   └── project-questions-and-help.md
+│   └── workflows
+│       └── tests.yml
 ├── .gitignore
-├── .travis.yml
-├── LICENSE
+├── .phpunit.result.cache
 ├── composer.json
+├── composer.lock
+├── LICENSE
 ├── phpunit.xml
+├── pint.json
 ├── readme.md
-└── src
-    ├── App
-    │   ├── Exceptions
-    │   │   ├── AccessDeniedException.php
-    │   │   ├── LevelDeniedException.php
-    │   │   ├── PermissionDeniedException.php
-    │   │   └── RoleDeniedException.php
-    │   ├── Http
-    │   │   ├── Controllers
-    │   │   │   ├── Api
-    │   │   │   │   └── LaravelRolesApiController.php
-    │   │   │   ├── LaravelPermissionsController.php
-    │   │   │   ├── LaravelRolesController.php
-    │   │   │   ├── LaravelRolesDeletedController.php
-    │   │   │   └── LaravelpermissionsDeletedController.php
-    │   │   ├── Middleware
-    │   │   │   ├── VerifyLevel.php
-    │   │   │   ├── VerifyPermission.php
-    │   │   │   └── VerifyRole.php
-    │   │   └── Requests
-    │   │       ├── StorePermissionRequest.php
-    │   │       ├── StoreRoleRequest.php
-    │   │       ├── UpdatePermissionRequest.php
-    │   │       └── UpdateRoleRequest.php
-    │   └── Services
-    │       ├── PermissionFormFields.php
-    │       └── RoleFormFields.php
-    ├── Contracts
-    │   ├── HasRoleAndPermission.php
-    │   ├── PermissionHasRelations.php
-    │   └── RoleHasRelations.php
-    ├── Models
-    │   ├── Permission.php
-    │   └── Role.php
-    ├── RolesFacade.php
-    ├── RolesServiceProvider.php
-    ├── Traits
-    │   ├── DatabaseTraits.php
-    │   ├── HasRoleAndPermission.php
-    │   ├── PermissionHasRelations.php
-    │   ├── RoleHasRelations.php
-    │   ├── RolesAndPermissionsHelpersTrait.php
-    │   ├── RolesUsageAuthTrait.php
-    │   └── Slugable.php
-    ├── config
-    │   └── roles.php
-    ├── database
-    │   ├── Migrations
-    │   │   ├── 2016_01_15_105324_create_roles_table.php
-    │   │   ├── 2016_01_15_114412_create_role_user_table.php
-    │   │   ├── 2016_01_26_115212_create_permissions_table.php
-    │   │   ├── 2016_01_26_115523_create_permission_role_table.php
-    │   │   └── 2016_02_09_132439_create_permission_user_table.php
-    │   └── Seeds
-    │       ├── DefaultConnectRelationshipsSeeder.php
-    │       ├── DefaultPermissionsTableSeeder.php
-    │       ├── DefaultRolesTableSeeder.php
-    │       ├── DefaultUsersTableSeeder.php
-    │       └── publish
-    │           ├── ConnectRelationshipsSeeder.php
-    │           ├── PermissionsTableSeeder.php
-    │           ├── RolesTableSeeder.php
-    │           └── UsersTableSeeder.php
-    ├── resources
-    │   ├── lang
-    │   │   └── en
-    │   │       └── laravelroles.php
+├── src
+│   ├── App
+│   │   ├── Console
+│   │   │   ├── Concerns
+│   │   │   │   ├── HandlesFrameworkSetup.php
+│   │   │   │   └── HasInstallPrompts.php
+│   │   │   ├── InstallCommand.php
+│   │   │   ├── SwitchCommand.php
+│   │   │   └── UpdateCommand.php
+│   │   ├── Exceptions
+│   │   │   ├── AccessDeniedException.php
+│   │   │   ├── LevelDeniedException.php
+│   │   │   ├── PermissionDeniedException.php
+│   │   │   └── RoleDeniedException.php
+│   │   ├── Http
+│   │   │   ├── Controllers
+│   │   │   │   ├── Api
+│   │   │   │   │   └── LaravelRolesApiController.php
+│   │   │   │   ├── Controller.php
+│   │   │   │   ├── LaravelPermissionsController.php
+│   │   │   │   ├── LaravelpermissionsDeletedController.php
+│   │   │   │   ├── LaravelRolesController.php
+│   │   │   │   └── LaravelRolesDeletedController.php
+│   │   │   ├── Middleware
+│   │   │   │   ├── VerifyLevel.php
+│   │   │   │   ├── VerifyPermission.php
+│   │   │   │   └── VerifyRole.php
+│   │   │   └── Requests
+│   │   │       ├── StorePermissionRequest.php
+│   │   │       ├── StoreRoleRequest.php
+│   │   │       ├── UpdatePermissionRequest.php
+│   │   │       └── UpdateRoleRequest.php
+│   │   └── Services
+│   │       ├── PermissionFormFields.php
+│   │       └── RoleFormFields.php
+│   ├── config
+│   │   └── roles.php
+│   ├── Contracts
+│   │   ├── HasRoleAndPermission.php
+│   │   ├── PermissionHasRelations.php
+│   │   └── RoleHasRelations.php
+│   ├── Database
+│   │   ├── Database.php
+│   │   ├── Migrations
+│   │   │   ├── 2016_01_15_105324_create_roles_table.php
+│   │   │   ├── 2016_01_15_114412_create_role_user_table.php
+│   │   │   ├── 2016_01_26_115212_create_permissions_table.php
+│   │   │   ├── 2016_01_26_115523_create_permission_role_table.php
+│   │   │   └── 2016_02_09_132439_create_permission_user_table.php
+│   │   ├── Seeders
+│   │   │   ├── DefaultConnectRelationshipsSeeder.php
+│   │   │   ├── DefaultPermissionsTableSeeder.php
+│   │   │   ├── DefaultRolesTableSeeder.php
+│   │   │   ├── DefaultUsersTableSeeder.php
+│   │   │   └── publish
+│   │   │       ├── ConnectRelationshipsSeeder.php
+│   │   │       ├── PermissionsTableSeeder.php
+│   │   │       ├── RolesTableSeeder.php
+│   │   │       └── UsersTableSeeder.php
+│   │   └── TestMigrations
+│   │       └── 2014_10_12_000000_create_users_table.php
+│   ├── LaravelRoles.php
+│   ├── Models
+│   │   ├── Permission.php
+│   │   └── Role.php
+│   ├── resources
+│   │   ├── lang
+│   │   │   ├── de
+│   │   │   │   └── laravelroles.php
+│   │   │   ├── en
+│   │   │   │   └── laravelroles.php
+│   │   │   └── fr
+│   │   │       └── laravelroles.php
+│   │   └── views
+│   │       ├── bootstrap4
+│   │       │   └── laravelroles
+│   │       │       ├── cards
+│   │       │       │   ├── permissions-card.blade.php
+│   │       │       │   └── roles-card.blade.php
+│   │       │       ├── crud
+│   │       │       │   ├── dashboard.blade.php
+│   │       │       │   ├── permissions
+│   │       │       │   │   ├── create.blade.php
+│   │       │       │   │   ├── deleted
+│   │       │       │   │   │   └── index.blade.php
+│   │       │       │   │   ├── edit.blade.php
+│   │       │       │   │   └── show.blade.php
+│   │       │       │   └── roles
+│   │       │       │       ├── create.blade.php
+│   │       │       │       ├── deleted
+│   │       │       │       │   └── index.blade.php
+│   │       │       │       ├── edit.blade.php
+│   │       │       │       └── show.blade.php
+│   │       │       ├── forms
+│   │       │       │   ├── create-permission-form.blade.php
+│   │       │       │   ├── create-role-form.blade.php
+│   │       │       │   ├── delete-sm.blade.php
+│   │       │       │   ├── destroy-all-permissions.blade.php
+│   │       │       │   ├── destroy-all-roles.blade.php
+│   │       │       │   ├── destroy-sm.blade.php
+│   │       │       │   ├── edit-permission-form.blade.php
+│   │       │       │   ├── edit-role-form.blade.php
+│   │       │       │   ├── partials
+│   │       │       │   │   ├── permission-desc-input.blade.php
+│   │       │       │   │   ├── permission-name-input.blade.php
+│   │       │       │   │   ├── permission-slug-input.blade.php
+│   │       │       │   │   ├── permissions-model-select.blade.php
+│   │       │       │   │   ├── role-desc-input.blade.php
+│   │       │       │   │   ├── role-level-input.blade.php
+│   │       │       │   │   ├── role-name-input.blade.php
+│   │       │       │   │   ├── role-permissions-select.blade.php
+│   │       │       │   │   └── role-slug-input.blade.php
+│   │       │       │   ├── permission-form.blade.php
+│   │       │       │   ├── restore-all-permissions.blade.php
+│   │       │       │   ├── restore-all-roles.blade.php
+│   │       │       │   ├── restore-item.blade.php
+│   │       │       │   └── role-form.blade.php
+│   │       │       ├── modals
+│   │       │       │   └── confirm-modal.blade.php
+│   │       │       ├── partials
+│   │       │       │   ├── bs-visibility-css.blade.php
+│   │       │       │   ├── flash-messages.blade.php
+│   │       │       │   ├── form-status.blade.php
+│   │       │       │   └── styles.blade.php
+│   │       │       ├── scripts
+│   │       │       │   ├── confirm-modal.blade.php
+│   │       │       │   ├── datatables.blade.php
+│   │       │       │   ├── form-inputs-helpers.blade.php
+│   │       │       │   ├── selectize.blade.php
+│   │       │       │   ├── selectizePermission.blade.php
+│   │       │       │   └── tooltips.blade.php
+│   │       │       └── tables
+│   │       │           ├── permission-items-table.blade.php
+│   │       │           ├── permissions-table.blade.php
+│   │       │           ├── role-items-table.blade.php
+│   │       │           └── roles-table.blade.php
+│   │       ├── bootstrap5
+│   │       │   └── laravelroles
+│   │       │       ├── cards
+│   │       │       │   ├── permissions-card.blade.php
+│   │       │       │   └── roles-card.blade.php
+│   │       │       ├── crud
+│   │       │       │   ├── dashboard.blade.php
+│   │       │       │   ├── permissions
+│   │       │       │   │   ├── create.blade.php
+│   │       │       │   │   ├── deleted
+│   │       │       │   │   │   └── index.blade.php
+│   │       │       │   │   ├── edit.blade.php
+│   │       │       │   │   └── show.blade.php
+│   │       │       │   └── roles
+│   │       │       │       ├── create.blade.php
+│   │       │       │       ├── deleted
+│   │       │       │       │   └── index.blade.php
+│   │       │       │       ├── edit.blade.php
+│   │       │       │       └── show.blade.php
+│   │       │       ├── forms
+│   │       │       │   ├── create-permission-form.blade.php
+│   │       │       │   ├── create-role-form.blade.php
+│   │       │       │   ├── delete-sm.blade.php
+│   │       │       │   ├── destroy-all-permissions.blade.php
+│   │       │       │   ├── destroy-all-roles.blade.php
+│   │       │       │   ├── destroy-sm.blade.php
+│   │       │       │   ├── edit-permission-form.blade.php
+│   │       │       │   ├── edit-role-form.blade.php
+│   │       │       │   ├── partials
+│   │       │       │   │   ├── permission-desc-input.blade.php
+│   │       │       │   │   ├── permission-name-input.blade.php
+│   │       │       │   │   ├── permission-slug-input.blade.php
+│   │       │       │   │   ├── permissions-model-select.blade.php
+│   │       │       │   │   ├── role-desc-input.blade.php
+│   │       │       │   │   ├── role-level-input.blade.php
+│   │       │       │   │   ├── role-name-input.blade.php
+│   │       │       │   │   ├── role-permissions-select.blade.php
+│   │       │       │   │   └── role-slug-input.blade.php
+│   │       │       │   ├── permission-form.blade.php
+│   │       │       │   ├── restore-all-permissions.blade.php
+│   │       │       │   ├── restore-all-roles.blade.php
+│   │       │       │   ├── restore-item.blade.php
+│   │       │       │   └── role-form.blade.php
+│   │       │       ├── modals
+│   │       │       │   └── confirm-modal.blade.php
+│   │       │       ├── partials
+│   │       │       │   ├── bs-visibility-css.blade.php
+│   │       │       │   ├── flash-messages.blade.php
+│   │       │       │   ├── form-status.blade.php
+│   │       │       │   └── styles.blade.php
+│   │       │       ├── scripts
+│   │       │       │   ├── confirm-modal.blade.php
+│   │       │       │   ├── datatables.blade.php
+│   │       │       │   ├── form-inputs-helpers.blade.php
+│   │       │       │   ├── selectize.blade.php
+│   │       │       │   ├── selectizePermission.blade.php
+│   │       │       │   └── tooltips.blade.php
+│   │       │       └── tables
+│   │       │           ├── permission-items-table.blade.php
+│   │       │           ├── permissions-table.blade.php
+│   │       │           ├── role-items-table.blade.php
+│   │       │           └── roles-table.blade.php
+│   │       └── tailwind
+│   │           └── laravelroles
+│   │               ├── cards
+│   │               │   ├── permissions-card.blade.php
+│   │               │   └── roles-card.blade.php
+│   │               ├── crud
+│   │               │   ├── dashboard.blade.php
+│   │               │   ├── permissions
+│   │               │   │   ├── create.blade.php
+│   │               │   │   ├── deleted
+│   │               │   │   │   └── index.blade.php
+│   │               │   │   ├── edit.blade.php
+│   │               │   │   └── show.blade.php
+│   │               │   └── roles
+│   │               │       ├── create.blade.php
+│   │               │       ├── deleted
+│   │               │       │   └── index.blade.php
+│   │               │       ├── edit.blade.php
+│   │               │       └── show.blade.php
+│   │               ├── forms
+│   │               │   ├── create-permission-form.blade.php
+│   │               │   ├── create-role-form.blade.php
+│   │               │   ├── delete-sm.blade.php
+│   │               │   ├── destroy-all-permissions.blade.php
+│   │               │   ├── destroy-all-roles.blade.php
+│   │               │   ├── destroy-sm.blade.php
+│   │               │   ├── edit-permission-form.blade.php
+│   │               │   ├── edit-role-form.blade.php
+│   │               │   ├── partials
+│   │               │   │   ├── permission-desc-input.blade.php
+│   │               │   │   ├── permission-name-input.blade.php
+│   │               │   │   ├── permission-slug-input.blade.php
+│   │               │   │   ├── permissions-model-select.blade.php
+│   │               │   │   ├── role-desc-input.blade.php
+│   │               │   │   ├── role-level-input.blade.php
+│   │               │   │   ├── role-name-input.blade.php
+│   │               │   │   ├── role-permissions-select.blade.php
+│   │               │   │   └── role-slug-input.blade.php
+│   │               │   ├── permission-form.blade.php
+│   │               │   ├── restore-all-permissions.blade.php
+│   │               │   ├── restore-all-roles.blade.php
+│   │               │   ├── restore-item.blade.php
+│   │               │   └── role-form.blade.php
+│   │               ├── modals
+│   │               │   └── confirm-modal.blade.php
+│   │               ├── partials
+│   │               │   ├── bs-visibility-css.blade.php
+│   │               │   ├── flash-messages.blade.php
+│   │               │   ├── form-status.blade.php
+│   │               │   └── styles.blade.php
+│   │               ├── scripts
+│   │               │   ├── confirm-modal.blade.php
+│   │               │   ├── datatables.blade.php
+│   │               │   ├── form-inputs-helpers.blade.php
+│   │               │   ├── selectize.blade.php
+│   │               │   ├── selectizePermission.blade.php
+│   │               │   └── tooltips.blade.php
+│   │               └── tables
+│   │                   ├── permission-items-table.blade.php
+│   │                   ├── permissions-table.blade.php
+│   │                   ├── role-items-table.blade.php
+│   │                   └── roles-table.blade.php
+│   ├── RolesFacade.php
+│   ├── RolesServiceProvider.php
+│   ├── routes
+│   │   ├── api.php
+│   │   └── web.php
+│   ├── Support
+│   │   └── CssFramework.php
+│   └── Traits
+│       ├── HasRoleAndPermission.php
+│       ├── PermissionHasRelations.php
+│       ├── RoleHasRelations.php
+│       ├── RolesAndPermissionsHelpersTrait.php
+│       ├── RolesUsageAuthTrait.php
+│       └── Slugable.php
+└── tests
+    ├── Article.php
+    ├── Concerns
+    │   └── CountsQueries.php
+    ├── Feature
+    │   ├── BladeDirectivesTest.php
+    │   ├── ConsoleCommandsTest.php
+    │   ├── CustomTableNamesTest.php
+    │   ├── HasRoleAndPermissionTest.php
+    │   ├── MiddlewareTest.php
+    │   ├── NPlusOneQueriesTest.php
+    │   ├── RolesApiTest.php
+    │   ├── RolesCrudTest.php
+    │   ├── RolesGuiTest.php
+    │   ├── SeedersTest.php
+    │   └── ServiceProviderTest.php
+    ├── Fixtures
     │   └── views
-    │       └── laravelroles
-    │           ├── cards
-    │           │   ├── permissions-card.blade.php
-    │           │   └── roles-card.blade.php
-    │           ├── crud
-    │           │   ├── dashboard.blade.php
-    │           │   ├── permissions
-    │           │   │   ├── create.blade.php
-    │           │   │   ├── deleted
-    │           │   │   │   └── index.blade.php
-    │           │   │   ├── edit.blade.php
-    │           │   │   └── show.blade.php
-    │           │   └── roles
-    │           │       ├── create.blade.php
-    │           │       ├── deleted
-    │           │       │   └── index.blade.php
-    │           │       ├── edit.blade.php
-    │           │       └── show.blade.php
-    │           ├── forms
-    │           │   ├── create-permission-form.blade.php
-    │           │   ├── create-role-form.blade.php
-    │           │   ├── delete-sm.blade.php
-    │           │   ├── destroy-all-permissions.blade.php
-    │           │   ├── destroy-all-roles.blade.php
-    │           │   ├── destroy-sm.blade.php
-    │           │   ├── edit-permission-form.blade.php
-    │           │   ├── edit-role-form.blade.php
-    │           │   ├── partials
-    │           │   │   ├── permission-desc-input.blade.php
-    │           │   │   ├── permission-name-input.blade.php
-    │           │   │   ├── permission-slug-input.blade.php
-    │           │   │   ├── permissions-model-select.blade.php
-    │           │   │   ├── role-desc-input.blade.php
-    │           │   │   ├── role-level-input.blade.php
-    │           │   │   ├── role-name-input.blade.php
-    │           │   │   ├── role-permissions-select.blade.php
-    │           │   │   └── role-slug-input.blade.php
-    │           │   ├── permission-form.blade.php
-    │           │   ├── restore-all-permissions.blade.php
-    │           │   ├── restore-all-roles.blade.php
-    │           │   ├── restore-item.blade.php
-    │           │   └── role-form.blade.php
-    │           ├── modals
-    │           │   └── confirm-modal.blade.php
-    │           ├── partials
-    │           │   ├── bs-visibility-css.blade.php
-    │           │   ├── flash-messages.blade.php
-    │           │   ├── form-status.blade.php
-    │           │   └── styles.blade.php
-    │           ├── scripts
-    │           │   ├── confirm-modal.blade.php
-    │           │   ├── datatables.blade.php
-    │           │   ├── form-inputs-helpers.blade.php
-    │           │   ├── selectize.blade.php
-    │           │   ├── selectizePermission.blade.php
-    │           │   └── tooltips.blade.php
-    │           └── tables
-    │               ├── permission-items-table.blade.php
-    │               ├── permissions-table.blade.php
-    │               ├── role-items-table.blade.php
-    │               └── roles-table.blade.php
-    └── routes
-        ├── api.php
-        └── web.php
+    │       └── layouts
+    │           └── app.blade.php
+    ├── Pest.php
+    ├── RefreshDatabase.php
+    ├── TestCase.php
+    ├── Unit
+    │   ├── CssFrameworkTest.php
+    │   └── ViewSetsTest.php
+    ├── User.php
+    └── UserFactory.php
 ```
 
 * Tree command can be installed using brew: `brew install tree`
-* File tree generated using command `tree -a -I '.git|node_modules|vendor|storage|tests'`
+* File tree generated using command `tree -a -I '.git|node_modules|vendor|storage'`
 
 ## Opening an Issue
 Before opening an issue there are a couple of considerations:

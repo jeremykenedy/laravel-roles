@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace jeremykenedy\LaravelRoles\Traits;
 
 use Illuminate\Support\Str;
@@ -10,7 +12,6 @@ trait Slugable
      * Set slug attribute.
      *
      * @param string $value
-     *
      * @return void
      */
     public function setSlugAttribute($value)

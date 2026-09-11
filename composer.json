@@ -15,7 +15,7 @@
     "type": "package",
     "authors": [
         {
-            "name": "Roman Bičan",
+            "name": "Roman Bi\u010dan",
             "email": "romanbican@seznam.cz"
         },
         {
@@ -24,16 +24,20 @@
         }
     ],
     "require": {
-        "php": "^7.2|^8.0|^8.1|^8.2|^8.3",
+        "php": "^7.2|^8.0",
         "laravel/framework": "5.3.*|5.4.*|5.5.*|5.6.*|5.7.*|5.8.*|6.*|7.*|8.*|^9.0|^10.0|^11.0|^12.0|^13.0",
-        "eklundkristoffer/seedster": "^8.0|^9.0|^10.0",
         "laravel/helpers": "^1.7"
     },
     "require-dev": {
+        "eklundkristoffer/seedster": "^8.0|^9.0|^10.0",
+        "laravel/pint": "^1.18",
         "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
-        "laravel/tinker": "^2.9|^3.0",
-        "illuminate/support": "^8.5|^9.0|^10.0|^11.0|^12.0|^13.0",
-        "laravel/laravel": "^8.0|^9.0|^10.0|^11.0|^12.0|^13.0"
+        "pestphp/pest": "^2.0|^3.0|^4.0",
+        "pestphp/pest-plugin-laravel": "^2.0|^3.0|^4.0"
+    },
+    "suggest": {
+        "eklundkristoffer/seedster": "Required for the roles.defaultSeeds options to auto-register the package seeders with db:seed.",
+        "jeremykenedy/laravel-ui-kit": "Set roles.uiKit.enabled to true to follow the CSS framework already configured for the UI kit."
     },
     "autoload": {
         "psr-4": {
@@ -52,8 +56,16 @@
             ]
         }
     },
+    "scripts": {
+        "test": "pest",
+        "lint": "pint --test",
+        "fix": "pint"
+    },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "minimum-stability": "stable",
     "prefer-stable": true

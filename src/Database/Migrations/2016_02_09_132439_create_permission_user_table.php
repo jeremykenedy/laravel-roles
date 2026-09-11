@@ -1,46 +1,42 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePermissionUserTable extends Migration
-{
+return new class() extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         $connection = config('roles.connection');
         $table = config('roles.permissionsUserTable');
         $permissionsTable = config('roles.permissionsTable');
-        $tableCheck = Schema::connection($connection)->hasTable($table);
         $userTable = app(config('auth.providers.users.model'))->getTable();
 
-        if (!$tableCheck) {
-            Schema::connection($connection)->create($table, function (Blueprint $table) use ($permissionsTable, $userTable) {
-                $table->increments('id')->unsigned();
-                $table->integer('permission_id')->unsigned()->index();
-                $table->foreign('permission_id')->references('id')->on($permissionsTable)->onDelete('cascade');
-                $table->unsignedBigInteger('user_id')->unsigned()->index();
-                $table->foreign('user_id')->references('id')->on($userTable)->onDelete('cascade');
-                $table->timestamps();
-                $table->softDeletes();
-            });
+        if (Schema::connection($connection)->hasTable($table)) {
+            return;
         }
+
+        Schema::connection($connection)->create($table, function (Blueprint $table) use ($permissionsTable, $userTable) {
+            $table->increments('id')->unsigned();
+            $table->integer('permission_id')->unsigned()->index();
+            $table->foreign('permission_id')->references('id')->on($permissionsTable)->onDelete('cascade');
+            $table->unsignedBigInteger('user_id')->unsigned()->index();
+            $table->foreign('user_id')->references('id')->on($userTable)->onDelete('cascade');
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        $connection = config('roles.connection');
-        $table = config('roles.permissionsUserTable');
-        Schema::connection($connection)->dropIfExists($table);
+        Schema::connection(config('roles.connection'))->dropIfExists(config('roles.permissionsUserTable'));
     }
-}
+};
