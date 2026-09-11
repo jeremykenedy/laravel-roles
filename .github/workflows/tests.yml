@@ -14,14 +14,16 @@ jobs:
     name: PHP ${{ matrix.php }} / Laravel ${{ matrix.laravel }}
     runs-on: ubuntu-latest
 
+    # Laravel 11 is not built here. Every 11.x release is affected by advisory
+    # PKSA-mdq4-51ck-6kdq with no patched 11.x, so composer refuses to install
+    # it. The package still declares support for it; it just cannot be resolved
+    # in CI under the default advisory policy.
     strategy:
       fail-fast: false
       matrix:
         php: ['8.2', '8.3', '8.4']
-        laravel: ['11', '12', '13']
+        laravel: ['12', '13']
         include:
-          - laravel: '11'
-            testbench: '^9.0'
           - laravel: '12'
             testbench: '^10.0'
           - laravel: '13'
