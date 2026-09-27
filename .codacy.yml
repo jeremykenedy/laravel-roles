@@ -7,3 +7,4 @@ exclude_paths:
   - 'src/resources/views/**'
   - 'src/resources/lang/**'
   - 'docs/**'
+  - 'tests/Fixtures/**'
