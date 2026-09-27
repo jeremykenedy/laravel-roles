@@ -46,7 +46,7 @@ jobs:
           coverage: none
 
       - name: Cache composer files
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.composer/cache/files
           key: composer-php-${{ matrix.php }}-laravel-${{ matrix.laravel }}-${{ hashFiles('composer.json') }}
