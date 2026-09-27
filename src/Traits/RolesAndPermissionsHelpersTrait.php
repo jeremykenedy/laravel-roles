@@ -6,6 +6,7 @@ namespace jeremykenedy\LaravelRoles\Traits;
 
 use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -250,7 +251,7 @@ trait RolesAndPermissionsHelpersTrait
      *
      * @param int $id The user id
      *
-     * @return User The user.
+     * @return Model The user.
      */
     public function getUser($id)
     {
@@ -758,7 +759,7 @@ trait RolesAndPermissionsHelpersTrait
      *
      * @param Collection $sortedRolesWithUsers The sorted roles with users
      * @param Collection $permissions          The permissions
-     * @param colection  $users                The users
+     * @param Collection $users                The users
      *
      * @return Collection The sorted permissons with roles and users.
      */
