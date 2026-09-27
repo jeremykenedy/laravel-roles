@@ -163,10 +163,10 @@ it('keeps the source within the php version composer declares', function (): voi
     // composer.json still allows ^7.2, but the test matrix only runs 8.2 and
     // above, so nothing else would catch syntax that needs a later runtime.
     $patterns = [
-        'typed property (7.4+)'    => '/^\s*(?:public|protected|private)\s+(?:static\s+)?(?!static\b)\??[A-Za-z_\\\\|]+\s+\$[a-zA-Z_]/m',
-        'arrow function (7.4+)'    => '/\bfn\s*\(/',
-        'null-safe operator (8.0+)' => '/\?->/',
-        'match expression (8.0+)'  => '/\bmatch\s*\(/',
+        'typed property (7.4+)'        => '/^\s*(?:public|protected|private)\s+(?:static\s+)?(?!static\b)\??[A-Za-z_\\\\|]+\s+\$[a-zA-Z_]/m',
+        'arrow function (7.4+)'        => '/\bfn\s*\(/',
+        'null-safe operator (8.0+)'    => '/\?->/',
+        'match expression (8.0+)'      => '/\bmatch\s*\(/',
         'constructor promotion (8.0+)' => '/function\s+__construct\s*\([^)]*\b(?:public|protected|private)\s+\$/',
     ];
 
