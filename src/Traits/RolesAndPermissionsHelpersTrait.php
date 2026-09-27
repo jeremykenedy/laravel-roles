@@ -839,8 +839,8 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Stores role with permissions.
      *
-     * @param array  $roleData        The role data
-     * @param array  $rolePermissions The role permissions
+     * @param array $roleData        The role data
+     * @param array $rolePermissions The role permissions
      *
      * @return collection The Role
      */
@@ -860,9 +860,9 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Update Role with permissions.
      *
-     * @param int    $id              The identifier
-     * @param array  $roleData        The role data
-     * @param array  $rolePermissions The role permissions
+     * @param int   $id              The identifier
+     * @param array $roleData        The role data
+     * @param array $rolePermissions The role permissions
      *
      * @return collection The Role
      */

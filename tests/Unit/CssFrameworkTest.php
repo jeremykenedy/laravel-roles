@@ -86,7 +86,7 @@ it('defaults the font awesome cdn to the icon set the framework uses', function 
     expect($config['cssFramework'])->toBe($framework)
         ->and($config['fontAwesomeCDN'])->toContain($expected);
 })->with([
-    'bootstrap4 keeps Font Awesome 4' => ['bootstrap4', 'font-awesome/4.7.0'],
-    'bootstrap5 moves to Font Awesome 6' => ['bootstrap5', 'fontawesome-free@6.7.2'],
+    'bootstrap4 keeps Font Awesome 4'                  => ['bootstrap4', 'font-awesome/4.7.0'],
+    'bootstrap5 moves to Font Awesome 6'               => ['bootstrap5', 'fontawesome-free@6.7.2'],
     'tailwind loads neither, so the default is unused' => ['tailwind', 'fontawesome-free@6.7.2'],
 ]);
