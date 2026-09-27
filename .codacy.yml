@@ -1,0 +1,9 @@
+---
+# Blade files are markup with PHP interpolated into it, and the language files
+# are translation arrays. Running PHP style rules over either reports on how
+# the templates are laid out rather than on the package's code, which is what
+# SonarCloud excludes for the same reason.
+exclude_paths:
+  - 'src/resources/views/**'
+  - 'src/resources/lang/**'
+  - 'docs/**'

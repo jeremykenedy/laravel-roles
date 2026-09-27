@@ -15,6 +15,7 @@
     <a href="https://github.styleci.io/repos/82768379"><img src="https://github.styleci.io/repos/82768379/shield?branch=master" alt="StyleCI"></a>
     <a href="https://sonarcloud.io/summary/new_code?id=jeremykenedy_laravel-roles"><img src="https://sonarcloud.io/api/project_badges/measure?project=jeremykenedy_laravel-roles&metric=alert_status" alt="Quality Gate Status"></a>
     <a href="https://www.codefactor.io/repository/github/jeremykenedy/laravel-roles"><img src="https://www.codefactor.io/repository/github/jeremykenedy/laravel-roles/badge" alt="CodeFactor"></a>
+    <a href="https://app.codacy.com/gh/jeremykenedy/laravel-roles/dashboard"><img src="https://app.codacy.com/project/badge/Grade/a78118886fd34faa996545389c295004" alt="Codacy Badge"></a>
     <a href="https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/build-status/master"><img src="https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/badges/build.png?b=master" alt="Scrutinizer Build Status"></a>
     <a href="https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/?branch=master"><img src="https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality"></a>
     <a href="https://scrutinizer-ci.com/code-intelligence"><img src="https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/badges/code-intelligence.svg?b=master" alt="Code Intelligence Status"></a>
