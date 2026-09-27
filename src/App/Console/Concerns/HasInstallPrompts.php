@@ -51,8 +51,8 @@ trait HasInstallPrompts
     /**
      * Provided by Illuminate\Console\Command.
      *
-     * @param string      $string
-     * @param string|null $style
+     * @param string          $string
+     * @param string|null     $style
      * @param int|string|null $verbosity
      *
      * @return void
@@ -62,7 +62,7 @@ trait HasInstallPrompts
     /**
      * Provided by Illuminate\Console\Command.
      *
-     * @param string $string
+     * @param string          $string
      * @param int|string|null $verbosity
      *
      * @return void
@@ -72,7 +72,7 @@ trait HasInstallPrompts
     /**
      * Provided by Illuminate\Console\Command.
      *
-     * @param string $string
+     * @param string          $string
      * @param int|string|null $verbosity
      *
      * @return void

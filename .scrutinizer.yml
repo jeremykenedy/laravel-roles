@@ -1,4 +1,9 @@
 build:
+    environment:
+        # Without this the worker falls back to PHP 7.3 and Composer 1, which
+        # Packagist stopped serving in September 2025.
+        php:
+            version: '8.3.12'
     dependencies:
         override:
             # Resolved rather than installed from the lock. The lock is built on
