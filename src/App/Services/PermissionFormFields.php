@@ -1,12 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace jeremykenedy\LaravelRoles\App\Services;
 
+use Illuminate\Support\Arr;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
 
 class PermissionFormFields
 {
     use RolesAndPermissionsHelpersTrait;
+
+    /**
+     * The id of the permission being edited, or null when creating.
+     *
+     * @var int|string|null
+     */
+    protected $id;
 
     /**
      * List of fields and default value for each field.
@@ -21,11 +31,9 @@ class PermissionFormFields
     ];
 
     /**
-     * Create a new job instance.
+     * Create a new form fields instance.
      *
-     * @param int $id
-     *
-     * @return void
+     * @param int|string|null $id
      */
     public function __construct($id = null)
     {
@@ -33,9 +41,9 @@ class PermissionFormFields
     }
 
     /**
-     * Execute the job.
+     * Build the form field data.
      *
-     * @return void
+     * @return array
      */
     public function handle()
     {
@@ -49,22 +57,16 @@ class PermissionFormFields
             $fields[$fieldName] = old($fieldName, $fieldValue);
         }
 
-        // Get the additional data for the form fields
-        $permissionFormFieldData = $this->permissionFormFieldData();
-
         return array_merge(
             $fields,
-            $permissionFormFieldData
+            $this->permissionFormFieldData()
         );
-
-        return $fields;
     }
 
     /**
      * Return the field values from the model.
      *
-     * @param int   $id
-     * @param array $fields
+     * @param int|string $id
      *
      * @return array
      */
@@ -72,11 +74,12 @@ class PermissionFormFields
     {
         $permission = config('roles.models.permission')::findOrFail($id);
 
-        $fieldNames = array_keys(array_except($fields, ['permissions']));
+        $fieldNames = array_keys(Arr::except($fields, ['permissions']));
 
         $fields = [
             'id' => $id,
         ];
+
         foreach ($fieldNames as $field) {
             $fields[$field] = $permission->{$field};
         }
@@ -85,7 +88,7 @@ class PermissionFormFields
     }
 
     /**
-     * Get the additonal form fields data.
+     * Get the additional form fields data.
      *
      * @return array
      */

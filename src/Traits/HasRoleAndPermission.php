@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace jeremykenedy\LaravelRoles\Traits;
 
 use BadMethodCallException;
@@ -13,6 +15,16 @@ use jeremykenedy\LaravelRoles\Models\Permission;
 use jeremykenedy\LaravelRoles\Models\Role;
 use ReflectionMethod;
 
+/**
+ * Adds the role and permission checks to an Eloquent model, normally the app User.
+ *
+ * @method BelongsToMany belongsToMany($related, $table = null, $foreignPivotKey = null, $relatedPivotKey = null, $parentKey = null, $relatedKey = null, $relation = null)
+ * @method mixed         getRelation($relation)
+ * @method void          load($relations)
+ * @method void          loadMissing($relations)
+ * @method bool          relationLoaded($key)
+ * @method void          unsetRelation($relation)
+ */
 trait HasRoleAndPermission
 {
     /**
@@ -181,7 +193,7 @@ trait HasRoleAndPermission
     /**
      * Sync roles for a user.
      *
-     * @param array|\jeremykenedy\LaravelRoles\Models\Role[]|\Illuminate\Database\Eloquent\Collection $roles
+     * @param array|Role[]|Collection $roles
      *
      * @return array
      */
@@ -205,37 +217,48 @@ trait HasRoleAndPermission
     /**
      * Get all permissions from roles.
      *
-     * @return Builder
+     * @return Builder|\Illuminate\Database\Query\Builder
      */
     public function rolePermissions()
     {
         $permissionModel = app(config('roles.models.permission'));
         $permissionTable = config('roles.permissionsTable');
+        $permissionRoleTable = config('roles.permissionsRoleTable');
         $roleTable = config('roles.rolesTable');
 
         if (!$permissionModel instanceof Model) {
             throw new InvalidArgumentException('[roles.models.permission] must be an instance of \Illuminate\Database\Eloquent\Model');
         }
 
+        $query = $permissionModel::select([
+            $permissionTable.'.*',
+            $permissionRoleTable.'.created_at as pivot_created_at',
+            $permissionRoleTable.'.updated_at as pivot_updated_at',
+        ])
+            ->join($permissionRoleTable, $permissionRoleTable.'.permission_id', '=', $permissionTable.'.id')
+            ->join($roleTable, $roleTable.'.id', '=', $permissionRoleTable.'.role_id')
+            ->whereNull($roleTable.'.deleted_at')
+            ->whereIn($roleTable.'.id', $this->getRoles()->pluck('id')->toArray());
+
         if (config('roles.inheritance')) {
-            return $permissionModel::select([$permissionTable.'.*', 'permission_role.created_at as pivot_created_at', 'permission_role.updated_at as pivot_updated_at'])
-                ->join('permission_role', 'permission_role.permission_id', '=', $permissionTable.'.id')
-                ->join($roleTable, $roleTable.'.id', '=', 'permission_role.role_id')
-                ->whereNull($roleTable.'.deleted_at')
-                ->whereIn($roleTable.'.id', $this->getRoles()->pluck('id')->toArray())
-                ->orWhere(function ($query) use ($roleTable) {
-                    $query->where($roleTable.'.level', '<', $this->level())
-                          ->whereNull($roleTable.'.deleted_at');
-                })
-                ->groupBy([$permissionTable.'.id', $permissionTable.'.name', $permissionTable.'.slug', $permissionTable.'.description', $permissionTable.'.model', $permissionTable.'.created_at', 'permissions.updated_at', $permissionTable.'.deleted_at', 'pivot_created_at', 'pivot_updated_at']);
-        } else {
-            return $permissionModel::select([$permissionTable.'.*', 'permission_role.created_at as pivot_created_at', 'permission_role.updated_at as pivot_updated_at'])
-                ->join('permission_role', 'permission_role.permission_id', '=', $permissionTable.'.id')
-                ->join($roleTable, $roleTable.'.id', '=', 'permission_role.role_id')
-                ->whereNull($roleTable.'.deleted_at')
-                ->whereIn($roleTable.'.id', $this->getRoles()->pluck('id')->toArray())
-                ->groupBy([$permissionTable.'.id', $permissionTable.'.name', $permissionTable.'.slug', $permissionTable.'.description', $permissionTable.'.model', $permissionTable.'.created_at', $permissionTable.'.updated_at', $permissionTable.'.deleted_at', 'pivot_created_at', 'pivot_updated_at']);
+            $query->orWhere(function ($query) use ($roleTable) {
+                $query->where($roleTable.'.level', '<', $this->level())
+                    ->whereNull($roleTable.'.deleted_at');
+            });
         }
+
+        return $query->groupBy([
+            $permissionTable.'.id',
+            $permissionTable.'.name',
+            $permissionTable.'.slug',
+            $permissionTable.'.description',
+            $permissionTable.'.model',
+            $permissionTable.'.created_at',
+            $permissionTable.'.updated_at',
+            $permissionTable.'.deleted_at',
+            'pivot_created_at',
+            'pivot_updated_at',
+        ]);
     }
 
     /**
@@ -245,7 +268,7 @@ trait HasRoleAndPermission
      */
     public function userPermissions()
     {
-        return $this->belongsToMany(config('roles.models.permission'), config('permissionsUserTable'))->withTimestamps();
+        return $this->belongsToMany(config('roles.models.permission'), config('roles.permissionsUserTable'))->withTimestamps();
     }
 
     /**
@@ -255,7 +278,15 @@ trait HasRoleAndPermission
      */
     public function getPermissions()
     {
-        return (!$this->permissions) ? $this->permissions = $this->rolePermissions()->get()->merge($this->userPermissions()->get()) : $this->permissions;
+        if ($this->permissions) {
+            return $this->permissions;
+        }
+
+        $userPermissions = $this->relationLoaded('userPermissions')
+            ? $this->getRelation('userPermissions')
+            : $this->userPermissions()->get();
+
+        return $this->permissions = $this->rolePermissions()->get()->merge($userPermissions);
     }
 
     /**
@@ -333,7 +364,6 @@ trait HasRoleAndPermission
      * Check if the user is allowed to manipulate with entity.
      *
      * @param string $providedPermission
-     * @param Model  $entity
      * @param bool   $owner
      * @param string $ownerColumn
      *
@@ -356,7 +386,6 @@ trait HasRoleAndPermission
      * Check if the user is allowed to manipulate with provided entity.
      *
      * @param string $providedPermission
-     * @param Model  $entity
      *
      * @return bool
      */
@@ -385,7 +414,7 @@ trait HasRoleAndPermission
         if ($this->getPermissions()->contains($permission)) {
             return true;
         }
-        $this->permissions = null;
+        $this->resetPermissions();
 
         return $this->userPermissions()->attach($permission);
     }
@@ -399,7 +428,7 @@ trait HasRoleAndPermission
      */
     public function detachPermission($permission)
     {
-        $this->permissions = null;
+        $this->resetPermissions();
 
         return $this->userPermissions()->detach($permission);
     }
@@ -411,7 +440,7 @@ trait HasRoleAndPermission
      */
     public function detachAllPermissions()
     {
-        $this->permissions = null;
+        $this->resetPermissions();
 
         return $this->userPermissions()->detach();
     }
@@ -419,13 +448,13 @@ trait HasRoleAndPermission
     /**
      * Sync permissions for a user.
      *
-     * @param array|\jeremykenedy\LaravelRoles\Models\Permission[]|\Illuminate\Database\Eloquent\Collection $permissions
+     * @param array|Permission[]|Collection $permissions
      *
      * @return array
      */
     public function syncPermissions($permissions)
     {
-        $this->permissions = null;
+        $this->resetPermissions();
 
         return $this->userPermissions()->sync($permissions);
     }
@@ -461,7 +490,7 @@ trait HasRoleAndPermission
      */
     private function getArrayFrom($argument)
     {
-        return (!is_array($argument)) ? preg_split('/ ?[,|] ?/', $argument) : $argument;
+        return (!is_array($argument)) ? preg_split('/ ?[,|] ?/', (string) $argument) : $argument;
     }
 
     protected function resetRoles()
@@ -471,6 +500,16 @@ trait HasRoleAndPermission
             $this->unsetRelation('roles');
         } else {
             unset($this->relations['roles']);
+        }
+    }
+
+    protected function resetPermissions()
+    {
+        $this->permissions = null;
+        if (method_exists($this, 'unsetRelation')) {
+            $this->unsetRelation('userPermissions');
+        } else {
+            unset($this->relations['userPermissions']);
         }
     }
 

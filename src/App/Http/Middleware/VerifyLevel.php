@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace jeremykenedy\LaravelRoles\App\Http\Middleware;
 
 use Closure;
@@ -16,8 +18,6 @@ class VerifyLevel
 
     /**
      * Create a new filter instance.
-     *
-     * @param Guard $auth
      */
     public function __construct(Guard $auth)
     {
@@ -27,11 +27,10 @@ class VerifyLevel
     /**
      * Handle an incoming request.
      *
-     * @param Request  $request
-     * @param \Closure $next
-     * @param int      $level
+     * @param Request $request
+     * @param int     $level
      *
-     * @throws \jeremykenedy\LaravelRoles\App\Exceptions\LevelDeniedException
+     * @throws LevelDeniedException
      *
      * @return mixed
      */

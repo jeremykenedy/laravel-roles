@@ -10,10 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use jeremykenedy\LaravelRoles\Traits\HasRoleAndPermission;
 
-class User extends Model implements AuthorizableContract, AuthenticatableContract
+class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
-    use Authorizable;
     use Authenticatable;
+    use Authorizable;
     use HasFactory;
     use HasRoleAndPermission;
 

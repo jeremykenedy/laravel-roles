@@ -1,21 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace jeremykenedy\LaravelRoles\App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
+use jeremykenedy\LaravelRoles\App\Http\Controllers\Controller;
 use jeremykenedy\LaravelRoles\App\Http\Requests\StoreRoleRequest;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
-use jeremykenedy\LaravelRoles\Traits\RolesUsageAuthTrait;
 
 class LaravelRolesApiController extends Controller
 {
     use RolesAndPermissionsHelpersTrait;
-    // use RolesUsageAuthTrait;
 
     /**
      * Return all the roles, Permissions, and Users data.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function index()
     {
@@ -30,14 +31,15 @@ class LaravelRolesApiController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Store a newly created role.
      *
-     * @return \Illuminate\Http\Response
+     *
+     * @return JsonResponse
      */
     public function store(StoreRoleRequest $request)
     {
         $roleData = $request->roleFillData();
-        $rolePermissions = $request->get('permissions');
+        $rolePermissions = $request->input('permissions');
         $role = $this->storeRoleWithPermissions($roleData, $rolePermissions);
 
         return response()->json([

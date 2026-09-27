@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace jeremykenedy\LaravelRoles\App\Http\Middleware;
 
 use Closure;
@@ -16,8 +18,6 @@ class VerifyRole
 
     /**
      * Create a new filter instance.
-     *
-     * @param Guard $auth
      */
     public function __construct(Guard $auth)
     {
@@ -28,7 +28,6 @@ class VerifyRole
      * Handle an incoming request.
      *
      * @param Request    $request
-     * @param \Closure   $next
      * @param int|string $role
      *
      * @throws RoleDeniedException
@@ -37,7 +36,7 @@ class VerifyRole
      */
     public function handle($request, Closure $next, ...$role)
     {
-        $role = join(',', $role);
+        $role = implode(',', $role);
         if ($this->auth->check() && $this->auth->user()->hasRole($role)) {
             return $next($request);
         }

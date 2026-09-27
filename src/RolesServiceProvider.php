@@ -1,8 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace jeremykenedy\LaravelRoles;
 
 use Illuminate\Support\ServiceProvider;
+use jeremykenedy\LaravelRoles\App\Console\InstallCommand;
+use jeremykenedy\LaravelRoles\App\Console\SwitchCommand;
+use jeremykenedy\LaravelRoles\App\Console\UpdateCommand;
 use jeremykenedy\LaravelRoles\App\Http\Middleware\VerifyLevel;
 use jeremykenedy\LaravelRoles\App\Http\Middleware\VerifyPermission;
 use jeremykenedy\LaravelRoles\App\Http\Middleware\VerifyRole;
@@ -10,6 +15,7 @@ use jeremykenedy\LaravelRoles\Database\Seeders\DefaultConnectRelationshipsSeeder
 use jeremykenedy\LaravelRoles\Database\Seeders\DefaultPermissionsTableSeeder;
 use jeremykenedy\LaravelRoles\Database\Seeders\DefaultRolesTableSeeder;
 use jeremykenedy\LaravelRoles\Database\Seeders\DefaultUsersTableSeeder;
+use jeremykenedy\LaravelRoles\Support\CssFramework;
 
 class RolesServiceProvider extends ServiceProvider
 {
@@ -24,8 +30,6 @@ class RolesServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap any application services.
-     *
-     * @param \Illuminate\Routing\Router $router The router
      *
      * @return void
      */
@@ -56,11 +60,17 @@ class RolesServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/config/roles.php', 'roles');
         $this->loadMigrations();
+
+        $this->app->singleton($this->_packageTag, function () {
+            return new LaravelRoles();
+        });
+
         if (config('roles.rolesGuiEnabled')) {
-            $this->loadViewsFrom(__DIR__.'/resources/views/', $this->_packageTag);
+            $this->loadViewsFrom(CssFramework::viewPath(CssFramework::resolve()), $this->_packageTag);
         }
         $this->publishFiles();
         $this->loadSeedsFrom();
+        $this->registerCommands();
     }
 
     private function loadMigrations()
@@ -71,7 +81,28 @@ class RolesServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the package console commands.
+     *
+     * @return void
+     */
+    private function registerCommands()
+    {
+        if (!$this->app->runningInConsole()) {
+            return;
+        }
+
+        $this->commands([
+            InstallCommand::class,
+            UpdateCommand::class,
+            SwitchCommand::class,
+        ]);
+    }
+
+    /**
      * Loads a seeds.
+     *
+     * The `seed.handler` binding comes from eklundkristoffer/seedster. The
+     * callback simply never fires when that package is not installed.
      *
      * @return void
      */
@@ -112,6 +143,7 @@ class RolesServiceProvider extends ServiceProvider
     private function publishFiles()
     {
         $publishTag = $this->_packageTag;
+        $viewDestination = base_path('resources/views/vendor/'.$publishTag);
 
         $this->publishes([
             __DIR__.'/config/roles.php' => config_path('roles.php'),
@@ -131,9 +163,17 @@ class RolesServiceProvider extends ServiceProvider
             __DIR__.'/Database/Seeders/publish' => database_path('seeders'),
         ], $publishTag);
 
+        // Publishes the active framework's views to the path the view finder
+        // already checks, so published views keep overriding the package.
         $this->publishes([
-            __DIR__.'/resources/views' => base_path('resources/views/vendor/'.$publishTag),
+            CssFramework::viewPath(CssFramework::resolve()) => $viewDestination,
         ], $publishTag.'-views');
+
+        foreach (CssFramework::supported() as $framework) {
+            $this->publishes([
+                CssFramework::viewPath($framework) => $viewDestination,
+            ], $publishTag.'-views-'.$framework);
+        }
 
         $this->publishes([
             __DIR__.'/resources/lang' => base_path('resources/lang/vendor/'.$publishTag),

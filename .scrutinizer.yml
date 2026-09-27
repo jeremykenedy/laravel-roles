@@ -1,0 +1,35 @@
+build:
+    environment:
+        # Without this the worker falls back to PHP 7.3 and Composer 1, which
+        # Packagist stopped serving in September 2025.
+        php:
+            version: '8.3.12'
+    dependencies:
+        override:
+            # Resolved rather than installed from the lock. The lock is built on
+            # a newer runtime than the inspection runs, and only the runtime
+            # packages are needed to analyse src.
+            - composer update --no-dev --prefer-dist --no-interaction
+    nodes:
+        analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run
+        tests:
+            tests:
+                override:
+                    - echo 'The test suite runs in GitHub Actions.'
+
+filter:
+    paths:
+        - src/*
+    excluded_paths:
+        - tests/*
+        - vendor/*
+        - src/resources/*
+
+checks:
+    php: true
+
+tools:
+    external_code_coverage: false

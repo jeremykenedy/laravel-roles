@@ -1,12 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace jeremykenedy\LaravelRoles\App\Services;
 
+use Illuminate\Support\Arr;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
 
 class RoleFormFields
 {
     use RolesAndPermissionsHelpersTrait;
+
+    /**
+     * The id of the role being edited, or null when creating.
+     *
+     * @var int|string|null
+     */
+    protected $id;
 
     /**
      * List of fields and default value for each field.
@@ -22,11 +32,9 @@ class RoleFormFields
     ];
 
     /**
-     * Create a new job instance.
+     * Create a new form fields instance.
      *
-     * @param int $id
-     *
-     * @return void
+     * @param int|string|null $id
      */
     public function __construct($id = null)
     {
@@ -34,9 +42,9 @@ class RoleFormFields
     }
 
     /**
-     * Execute the job.
+     * Build the form field data.
      *
-     * @return void
+     * @return array
      */
     public function handle()
     {
@@ -52,24 +60,20 @@ class RoleFormFields
             $fields[$fieldName] = old($fieldName, $fieldValue);
         }
 
-        // Get the additional data for the form fields
-        $roleFormFieldData = $this->roleFormFieldData();
-
         return array_merge(
             $fields,
             [
                 'allPermissions'     => config('roles.models.permission')::all(),
                 'rolePermissionsIds' => $rolePermissionsIds,
             ],
-            $roleFormFieldData
+            $this->roleFormFieldData()
         );
     }
 
     /**
      * Return the field values from the model.
      *
-     * @param int   $id
-     * @param array $fields
+     * @param int|string $id
      *
      * @return array
      */
@@ -77,11 +81,12 @@ class RoleFormFields
     {
         $role = config('roles.models.role')::findOrFail($id);
 
-        $fieldNames = array_keys(array_except($fields, ['permissions']));
+        $fieldNames = array_keys(Arr::except($fields, ['permissions']));
 
         $fields = [
             'id' => $id,
         ];
+
         foreach ($fieldNames as $field) {
             $fields[$field] = $role->{$field};
         }
@@ -92,16 +97,14 @@ class RoleFormFields
     }
 
     /**
-     * Get the additonal form fields data.
+     * Get the additional form fields data.
      *
      * @return array
      */
     protected function roleFormFieldData()
     {
-        $allAvailablePermissions = config('roles.models.permission')::all();
-
         return [
-            'allAvailablePermissions'   => $allAvailablePermissions,
+            'allAvailablePermissions' => config('roles.models.permission')::all(),
         ];
     }
 }

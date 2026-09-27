@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace jeremykenedy\LaravelRoles\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,6 +15,7 @@ class Permission extends Database implements PermissionHasRelationsContract
     use PermissionHasRelations;
     use Slugable;
     use SoftDeletes;
+
     /**
      * The attributes that are not mass assignable.
      *
@@ -20,17 +23,6 @@ class Permission extends Database implements PermissionHasRelationsContract
      */
     protected $guarded = [
         'id',
-    ];
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'deleted_at',
     ];
 
     /**
@@ -70,8 +62,6 @@ class Permission extends Database implements PermissionHasRelationsContract
 
     /**
      * Create a new model instance.
-     *
-     * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {

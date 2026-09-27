@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace jeremykenedy\LaravelRoles\Traits;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,7 +15,7 @@ trait PermissionHasRelations
      */
     public function roles()
     {
-        return $this->belongsToMany(config('roles.models.role'))->withTimestamps();
+        return $this->belongsToMany(config('roles.models.role'), config('roles.permissionsRoleTable'))->withTimestamps();
     }
 
     /**
@@ -23,6 +25,6 @@ trait PermissionHasRelations
      */
     public function users()
     {
-        return $this->belongsToMany(config('roles.models.defaultUser'))->withTimestamps();
+        return $this->belongsToMany(config('roles.models.defaultUser'), config('roles.permissionsUserTable'))->withTimestamps();
     }
 }

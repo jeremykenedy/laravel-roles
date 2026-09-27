@@ -2,8 +2,8 @@
 
 namespace jeremykenedy\LaravelRoles\App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use jeremykenedy\LaravelRoles\App\Http\Requests\StorePermissionRequest;
 use jeremykenedy\LaravelRoles\App\Http\Requests\UpdatePermissionRequest;
 use jeremykenedy\LaravelRoles\App\Services\PermissionFormFields;
@@ -18,7 +18,7 @@ class LaravelPermissionsController extends Controller
     /**
      * Show the roles and Permissions dashboard.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -30,7 +30,7 @@ class LaravelPermissionsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -43,9 +43,8 @@ class LaravelPermissionsController extends Controller
     /**
      * Store a newly created permission in storage.
      *
-     * @param \jeremykenedy\LaravelRoles\App\Http\Requests\StorePermissionRequest $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(StorePermissionRequest $request)
     {
@@ -53,7 +52,7 @@ class LaravelPermissionsController extends Controller
         $permission = $this->storeNewPermission($permissionData);
 
         return redirect()->route('laravelroles::roles.index')
-                            ->with('success', trans('laravelroles::laravelroles.flash-messages.permission-create', ['permission' => $permission->name]));
+            ->with('success', trans('laravelroles::laravelroles.flash-messages.permission-create', ['permission' => $permission->name]));
     }
 
     /**
@@ -61,7 +60,7 @@ class LaravelPermissionsController extends Controller
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -75,7 +74,7 @@ class LaravelPermissionsController extends Controller
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Request $request, $id)
     {
@@ -88,10 +87,9 @@ class LaravelPermissionsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \jeremykenedy\LaravelRoles\App\Http\Requests\UpdatePermissionRequest $request
-     * @param int                                                                  $id
+     * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(UpdatePermissionRequest $request, $id)
     {
@@ -107,13 +105,13 @@ class LaravelPermissionsController extends Controller
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
         $permission = $this->deletePermission($id);
 
         return redirect(route('laravelroles::roles.index'))
-                    ->with('success', trans('laravelroles::laravelroles.flash-messages.successDeletedItem', ['type' => 'Permission', 'item' => $permission->name]));
+            ->with('success', trans('laravelroles::laravelroles.flash-messages.successDeletedItem', ['type' => 'Permission', 'item' => $permission->name]));
     }
 }

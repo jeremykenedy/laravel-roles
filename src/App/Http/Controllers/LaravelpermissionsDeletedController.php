@@ -2,20 +2,20 @@
 
 namespace jeremykenedy\LaravelRoles\App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
 use jeremykenedy\LaravelRoles\Traits\RolesUsageAuthTrait;
 
 class LaravelpermissionsDeletedController extends Controller
 {
-    use RolesUsageAuthTrait;
     use RolesAndPermissionsHelpersTrait;
+    use RolesUsageAuthTrait;
 
     /**
      * Show the deleted permission items.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -32,7 +32,7 @@ class LaravelpermissionsDeletedController extends Controller
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -45,9 +45,9 @@ class LaravelpermissionsDeletedController extends Controller
     /**
      * Dashbaord Method to restore all deleted permissions.
      *
-     * @param \Illuminate\Http\Request $request The request
+     * @param Request $request The request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function restoreAllDeletedPermissions(Request $request)
     {
@@ -55,35 +55,34 @@ class LaravelpermissionsDeletedController extends Controller
 
         if ($deletedPermissions['status'] === 'success') {
             return redirect()->route('laravelroles::roles.index')
-                        ->with('success', trans_choice('laravelroles::laravelroles.flash-messages.successRestoredAllPermissions', $deletedPermissions['count'], ['count' => $deletedPermissions['count']]));
+                ->with('success', trans_choice('laravelroles::laravelroles.flash-messages.successRestoredAllPermissions', $deletedPermissions['count'], ['count' => $deletedPermissions['count']]));
         }
 
         return redirect()->route('laravelroles::roles.index')
-                    ->with('error', trans('laravelroles::laravelroles.flash-messages.errorRestoringAllPermissions'));
+            ->with('error', trans('laravelroles::laravelroles.flash-messages.errorRestoringAllPermissions'));
     }
 
     /**
      * Restore the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int                      $id
+     * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function restorePermission(Request $request, $id)
     {
         $permission = $this->restoreDeletedPermission($id);
 
         return redirect()->route('laravelroles::roles.index')
-                    ->with('success', trans('laravelroles::laravelroles.flash-messages.successRestoredPermission', ['permission' => $permission->name]));
+            ->with('success', trans('laravelroles::laravelroles.flash-messages.successRestoredPermission', ['permission' => $permission->name]));
     }
 
     /**
      * Destroy all the specified resource from storage.
      *
-     * @param \Illuminate\Http\Request $request The request
+     * @param Request $request The request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroyAllDeletedPermissions(Request $request)
     {
@@ -91,11 +90,11 @@ class LaravelpermissionsDeletedController extends Controller
 
         if ($deletedPermissions['status'] === 'success') {
             return redirect()->route('laravelroles::roles.index')
-                        ->with('success', trans_choice('laravelroles::laravelroles.flash-messages.successDestroyedAllPermissions', $deletedPermissions['count'], ['count' => $deletedPermissions['count']]));
+                ->with('success', trans_choice('laravelroles::laravelroles.flash-messages.successDestroyedAllPermissions', $deletedPermissions['count'], ['count' => $deletedPermissions['count']]));
         }
 
         return redirect()->route('laravelroles::roles.index')
-                    ->with('error', trans('laravelroles::laravelroles.flash-messages.errorDestroyingAllPermissions'));
+            ->with('error', trans('laravelroles::laravelroles.flash-messages.errorDestroyingAllPermissions'));
     }
 
     /**
@@ -103,13 +102,13 @@ class LaravelpermissionsDeletedController extends Controller
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
         $permission = $this->destroyPermission($id);
 
         return redirect()->route('laravelroles::roles.index')
-                    ->with('success', trans('laravelroles::laravelroles.flash-messages.successDestroyedPermission', ['permission' => $permission->name]));
+            ->with('success', trans('laravelroles::laravelroles.flash-messages.successDestroyedPermission', ['permission' => $permission->name]));
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace jeremykenedy\LaravelRoles\Database;
 
 use Illuminate\Database\Eloquent\Model;
@@ -22,12 +24,11 @@ abstract class Database extends Model
 
     /**
      * Create a new instance to set the table and connection.
-     *
-     * @return void
      */
-    public function __construct($attributes = [])
+    public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
+
         if ($connection = config('roles.connection')) {
             $this->connection = $connection;
         }
@@ -35,6 +36,8 @@ abstract class Database extends Model
 
     /**
      * Get the database connection.
+     *
+     * @return string|null
      */
     public function getConnectionName()
     {
@@ -43,6 +46,8 @@ abstract class Database extends Model
 
     /**
      * Get the database table.
+     *
+     * @return string|null
      */
     public function getTableName()
     {

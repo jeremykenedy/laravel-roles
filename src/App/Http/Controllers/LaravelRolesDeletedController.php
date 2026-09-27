@@ -2,8 +2,8 @@
 
 namespace jeremykenedy\LaravelRoles\App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
 use jeremykenedy\LaravelRoles\Traits\RolesUsageAuthTrait;
 
@@ -15,7 +15,7 @@ class LaravelRolesDeletedController extends Controller
     /**
      * Show the deleted role items.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -32,7 +32,7 @@ class LaravelRolesDeletedController extends Controller
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -45,9 +45,9 @@ class LaravelRolesDeletedController extends Controller
     /**
      * Dashbaord Method to restore all deleted roles.
      *
-     * @param \Illuminate\Http\Request $request The request
+     * @param Request $request The request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function restoreAllDeletedRoles(Request $request)
     {
@@ -55,35 +55,34 @@ class LaravelRolesDeletedController extends Controller
 
         if ($deletedRoles['status'] === 'success') {
             return redirect()->route('laravelroles::roles.index')
-                        ->with('success', trans_choice('laravelroles::laravelroles.flash-messages.successRestoredAllRoles', $deletedRoles['count'], ['count' => $deletedRoles['count']]));
+                ->with('success', trans_choice('laravelroles::laravelroles.flash-messages.successRestoredAllRoles', $deletedRoles['count'], ['count' => $deletedRoles['count']]));
         }
 
         return redirect()->route('laravelroles::roles.index')
-                    ->with('error', trans('laravelroles::laravelroles.flash-messages.errorRestoringAllRoles'));
+            ->with('error', trans('laravelroles::laravelroles.flash-messages.errorRestoringAllRoles'));
     }
 
     /**
      * Restore the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int                      $id
+     * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function restoreRole(Request $request, $id)
     {
         $role = $this->restoreDeletedRole($id);
 
         return redirect()->route('laravelroles::roles.index')
-                    ->with('success', trans('laravelroles::laravelroles.flash-messages.successRestoredRole', ['role' => $role->name]));
+            ->with('success', trans('laravelroles::laravelroles.flash-messages.successRestoredRole', ['role' => $role->name]));
     }
 
     /**
      * Destroy all the specified resource from storage.
      *
-     * @param \Illuminate\Http\Request $request The request
+     * @param Request $request The request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroyAllDeletedRoles(Request $request)
     {
@@ -91,11 +90,11 @@ class LaravelRolesDeletedController extends Controller
 
         if ($deletedRoles['status'] === 'success') {
             return redirect()->route('laravelroles::roles.index')
-                        ->with('success', trans_choice('laravelroles::laravelroles.flash-messages.successDestroyedAllRoles', $deletedRoles['count'], ['count' => $deletedRoles['count']]));
+                ->with('success', trans_choice('laravelroles::laravelroles.flash-messages.successDestroyedAllRoles', $deletedRoles['count'], ['count' => $deletedRoles['count']]));
         }
 
         return redirect()->route('laravelroles::roles.index')
-                    ->with('error', trans('laravelroles::laravelroles.flash-messages.errorDestroyingAllRoles'));
+            ->with('error', trans('laravelroles::laravelroles.flash-messages.errorDestroyingAllRoles'));
     }
 
     /**
@@ -103,13 +102,13 @@ class LaravelRolesDeletedController extends Controller
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
         $role = $this->destroyRole($id);
 
         return redirect()->route('laravelroles::roles.index')
-                    ->with('success', trans('laravelroles::laravelroles.flash-messages.successDestroyedRole', ['role' => $role->name]));
+            ->with('success', trans('laravelroles::laravelroles.flash-messages.successDestroyedRole', ['role' => $role->name]));
     }
 }

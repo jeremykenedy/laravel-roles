@@ -2,67 +2,59 @@
 
 namespace jeremykenedy\LaravelRoles\Test;
 
-use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Testing\RefreshDatabase as TestingRefreshDatabase;
+use jeremykenedy\LaravelRoles\Database\Seeders\DefaultConnectRelationshipsSeeder;
+use jeremykenedy\LaravelRoles\Database\Seeders\DefaultPermissionsTableSeeder;
+use jeremykenedy\LaravelRoles\Database\Seeders\DefaultRolesTableSeeder;
 
 trait RefreshDatabase
 {
     use TestingRefreshDatabase;
 
-    protected $seeder = [
-        \jeremykenedy\LaravelRoles\Database\Seeders\DefaultPermissionsTableSeeder::class,
-        \jeremykenedy\LaravelRoles\Database\Seeders\DefaultRolesTableSeeder::class,
-        \jeremykenedy\LaravelRoles\Database\Seeders\DefaultConnectRelationshipsSeeder::class,
+    /**
+     * Seed the package's default roles and permissions for each test.
+     */
+    protected bool $seed = true;
+
+    /**
+     * Package seeders run, in order, for every seeded test.
+     *
+     * @var array<int, class-string<Seeder>>
+     */
+    protected array $packageSeeders = [
+        DefaultPermissionsTableSeeder::class,
+        DefaultRolesTableSeeder::class,
+        DefaultConnectRelationshipsSeeder::class,
     ];
 
     /**
-     * Refresh the in-memory database.
+     * The parameters used when running "migrate:fresh".
      *
-     * @return void
+     * `--seed` is left off because it resolves Database\Seeders\DatabaseSeeder,
+     * which the package test application does not have.
+     *
+     * @return array<string, mixed>
      */
-    protected function refreshInMemoryDatabase()
+    protected function migrateFreshUsing()
     {
-        $this->artisan('migrate', $this->migrateUsing());
-
-        if ($this->shouldSeed()) {
-            $options = ['--force' => true];
-
-            if ($seeders = $this->seeder()) {
-                if (is_array($seeders)) {
-                    foreach ($seeders as $seeder) {
-                        $options['--class'] = $seeder;
-                        $this->artisan('db:seed', $options);
-                    }
-                } else {
-                    $options['--class'] = $seeders;
-                    $this->artisan('db:seed', $options);
-                }
-            } else {
-                $this->artisan('db:seed', $options);
-            }
-        }
-
-        $this->app[Kernel::class]->setArtisan(null);
+        return [
+            '--drop-views' => $this->shouldDropViews(),
+            '--drop-types' => $this->shouldDropTypes(),
+        ];
     }
 
     /**
-     * The parameters that should be used when running "migrate".
-     *
-     * @return array
+     * Seed the package's default roles, permissions and their relationships.
      */
-    protected function migrateUsing()
+    protected function defineDatabaseSeeders(): void
     {
-        return [
-            /**
-             * Non standard path.
-             *
-             * $this->laravel->databasePath().DIRECTORY_SEPARATOR.'migrations'
-             * with `vendor/orchestra/testbench-core/laravel` as basePath
-             *
-             * @see \Illuminate\Database\Console\Migrations\BaseCommand
-             */
-            '--path'     => realpath(__DIR__.'/../src/Database/Migrations'),
-            '--realpath' => true,
-        ];
+        if (!$this->shouldSeed()) {
+            return;
+        }
+
+        foreach ($this->packageSeeders as $seeder) {
+            $this->seed($seeder);
+        }
     }
 }

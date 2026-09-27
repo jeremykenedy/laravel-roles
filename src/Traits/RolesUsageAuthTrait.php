@@ -1,21 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace jeremykenedy\LaravelRoles\Traits;
 
 trait RolesUsageAuthTrait
 {
     /**
-     * Variable to hold if we are using built in Laravel authentication.
+     * Whether the GUI is behind Laravel's built in `auth` middleware.
+     *
+     * @var bool
      */
     private $_rolesGuiAuthEnabled;
 
     /**
-     * Variable to hold if we are using roles/permissoins middleware for access.
+     * Whether the GUI is behind the package's roles/permissions middleware.
+     *
+     * @var bool
      */
     private $_rolesGuiMiddlewareEnabled;
 
     /**
-     * Variable to hold what roles/permissions middleware we are using if enabled.
+     * The roles/permissions middleware applied when enabled.
+     *
+     * @var string
      */
     private $_rolesGuiMiddleware;
 
@@ -29,6 +37,10 @@ trait RolesUsageAuthTrait
         $this->_rolesGuiAuthEnabled = config('roles.rolesGuiAuthEnabled');
         $this->_rolesGuiMiddlewareEnabled = config('roles.rolesGuiMiddlewareEnabled');
         $this->_rolesGuiMiddleware = config('roles.rolesGuiMiddleware');
+
+        if (!method_exists($this, 'middleware')) {
+            return;
+        }
 
         if ($this->_rolesGuiAuthEnabled) {
             $this->middleware('auth');

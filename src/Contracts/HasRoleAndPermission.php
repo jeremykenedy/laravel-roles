@@ -163,7 +163,6 @@ interface HasRoleAndPermission
      * Check if the user is allowed to manipulate with entity.
      *
      * @param string $providedPermission
-     * @param Model  $entity
      * @param bool   $owner
      * @param string $ownerColumn
      *

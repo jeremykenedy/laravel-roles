@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" role="img" aria-labelledby="title description">
+  <title id="title">Laravel Roles</title>
+  <desc id="description">Roles, permissions, and levels for Laravel. Bootstrap 4, Bootstrap 5, Tailwind CSS, and an optional GUI.</desc>
+  <defs><linearGradient id="background" x2="1" y2="1"><stop stop-color="#0c0a09"/><stop offset="1" stop-color="#1c1917"/></linearGradient></defs>
+  <rect width="800" height="200" rx="16" fill="url(#background)"/>
+  <g font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+    <text x="40" y="80" font-size="40" font-weight="700" letter-spacing="-.5" fill="#fff">Laravel Roles</text>
+    <text x="40" y="110" font-size="14" fill="#a8a29e">Roles, permissions, and levels for your Laravel application.</text>
+    <rect x="40" y="133" width="90" height="22" rx="11" fill="#1a1a1a" stroke="#a78bfa" stroke-width=".8" opacity=".8"/>
+    <text x="85" y="148" font-size="10" font-weight="500" text-anchor="middle" fill="#a78bfa">Bootstrap 4</text>
+    <rect x="140" y="133" width="90" height="22" rx="11" fill="#1a1a1a" stroke="#60a5fa" stroke-width=".8" opacity=".8"/>
+    <text x="185" y="148" font-size="10" font-weight="500" text-anchor="middle" fill="#60a5fa">Bootstrap 5</text>
+    <rect x="240" y="133" width="95" height="22" rx="11" fill="#1a1a1a" stroke="#4ade80" stroke-width=".8" opacity=".8"/>
+    <text x="287.5" y="148" font-size="10" font-weight="500" text-anchor="middle" fill="#4ade80">Tailwind CSS</text>
+    <rect x="345" y="133" width="85" height="22" rx="11" fill="#1a1a1a" stroke="#fbbf24" stroke-width=".8" opacity=".8"/>
+    <text x="387.5" y="148" font-size="10" font-weight="500" text-anchor="middle" fill="#fbbf24">Role levels</text>
+    <rect x="440" y="133" width="90" height="22" rx="11" fill="#1a1a1a" stroke="#f87171" stroke-width=".8" opacity=".8"/>
+    <text x="485" y="148" font-size="10" font-weight="500" text-anchor="middle" fill="#f87171">Optional GUI</text>
+  </g>
+  <g transform="translate(570 40)">
+    <rect width="180" height="120" rx="16" fill="#292524"/>
+    <path d="M 45 22 L 72 32 L 72 62 Q 72 88 45 98 Q 18 88 18 62 L 18 32 Z" fill="#8b5cf6"/>
+    <path d="M 33 58 L 42 68 L 58 46" fill="none" stroke="#292524" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="95" y="36" width="62" height="12" rx="6" fill="#a78bfa"/>
+    <rect x="95" y="56" width="48" height="12" rx="6" fill="#60a5fa"/>
+    <rect x="95" y="76" width="34" height="12" rx="6" fill="#4ade80"/>
+  </g>
+</svg>
