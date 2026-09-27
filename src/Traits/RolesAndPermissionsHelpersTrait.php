@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace jeremykenedy\LaravelRoles\Traits;
 
 use Illuminate\Database\Connection;
-use Illuminate\Http\Response;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use jeremykenedy\LaravelRoles\Models\Permission;
+use jeremykenedy\LaravelRoles\Models\Role;
 use Throwable;
 
 trait RolesAndPermissionsHelpersTrait
@@ -17,7 +20,7 @@ trait RolesAndPermissionsHelpersTrait
      *
      * @param int $id The identifier
      *
-     * @return collection
+     * @return Permission
      */
     public function deletePermission($id)
     {
@@ -71,7 +74,7 @@ trait RolesAndPermissionsHelpersTrait
      *
      * @param int $id The identifier
      *
-     * @return collection
+     * @return Permission
      */
     public function destroyPermission($id)
     {
@@ -87,7 +90,7 @@ trait RolesAndPermissionsHelpersTrait
      *
      * @param int $id The identifier
      *
-     * @return collection
+     * @return Role
      */
     public function deleteRole($id)
     {
@@ -102,7 +105,7 @@ trait RolesAndPermissionsHelpersTrait
      *
      * @param int $id The identifier
      *
-     * @return collection
+     * @return Role
      */
     public function destroyRole($id)
     {
@@ -157,7 +160,7 @@ trait RolesAndPermissionsHelpersTrait
      *
      * @param int $id
      *
-     * @return Response|collection
+     * @return Permission
      */
     public function getDeletedPermission($id)
     {
@@ -175,7 +178,7 @@ trait RolesAndPermissionsHelpersTrait
      *
      * @param int $id
      *
-     * @return Response|collection
+     * @return Role
      */
     public function getDeletedRole($id)
     {
@@ -191,7 +194,7 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets the roles.
      *
-     * @return collection The roles.
+     * @return Collection The roles.
      */
     public function getRoles()
     {
@@ -203,7 +206,7 @@ trait RolesAndPermissionsHelpersTrait
      *
      * @param int $id The identifier
      *
-     * @return collection The role.
+     * @return Role The role.
      */
     public function getRole($id)
     {
@@ -213,7 +216,7 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets the permissions.
      *
-     * @return collection The permissions.
+     * @return Collection The permissions.
      */
     public function getPermissions()
     {
@@ -225,7 +228,7 @@ trait RolesAndPermissionsHelpersTrait
      *
      * @param int $id The identifier
      *
-     * @return collection The permission.
+     * @return Permission The permission.
      */
     public function getPermission($id)
     {
@@ -235,7 +238,7 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets the users.
      *
-     * @return collection The users.
+     * @return Collection The users.
      */
     public function getUsers()
     {
@@ -257,7 +260,7 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets the deleted roles.
      *
-     * @return collection The deleted roles.
+     * @return Builder The deleted roles.
      */
     public function getDeletedRoles()
     {
@@ -267,7 +270,7 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets the deleted permissions.
      *
-     * @return collection The deleted permissions.
+     * @return Builder The deleted permissions.
      */
     public function getDeletedPermissions()
     {
@@ -277,9 +280,9 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets the permissions with roles.
      *
-     * @param int $roleId The role Id
+     * @param int|string $roleId The role Id
      *
-     * @return collection The permissions with roles.
+     * @return Collection The permissions with roles.
      */
     public function getPermissionsWithRoles($roleId = null)
     {
@@ -313,7 +316,7 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets the permission models.
      *
-     * @return collection The permission models.
+     * @return Collection The permission models.
      */
     public function getPermissionModels()
     {
@@ -439,9 +442,9 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets all users for permission.
      *
-     * @param collection $permission The permission
+     * @param Collection $permission The permission
      *
-     * @return collection All users for permission.
+     * @return Collection All users for permission.
      */
     public function getAllUsersForPermission($permission)
     {
@@ -577,7 +580,7 @@ trait RolesAndPermissionsHelpersTrait
      *
      * @param int $id The identifier
      *
-     * @return collection
+     * @return Permission
      */
     public function restoreDeletedPermission($id)
     {
@@ -592,7 +595,7 @@ trait RolesAndPermissionsHelpersTrait
      *
      * @param int $id The identifier
      *
-     * @return collection
+     * @return Role
      */
     public function restoreDeletedRole($id)
     {
@@ -678,10 +681,10 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets the sorted users with roles.
      *
-     * @param collection $roles The roles
-     * @param collection $users The users
+     * @param Collection $roles The roles
+     * @param Collection $users The users
      *
-     * @return collection The sorted users with roles.
+     * @return Collection The sorted users with roles.
      */
     public function getSortedUsersWithRoles($roles, $users)
     {
@@ -707,10 +710,10 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets the sorted roles with permissions.
      *
-     * @param collection $sortedRolesWithUsers The sorted roles with users
-     * @param collection $permissions          The permissions
+     * @param Collection $sortedRolesWithUsers The sorted roles with users
+     * @param Collection $permissions          The permissions
      *
-     * @return collection The sorted roles with permissions.
+     * @return Collection The sorted roles with permissions.
      */
     public function getSortedRolesWithPermissionsAndUsers($sortedRolesWithUsers, $permissions)
     {
@@ -753,11 +756,11 @@ trait RolesAndPermissionsHelpersTrait
     /**
      * Gets the sorted permissons with roles and users.
      *
-     * @param collection $sortedRolesWithUsers The sorted roles with users
-     * @param collection $permissions          The permissions
+     * @param Collection $sortedRolesWithUsers The sorted roles with users
+     * @param Collection $permissions          The permissions
      * @param colection  $users                The users
      *
-     * @return collection The sorted permissons with roles and users.
+     * @return Collection The sorted permissons with roles and users.
      */
     public function getSortedPermissonsWithRolesAndUsers($sortedRolesWithUsers, $permissions, $users)
     {
@@ -842,14 +845,14 @@ trait RolesAndPermissionsHelpersTrait
      * @param array $roleData        The role data
      * @param array $rolePermissions The role permissions
      *
-     * @return collection The Role
+     * @return Role The Role
      */
     public function storeRoleWithPermissions($roleData, $rolePermissions)
     {
         return $this->rolesConnection()->transaction(function () use ($roleData, $rolePermissions) {
             $role = config('roles.models.role')::create($roleData);
 
-            if ($rolePermissions) {
+            if (!empty($rolePermissions)) {
                 $role->syncPermissions($this->permissionIdsFrom($rolePermissions));
             }
 
@@ -864,7 +867,7 @@ trait RolesAndPermissionsHelpersTrait
      * @param array $roleData        The role data
      * @param array $rolePermissions The role permissions
      *
-     * @return collection The Role
+     * @return Role The Role
      */
     public function updateRoleWithPermissions($id, $roleData, $rolePermissions)
     {
@@ -875,7 +878,7 @@ trait RolesAndPermissionsHelpersTrait
             $role->save();
             $role->detachAllPermissions();
 
-            if ($rolePermissions) {
+            if (!empty($rolePermissions)) {
                 $role->syncPermissions($this->permissionIdsFrom($rolePermissions));
             }
 
@@ -916,7 +919,7 @@ trait RolesAndPermissionsHelpersTrait
      *
      * @param array $permissionData The permission data
      *
-     * @return collection The New Permission
+     * @return Permission The New Permission
      */
     public function storeNewPermission($permissionData)
     {
@@ -929,7 +932,7 @@ trait RolesAndPermissionsHelpersTrait
      * @param int   $id             The identifier
      * @param array $permissionData The permission data
      *
-     * @return collection
+     * @return Permission
      */
     public function updatePermission($id, $permissionData)
     {
