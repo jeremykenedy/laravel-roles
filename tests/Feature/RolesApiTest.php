@@ -42,6 +42,33 @@ it('rejects an unauthenticated request', function (): void {
     $this->getJson('/api/roles-api')->assertUnauthorized();
 });
 
+it('refuses an authenticated user without the configured role', function (): void {
+    $this->enableApi();
+
+    $this->actingAs(User::factory()->create(), 'api')
+        ->getJson('/api/roles-api')
+        ->assertForbidden();
+});
+
+it('refuses a role created by a user without the configured role', function (): void {
+    $this->enableApi();
+
+    $this->actingAs(User::factory()->create(), 'api')
+        ->postJson('/api/roles-api', ['name' => 'Editor', 'slug' => 'editor', 'level' => 3])
+        ->assertForbidden();
+
+    expect(Role::where('slug', 'editor')->exists())->toBeFalse();
+});
+
+it('drops the role check when the middleware is turned off', function (): void {
+    config(['roles.rolesAPIMiddlewareEnabled' => false]);
+    $this->enableApi();
+
+    $this->actingAs(User::factory()->create(), 'api')
+        ->getJson('/api/roles-api')
+        ->assertOk();
+});
+
 it('returns the roles and permissions payload', function (): void {
     $this->enableApi();
 

@@ -12,8 +12,18 @@ use jeremykenedy\LaravelRoles\App\Http\Controllers\Api\LaravelRolesApiController
 |
 */
 
+$middleware = [];
+
+if (config('roles.rolesAPIAuthEnabled')) {
+    $middleware[] = 'auth:api';
+}
+
+if (config('roles.rolesAPIMiddlewareEnabled')) {
+    $middleware[] = config('roles.rolesAPIMiddleware');
+}
+
 Route::group([
-    'middleware'    => ['auth:api'],
+    'middleware'    => $middleware,
     'as'            => 'laravelroles::',
     'prefix'        => 'api',
 ], function () {
