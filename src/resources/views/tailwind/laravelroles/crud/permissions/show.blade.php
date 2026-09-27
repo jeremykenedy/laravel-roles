@@ -164,6 +164,7 @@
                             <a class="inline-flex w-full items-center justify-center gap-1.5 rounded-md bg-gray-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 dark:bg-gray-600 dark:hover:bg-gray-500 dark:focus-visible:ring-offset-gray-800 motion-reduce:transition-none"
                                 href="{{ route('laravelroles::permissions.edit', $permission->id) }}" title="{{ trans("laravelroles::laravelroles.tooltips.edit-permission") }}">
                                 {!! trans("laravelroles::laravelroles.buttons.edit-larger") !!}
+                                        <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" /></svg>
                             </a>
                         @endisset
                     </div>

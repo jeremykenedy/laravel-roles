@@ -130,11 +130,13 @@
                             <td>
                                 <a class="btn btn-sm btn-outline-info w-100" href="{{ route('laravelroles::roles.show', $item['role']->id) }}" data-bs-toggle="tooltip" title="{{ trans('laravelroles::laravelroles.tooltips.show-role') }}">
                                     {!! trans("laravelroles::laravelroles.buttons.show") !!}
+                                    <i class="fa-solid fa-eye fa-fw" aria-hidden="true"></i>
                                 </a>
                             </td>
                             <td>
                                 <a class="btn btn-sm btn-outline-secondary w-100" href="{{ route('laravelroles::roles.edit', $item['role']->id) }}" data-bs-toggle="tooltip" title="{{ trans('laravelroles::laravelroles.tooltips.edit-role') }}">
                                     {!! trans("laravelroles::laravelroles.buttons.edit") !!}
+                                    <i class="fa-solid fa-pencil fa-fw" aria-hidden="true"></i>
                                 </a>
                             </td>
                             <td>

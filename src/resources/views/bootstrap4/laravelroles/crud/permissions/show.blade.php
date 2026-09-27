@@ -247,6 +247,7 @@
                                 @else
                                     <a class="btn btn-sm btn-secondary btn-block text-white mb-0" href="{{ route('laravelroles::permissions.edit', $item['permission']->id) }}" data-toggle="tooltip" title="{{ trans("laravelroles::laravelroles.tooltips.edit-permission") }}">
                                         {!! trans("laravelroles::laravelroles.buttons.edit-larger") !!}
+                                        <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>
                                     </a>
                                 @endisset
                             </div>

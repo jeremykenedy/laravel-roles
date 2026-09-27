@@ -6,6 +6,9 @@ namespace jeremykenedy\LaravelRoles\Traits;
 
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Throwable;
+use Illuminate\Database\Connection;
 
 trait RolesAndPermissionsHelpersTrait
 {
@@ -31,21 +34,35 @@ trait RolesAndPermissionsHelpersTrait
      */
     public function destroyAllTheDeletedPermissions()
     {
-        $deletedPermissions = $this->getDeletedPermissions()->get();
-        $deletedPermissionsCount = $deletedPermissions->count();
-        $status = 'error';
+        $items = $this->getDeletedPermissions()->get();
+        $count = $items->count();
 
-        if ($deletedPermissionsCount > 0) {
-            foreach ($deletedPermissions as $deletedPermission) {
-                $this->removeUsersAndRolesFromPermissions($deletedPermission);
-                $deletedPermission->forceDelete();
-            }
-            $status = 'success';
+        if ($count === 0) {
+            return [
+                'status' => 'error',
+                'count'  => $count,
+            ];
+        }
+
+        try {
+            $this->rolesConnection()->transaction(function () use ($items) {
+                foreach ($items as $item) {
+                    $this->removeUsersAndRolesFromPermissions($item);
+                    $item->forceDelete();
+                }
+            });
+        } catch (Throwable $e) {
+            Log::error('laravel-roles failed to destroy all deleted permissions.', ['exception' => $e]);
+
+            return [
+                'status' => 'error',
+                'count'  => $count,
+            ];
         }
 
         return [
-            'status' => $status,
-            'count'  => $deletedPermissionsCount,
+            'status' => 'success',
+            'count'  => $count,
         ];
     }
 
@@ -103,21 +120,35 @@ trait RolesAndPermissionsHelpersTrait
      */
     public function destroyAllTheDeletedRoles()
     {
-        $deletedRoles = $this->getDeletedRoles()->get();
-        $deletedRolesCount = $deletedRoles->count();
-        $status = 'error';
+        $items = $this->getDeletedRoles()->get();
+        $count = $items->count();
 
-        if ($deletedRolesCount > 0) {
-            foreach ($deletedRoles as $deletedRole) {
-                $this->removeUsersAndPermissionsFromRole($deletedRole);
-                $deletedRole->forceDelete();
-            }
-            $status = 'success';
+        if ($count === 0) {
+            return [
+                'status' => 'error',
+                'count'  => $count,
+            ];
+        }
+
+        try {
+            $this->rolesConnection()->transaction(function () use ($items) {
+                foreach ($items as $item) {
+                    $this->removeUsersAndPermissionsFromRole($item);
+                    $item->forceDelete();
+                }
+            });
+        } catch (Throwable $e) {
+            Log::error('laravel-roles failed to destroy all deleted roles.', ['exception' => $e]);
+
+            return [
+                'status' => 'error',
+                'count'  => $count,
+            ];
         }
 
         return [
-            'status' => $status,
-            'count'  => $deletedRolesCount,
+            'status' => 'success',
+            'count'  => $count,
         ];
     }
 
@@ -472,20 +503,34 @@ trait RolesAndPermissionsHelpersTrait
      */
     public function restoreAllTheDeletedPermissions()
     {
-        $deletedPermissions = $this->getDeletedPermissions()->get();
-        $deletedPermissionsCount = $deletedPermissions->count();
-        $status = 'error';
+        $items = $this->getDeletedPermissions()->get();
+        $count = $items->count();
 
-        if ($deletedPermissionsCount > 0) {
-            foreach ($deletedPermissions as $deletedPermission) {
-                $deletedPermission->restore();
-            }
-            $status = 'success';
+        if ($count === 0) {
+            return [
+                'status' => 'error',
+                'count'  => $count,
+            ];
+        }
+
+        try {
+            $this->rolesConnection()->transaction(function () use ($items) {
+                foreach ($items as $item) {
+                    $item->restore();
+                }
+            });
+        } catch (Throwable $e) {
+            Log::error('laravel-roles failed to restore all deleted permissions.', ['exception' => $e]);
+
+            return [
+                'status' => 'error',
+                'count'  => $count,
+            ];
         }
 
         return [
-            'status' => $status,
-            'count'  => $deletedPermissionsCount,
+            'status' => 'success',
+            'count'  => $count,
         ];
     }
 
@@ -496,20 +541,34 @@ trait RolesAndPermissionsHelpersTrait
      */
     public function restoreAllTheDeletedRoles()
     {
-        $deletedRoles = $this->getDeletedRoles()->get();
-        $deletedRolesCount = $deletedRoles->count();
-        $status = 'error';
+        $items = $this->getDeletedRoles()->get();
+        $count = $items->count();
 
-        if ($deletedRolesCount > 0) {
-            foreach ($deletedRoles as $deletedRole) {
-                $deletedRole->restore();
-            }
-            $status = 'success';
+        if ($count === 0) {
+            return [
+                'status' => 'error',
+                'count'  => $count,
+            ];
+        }
+
+        try {
+            $this->rolesConnection()->transaction(function () use ($items) {
+                foreach ($items as $item) {
+                    $item->restore();
+                }
+            });
+        } catch (Throwable $e) {
+            Log::error('laravel-roles failed to restore all deleted roles.', ['exception' => $e]);
+
+            return [
+                'status' => 'error',
+                'count'  => $count,
+            ];
         }
 
         return [
-            'status' => $status,
-            'count'  => $deletedRolesCount,
+            'status' => 'success',
+            'count'  => $count,
         ];
     }
 
@@ -787,17 +846,15 @@ trait RolesAndPermissionsHelpersTrait
      */
     public function storeRoleWithPermissions($roleData, $rolePermissions)
     {
-        $role = config('roles.models.role')::create($roleData);
+        return $this->rolesConnection()->transaction(function () use ($roleData, $rolePermissions) {
+            $role = config('roles.models.role')::create($roleData);
 
-        if ($rolePermissions) {
-            $permissionIds = [];
-            foreach ($rolePermissions as $permission) {
-                $permissionIds[] = json_decode($permission)->id;
+            if ($rolePermissions) {
+                $role->syncPermissions($this->permissionIdsFrom($rolePermissions));
             }
-            $role->syncPermissions($permissionIds);
-        }
 
-        return $role;
+            return $role;
+        });
     }
 
     /**
@@ -811,21 +868,47 @@ trait RolesAndPermissionsHelpersTrait
      */
     public function updateRoleWithPermissions($id, $roleData, $rolePermissions)
     {
-        $role = config('roles.models.role')::findOrFail($id);
+        return $this->rolesConnection()->transaction(function () use ($id, $roleData, $rolePermissions) {
+            $role = config('roles.models.role')::findOrFail($id);
 
-        $role->fill($roleData);
-        $role->save();
-        $role->detachAllPermissions();
+            $role->fill($roleData);
+            $role->save();
+            $role->detachAllPermissions();
 
-        if ($rolePermissions) {
-            $permissionIds = [];
-            foreach ($rolePermissions as $permission) {
-                $permissionIds[] = json_decode($permission)->id;
+            if ($rolePermissions) {
+                $role->syncPermissions($this->permissionIdsFrom($rolePermissions));
             }
-            $role->syncPermissions($permissionIds);
+
+            return $role;
+        });
+    }
+
+    /**
+     * Pull the ids out of the permission payload the role forms submit.
+     *
+     * @param array $rolePermissions
+     *
+     * @return array
+     */
+    protected function permissionIdsFrom($rolePermissions)
+    {
+        $ids = [];
+
+        foreach ($rolePermissions as $permission) {
+            $ids[] = json_decode($permission)->id;
         }
 
-        return $role;
+        return $ids;
+    }
+
+    /**
+     * The connection the package tables live on.
+     *
+     * @return Connection
+     */
+    protected function rolesConnection()
+    {
+        return DB::connection(config('roles.connection'));
     }
 
     /**

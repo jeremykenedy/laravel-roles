@@ -130,3 +130,31 @@ it('gives every tailwind alpine directive an x-data root in the same file', func
 
     expect($offenders)->toBeEmpty();
 });
+
+it('keeps framework specific markup out of the shared translation strings', function (string $locale): void {
+    $strings = require dirname(__DIR__, 2)."/src/resources/lang/{$locale}/laravelroles.php";
+
+    $offenders = [];
+
+    // Plain emphasis is fine. CSS classes and icon tags are not: the strings
+    // are shared by all three view sets, which each draw their own icons.
+    array_walk_recursive($strings, function ($value, $key) use (&$offenders) {
+        if (is_string($value) && preg_match('/class=|<i[\s>]|<svg/i', $value)) {
+            $offenders[] = $key;
+        }
+    });
+
+    expect($offenders)->toBeEmpty();
+})->with(['en', 'de', 'fr']);
+
+it('gives the row actions an icon drawn from the active framework', function (string $framework, string $needle): void {
+    foreach (['role', 'permission'] as $type) {
+        $table = file_get_contents(CssFramework::viewPath($framework)."/laravelroles/tables/{$type}-items-table.blade.php");
+
+        expect($table)->toContain($needle);
+    }
+})->with([
+    ['bootstrap4', 'fa fa-eye'],
+    ['bootstrap5', 'fa-solid fa-eye'],
+    ['tailwind', '<svg'],
+]);

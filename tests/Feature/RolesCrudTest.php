@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Log;
+use jeremykenedy\LaravelRoles\LaravelRoles;
 use jeremykenedy\LaravelRoles\Models\Permission;
 use jeremykenedy\LaravelRoles\Models\Role;
 use jeremykenedy\LaravelRoles\Test\RefreshDatabase;
@@ -225,4 +227,34 @@ it('authorizes by permission when the middleware type is permissions', function 
             'level' => 3,
         ])
         ->assertRedirect(route('laravelroles::roles.index'));
+});
+
+it('rolls the new role back when attaching its permissions fails', function (): void {
+    config(['roles.models.permission' => 'App\\Models\\ThisPermissionModelIsMissing']);
+
+    try {
+        (new LaravelRoles())->storeRoleWithPermissions(
+            ['name' => 'Editor', 'slug' => 'editor', 'description' => '', 'level' => 3],
+            ['{"id":1}']
+        );
+    } catch (Throwable $e) {
+        // The point of the test is what the database looks like afterwards.
+    }
+
+    expect(Role::where('slug', 'editor')->exists())->toBeFalse();
+});
+
+it('keeps the deleted roles and reports an error when destroying them fails', function (): void {
+    Role::where('slug', 'user')->firstOrFail()->delete();
+    Log::spy();
+
+    config(['roles.models.defaultUser' => 'App\\Models\\ThisUserModelIsMissing']);
+
+    $result = (new LaravelRoles())->destroyAllTheDeletedRoles();
+
+    expect($result['status'])->toBe('error')
+        ->and($result['count'])->toBe(1)
+        ->and(Role::onlyTrashed()->count())->toBe(1);
+
+    Log::shouldHaveReceived('error')->once();
 });

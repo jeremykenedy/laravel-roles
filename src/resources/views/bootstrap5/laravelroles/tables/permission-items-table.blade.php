@@ -130,11 +130,13 @@
                             <td>
                                 <a class="btn btn-sm btn-outline-info w-100" href="{{ route('laravelroles::permissions.show', $item['permission']->id) }}" data-bs-toggle="tooltip" title="{{ trans('laravelroles::laravelroles.tooltips.show-permission') }}">
                                     {!! trans("laravelroles::laravelroles.buttons.show") !!}
+                                    <i class="fa-solid fa-eye fa-fw" aria-hidden="true"></i>
                                 </a>
                             </td>
                             <td>
                                 <a class="btn btn-sm btn-outline-secondary w-100" href="{{ route('laravelroles::permissions.edit', $item['permission']->id) }}" data-bs-toggle="tooltip" title="{{ trans('laravelroles::laravelroles.tooltips.edit-permission') }}">
                                     {!! trans("laravelroles::laravelroles.buttons.edit") !!}
+                                    <i class="fa-solid fa-pencil fa-fw" aria-hidden="true"></i>
                                 </a>
                             </td>
                             <td>

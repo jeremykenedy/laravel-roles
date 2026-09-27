@@ -227,6 +227,7 @@
                                 @else
                                     <a class="btn btn-sm btn-secondary w-100 text-white mb-0" href="{{ route('laravelroles::roles.edit', $item->id) }}" data-bs-toggle="tooltip" title="{{ trans("laravelroles::laravelroles.tooltips.edit-role") }}">
                                         {!! trans("laravelroles::laravelroles.buttons.edit-larger") !!}
+                                        <i class="fa-solid fa-pencil fa-fw" aria-hidden="true"></i>
                                     </a>
                                 @endisset
                             </div>

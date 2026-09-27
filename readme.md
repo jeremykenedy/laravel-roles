@@ -8,6 +8,7 @@ A Powerful package for handling roles and permissions in Laravel. Supports Larav
 [![Latest Stable Version](https://poser.pugx.org/jeremykenedy/laravel-roles/v/stable.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
 [![Scrutinizer-CI Build Status](https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/badges/build.png?b=master)](https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/build-status/master)
 [![StyleCI](https://github.styleci.io/repos/82768379/shield?branch=master)](https://github.styleci.io/repos/82768379)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jeremykenedy_laravel-roles&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=jeremykenedy_laravel-roles)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/?branch=master)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/jeremykenedy/laravel-roles/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

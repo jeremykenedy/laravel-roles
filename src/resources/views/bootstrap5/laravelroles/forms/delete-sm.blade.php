@@ -20,5 +20,6 @@
     {{ method_field('DELETE') }}
     <button class="btn w-100 {{ $btnClass }}" type="button" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-title="{!! trans('laravelroles::laravelroles.modals.delete_modal_title', ['type' => $type, 'item' => $item->name]) !!}" data-message="{!! trans('laravelroles::laravelroles.modals.delete_modal_message', ['type' => $type, 'item' => $item->name]) !!}" >
         {!! $btnText !!}
+        <i class="fa-solid fa-trash-can fa-fw" aria-hidden="true"></i>
     </button>
 </form>
