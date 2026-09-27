@@ -1,15 +1,11 @@
 build:
     nodes:
         analysis:
-            environment:
-                php:
-                    version: '8.3'
             dependencies:
                 override:
-                    # Resolved rather than installed from the lock, so the
-                    # runtime here does not have to match the one the lock
-                    # was built on. Only the runtime packages are needed to
-                    # analyse src/.
+                    # Resolved rather than installed from the lock. The lock is
+                    # built on a newer runtime than the one the inspection runs,
+                    # and only the runtime packages are needed to analyse src.
                     - composer update --no-dev --prefer-dist --no-interaction
             tests:
                 override:
