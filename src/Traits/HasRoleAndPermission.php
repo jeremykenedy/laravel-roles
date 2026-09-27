@@ -18,7 +18,7 @@ use ReflectionMethod;
 /**
  * Adds the role and permission checks to an Eloquent model, normally the app User.
  *
- * @method BelongsToMany belongsToMany($related, $table = null)
+ * @method BelongsToMany belongsToMany($related, $table = null, $foreignPivotKey = null, $relatedPivotKey = null, $parentKey = null, $relatedKey = null, $relation = null)
  * @method mixed         getRelation($relation)
  * @method void          load($relations)
  * @method void          loadMissing($relations)

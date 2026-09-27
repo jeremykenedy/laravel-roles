@@ -6,7 +6,7 @@
     </picture>
 </p>
 
-<p align="center">A powerful package for handling roles and permissions in Laravel. Supports Laravel 5.3 through 13.</p>
+<p align="center">Role-Based Access Control (RBAC) for Laravel. Roles, permissions and role levels. Supports Laravel 5.3 through 13.</p>
 
 <p align="center">
     <a href="https://github.com/jeremykenedy/laravel-roles/actions/workflows/tests.yml"><img src="https://github.com/jeremykenedy/laravel-roles/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
