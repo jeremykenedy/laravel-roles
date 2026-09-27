@@ -6,6 +6,15 @@ namespace jeremykenedy\LaravelRoles\App\Console\Concerns;
 
 trait HandlesFrameworkSetup
 {
+    /**
+     * Provided by Illuminate\Console\Command.
+     *
+     * @param string $command
+     *
+     * @return int
+     */
+    abstract public function call($command, array $arguments = []);
+
     protected function setCssFramework(string $css): void
     {
         $this->updateEnvValue('ROLES_CSS_FRAMEWORK', $css);

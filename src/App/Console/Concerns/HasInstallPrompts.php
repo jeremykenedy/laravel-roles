@@ -39,6 +39,67 @@ trait HasInstallPrompts
         ' ' => ['   ', '   ', '   ', '   ', '   '],
     ];
 
+    /**
+     * Provided by Illuminate\Console\Command.
+     *
+     * @param string|null $key
+     *
+     * @return mixed
+     */
+    abstract public function option($key = null);
+
+    /**
+     * Provided by Illuminate\Console\Command.
+     *
+     * @param string      $string
+     * @param string|null $style
+     * @param int|string|null $verbosity
+     *
+     * @return void
+     */
+    abstract public function line($string, $style = null, $verbosity = null);
+
+    /**
+     * Provided by Illuminate\Console\Command.
+     *
+     * @param string $string
+     * @param int|string|null $verbosity
+     *
+     * @return void
+     */
+    abstract public function info($string, $verbosity = null);
+
+    /**
+     * Provided by Illuminate\Console\Command.
+     *
+     * @param string $string
+     * @param int|string|null $verbosity
+     *
+     * @return void
+     */
+    abstract public function error($string, $verbosity = null);
+
+    /**
+     * Provided by Illuminate\Console\Command.
+     *
+     * @param int $count
+     *
+     * @return void
+     */
+    abstract public function newLine($count = 1);
+
+    /**
+     * Provided by Illuminate\Console\Command.
+     *
+     * @param string   $question
+     * @param mixed    $default
+     * @param int|null $attempts
+     * @param bool     $multiple
+     *
+     * @return mixed
+     */
+    abstract public function choice($question, array $choices, $default = null, $attempts = null, $multiple = false);
+
     protected function renderBanner(string $name): void
     {
         $lines = ['', '', '', '', ''];
