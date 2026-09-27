@@ -8,7 +8,7 @@ use jeremykenedy\LaravelRoles\Support\CssFramework;
 
 trait HasInstallPrompts
 {
-    protected static array $font = [
+    protected static $font = [
         'A' => ['  ██  ', ' ████ ', '██  ██', '██████', '██  ██'],
         'B' => ['█████ ', '██  ██', '█████ ', '██  ██', '█████ '],
         'C' => [' ████ ', '██    ', '██    ', '██    ', ' ████ '],

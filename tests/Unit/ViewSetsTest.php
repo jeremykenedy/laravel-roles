@@ -158,3 +158,33 @@ it('gives the row actions an icon drawn from the active framework', function (st
     ['bootstrap5', 'fa-solid fa-eye'],
     ['tailwind', '<svg'],
 ]);
+
+it('keeps the source within the php version composer declares', function (): void {
+    // composer.json still allows ^7.2, but the test matrix only runs 8.2 and
+    // above, so nothing else would catch syntax that needs a later runtime.
+    $patterns = [
+        'typed property (7.4+)'    => '/^\s*(?:public|protected|private)\s+(?:static\s+)?(?!static\b)\??[A-Za-z_\\\\|]+\s+\$[a-zA-Z_]/m',
+        'arrow function (7.4+)'    => '/\bfn\s*\(/',
+        'null-safe operator (8.0+)' => '/\?->/',
+        'match expression (8.0+)'  => '/\bmatch\s*\(/',
+        'constructor promotion (8.0+)' => '/function\s+__construct\s*\([^)]*\b(?:public|protected|private)\s+\$/',
+    ];
+
+    $offenders = [];
+
+    foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__.'/../../src')) as $file) {
+        if ($file->getExtension() !== 'php' || str_contains($file->getPathname(), '.blade.')) {
+            continue;
+        }
+
+        $code = file_get_contents($file->getPathname());
+
+        foreach ($patterns as $label => $pattern) {
+            if (preg_match($pattern, $code)) {
+                $offenders[] = basename($file->getPathname()).': '.$label;
+            }
+        }
+    }
+
+    expect($offenders)->toBeEmpty();
+});
