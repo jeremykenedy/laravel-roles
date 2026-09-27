@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace jeremykenedy\LaravelRoles\Traits;
 
+use Illuminate\Database\Connection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
-use Illuminate\Database\Connection;
 
 trait RolesAndPermissionsHelpersTrait
 {
