@@ -3,12 +3,12 @@
 namespace jeremykenedy\LaravelRoles\App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use jeremykenedy\LaravelRoles\App\Http\Requests\StoreRoleRequest;
 use jeremykenedy\LaravelRoles\App\Http\Requests\UpdateRoleRequest;
 use jeremykenedy\LaravelRoles\App\Services\RoleFormFields;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
 use jeremykenedy\LaravelRoles\Traits\RolesUsageAuthTrait;
-use Illuminate\Http\Response;
 
 class LaravelRolesController extends Controller
 {
@@ -60,6 +60,7 @@ class LaravelRolesController extends Controller
      * Display the specified resource.
      *
      * @param int $id
+     *
      * @return Response
      */
     public function show($id)
@@ -73,6 +74,7 @@ class LaravelRolesController extends Controller
      * Edit the specified resource.
      *
      * @param int $id
+     *
      * @return Response
      */
     public function edit(Request $request, $id)
@@ -86,7 +88,8 @@ class LaravelRolesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param int                                                            $id
+     * @param int $id
+     *
      * @return Response
      */
     public function update(UpdateRoleRequest $request, $id)
@@ -103,6 +106,7 @@ class LaravelRolesController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
+     *
      * @return Response
      */
     public function destroy($id)

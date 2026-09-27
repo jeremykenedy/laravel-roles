@@ -2,11 +2,11 @@
 
 namespace jeremykenedy\LaravelRoles\Test;
 
+use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Testing\RefreshDatabase as TestingRefreshDatabase;
 use jeremykenedy\LaravelRoles\Database\Seeders\DefaultConnectRelationshipsSeeder;
 use jeremykenedy\LaravelRoles\Database\Seeders\DefaultPermissionsTableSeeder;
 use jeremykenedy\LaravelRoles\Database\Seeders\DefaultRolesTableSeeder;
-use Illuminate\Database\Seeder;
 
 trait RefreshDatabase
 {

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace jeremykenedy\LaravelRoles\App\Http\Controllers\Api;
 
+use Illuminate\Http\JsonResponse;
 use jeremykenedy\LaravelRoles\App\Http\Controllers\Controller;
 use jeremykenedy\LaravelRoles\App\Http\Requests\StoreRoleRequest;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
-use Illuminate\Http\JsonResponse;
 
 class LaravelRolesApiController extends Controller
 {

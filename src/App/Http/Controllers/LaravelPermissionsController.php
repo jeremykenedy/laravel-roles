@@ -3,12 +3,12 @@
 namespace jeremykenedy\LaravelRoles\App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use jeremykenedy\LaravelRoles\App\Http\Requests\StorePermissionRequest;
 use jeremykenedy\LaravelRoles\App\Http\Requests\UpdatePermissionRequest;
 use jeremykenedy\LaravelRoles\App\Services\PermissionFormFields;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
 use jeremykenedy\LaravelRoles\Traits\RolesUsageAuthTrait;
-use Illuminate\Http\Response;
 
 class LaravelPermissionsController extends Controller
 {
@@ -59,6 +59,7 @@ class LaravelPermissionsController extends Controller
      * Display the specified resource.
      *
      * @param int $id
+     *
      * @return Response
      */
     public function show($id)
@@ -72,6 +73,7 @@ class LaravelPermissionsController extends Controller
      * Edit the specified resource.
      *
      * @param int $id
+     *
      * @return Response
      */
     public function edit(Request $request, $id)
@@ -85,7 +87,8 @@ class LaravelPermissionsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param int                                                                  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function update(UpdatePermissionRequest $request, $id)
@@ -101,6 +104,7 @@ class LaravelPermissionsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
+     *
      * @return Response
      */
     public function destroy($id)

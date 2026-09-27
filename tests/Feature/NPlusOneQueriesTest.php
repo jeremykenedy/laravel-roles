@@ -121,8 +121,9 @@ it('can preload permissions on a collection', function (): void {
     $users = User::with('roles', 'userPermissions')->get();
     $this->assertQueries(3);
 
-    // Eager loading roles and userPermissions removes two of the three
-    // queries per user; rolePermissions is still resolved per model.
+    // Eager loading answers the roles and userPermissions lookups, leaving
+    // only the rolePermissions query, which is a builder rather than a
+    // relation and so cannot be preloaded.
     $users->each(fn (User $user) => $user->getPermissions());
-    $this->assertQueries(USERS_COUNT * 2);
+    $this->assertQueries(USERS_COUNT);
 });

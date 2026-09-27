@@ -29,6 +29,7 @@ class VerifyPermission
      *
      * @param Request    $request
      * @param int|string $permission
+     *
      * @return mixed
      *
      * @throws PermissionDeniedException

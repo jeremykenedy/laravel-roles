@@ -3,9 +3,9 @@
 namespace jeremykenedy\LaravelRoles\App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use jeremykenedy\LaravelRoles\Traits\RolesAndPermissionsHelpersTrait;
 use jeremykenedy\LaravelRoles\Traits\RolesUsageAuthTrait;
-use Illuminate\Http\Response;
 
 class LaravelRolesDeletedController extends Controller
 {
@@ -31,6 +31,7 @@ class LaravelRolesDeletedController extends Controller
      * Display the specified resource.
      *
      * @param int $id
+     *
      * @return Response
      */
     public function show($id)
@@ -45,6 +46,7 @@ class LaravelRolesDeletedController extends Controller
      * Dashbaord Method to restore all deleted roles.
      *
      * @param Request $request The request
+     *
      * @return Response
      */
     public function restoreAllDeletedRoles(Request $request)
@@ -63,7 +65,8 @@ class LaravelRolesDeletedController extends Controller
     /**
      * Restore the specified resource in storage.
      *
-     * @param int                      $id
+     * @param int $id
+     *
      * @return Response
      */
     public function restoreRole(Request $request, $id)
@@ -78,6 +81,7 @@ class LaravelRolesDeletedController extends Controller
      * Destroy all the specified resource from storage.
      *
      * @param Request $request The request
+     *
      * @return Response
      */
     public function destroyAllDeletedRoles(Request $request)
@@ -97,6 +101,7 @@ class LaravelRolesDeletedController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
+     *
      * @return Response
      */
     public function destroy($id)

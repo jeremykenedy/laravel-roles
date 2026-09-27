@@ -3,13 +3,13 @@
 namespace jeremykenedy\LaravelRoles\Test;
 
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\View;
 use jeremykenedy\LaravelRoles\RolesFacade;
 use jeremykenedy\LaravelRoles\RolesServiceProvider;
 use jeremykenedy\LaravelRoles\Support\CssFramework;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
-use Seedster\Handlers\SeedHandler;
-use Illuminate\Foundation\Application;
+use Jeremykenedy\LaravelSeedster\Handlers\SeedHandler;
 
 class TestCase extends OrchestraTestCase
 {
@@ -24,6 +24,7 @@ class TestCase extends OrchestraTestCase
      * Get package providers.
      *
      * @param Application $app
+     *
      * @return array<int, class-string>
      */
     protected function getPackageProviders($app)
@@ -35,6 +36,7 @@ class TestCase extends OrchestraTestCase
      * Get package aliases.
      *
      * @param Application $app
+     *
      * @return array<string, class-string>
      */
     protected function getPackageAliases($app)
@@ -48,6 +50,7 @@ class TestCase extends OrchestraTestCase
      * Define environment setup.
      *
      * @param Application $app
+     *
      * @return void
      */
     public function getEnvironmentSetUp($app)
@@ -82,8 +85,9 @@ class TestCase extends OrchestraTestCase
      * getEnvironmentSetUp(), so the only way to exercise the GUI is to apply
      * the config and register the provider again.
      *
-     * @param string $framework
+     * @param string               $framework
      * @param array<string, mixed> $config
+     *
      * @return void
      */
     protected function enableGui($framework = CssFramework::BOOTSTRAP4, array $config = [])

@@ -1,0 +1,29 @@
+build:
+    environment:
+        php:
+            version: '8.3.12'
+    dependencies:
+        override:
+            - composer install --no-interaction --prefer-dist
+    nodes:
+        analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run
+
+filter:
+    paths:
+        - src/*
+    excluded_paths:
+        - tests/*
+        - vendor/*
+        - src/resources/*
+
+checks:
+    php: true
+
+tools:
+    external_code_coverage: false
+
+build_failure_conditions:
+    - 'elements.rating(<= B).exists'

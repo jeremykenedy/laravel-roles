@@ -27,8 +27,9 @@ class VerifyLevel
     /**
      * Handle an incoming request.
      *
-     * @param Request  $request
-     * @param int      $level
+     * @param Request $request
+     * @param int     $level
+     *
      * @return mixed
      *
      * @throws LevelDeniedException

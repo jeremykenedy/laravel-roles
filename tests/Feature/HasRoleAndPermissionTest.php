@@ -133,6 +133,26 @@ it('detaches and syncs user permissions', function (): void {
     expect($user->fresh()->getPermissions())->toHaveCount(0);
 });
 
+it('sees a permission attached after the relation was eager loaded', function (): void {
+    $user = User::with('userPermissions')->findOrFail(User::factory()->create()->id);
+
+    $user->attachPermission(Permission::where('slug', 'edit.users')->firstOrFail());
+
+    expect($user->hasPermission('edit.users'))->toBeTrue();
+});
+
+it('stops seeing a permission detached after the relation was eager loaded', function (): void {
+    $user = User::factory()->create();
+    $user->attachPermission(Permission::where('slug', 'edit.users')->firstOrFail());
+
+    $user = User::with('userPermissions')->findOrFail($user->id);
+    expect($user->hasPermission('edit.users'))->toBeTrue();
+
+    $user->detachPermission(Permission::where('slug', 'edit.users')->firstOrFail());
+
+    expect($user->hasPermission('edit.users'))->toBeFalse();
+});
+
 it('requires every permission when all is requested', function (): void {
     $user = User::factory()->create();
     $user->attachPermission(Permission::where('slug', 'view.users')->firstOrFail());

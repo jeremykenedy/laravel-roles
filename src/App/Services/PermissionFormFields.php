@@ -67,6 +67,7 @@ class PermissionFormFields
      * Return the field values from the model.
      *
      * @param int|string $id
+     *
      * @return array
      */
     protected function fieldsFromModel($id, array $fields)

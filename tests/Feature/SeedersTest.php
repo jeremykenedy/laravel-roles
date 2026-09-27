@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
+use jeremykenedy\LaravelRoles\Database\Seeders\DefaultPermissionsTableSeeder;
+use jeremykenedy\LaravelRoles\Database\Seeders\DefaultRolesTableSeeder;
 use jeremykenedy\LaravelRoles\Models\Permission;
 use jeremykenedy\LaravelRoles\Models\Role;
 use jeremykenedy\LaravelRoles\Test\RefreshDatabase;
-use jeremykenedy\LaravelRoles\Database\Seeders\DefaultPermissionsTableSeeder;
-use jeremykenedy\LaravelRoles\Database\Seeders\DefaultRolesTableSeeder;
 
 uses(RefreshDatabase::class);
 

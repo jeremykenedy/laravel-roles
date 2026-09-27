@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 use Illuminate\Support\ServiceProvider;
+use jeremykenedy\LaravelRoles\Database\Seeders\DefaultConnectRelationshipsSeeder;
+use jeremykenedy\LaravelRoles\Database\Seeders\DefaultPermissionsTableSeeder;
+use jeremykenedy\LaravelRoles\Database\Seeders\DefaultRolesTableSeeder;
 use jeremykenedy\LaravelRoles\LaravelRoles;
 use jeremykenedy\LaravelRoles\RolesFacade;
 use jeremykenedy\LaravelRoles\RolesServiceProvider;
 use jeremykenedy\LaravelRoles\Support\CssFramework;
 use jeremykenedy\LaravelRoles\Test\RefreshDatabase;
-use jeremykenedy\LaravelRoles\Database\Seeders\DefaultConnectRelationshipsSeeder;
-use jeremykenedy\LaravelRoles\Database\Seeders\DefaultPermissionsTableSeeder;
-use jeremykenedy\LaravelRoles\Database\Seeders\DefaultRolesTableSeeder;
 
 uses(RefreshDatabase::class);
 

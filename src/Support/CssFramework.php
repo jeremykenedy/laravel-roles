@@ -40,6 +40,7 @@ class CssFramework
      * Determine whether the given value names a shipped view set.
      *
      * @param mixed $framework
+     *
      * @return bool
      */
     public static function isSupported($framework)
@@ -70,6 +71,7 @@ class CssFramework
      * Absolute path to a framework's view directory.
      *
      * @param string $framework
+     *
      * @return string
      */
     public static function viewPath($framework)

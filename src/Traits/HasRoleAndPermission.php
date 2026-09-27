@@ -71,6 +71,7 @@ trait HasRoleAndPermission
      *
      * @param int|string|array $role
      * @param bool             $all
+     *
      * @return bool
      */
     public function hasRole($role, $all = false)
@@ -90,6 +91,7 @@ trait HasRoleAndPermission
      * Check if the user has at least one of the given roles.
      *
      * @param int|string|array $role
+     *
      * @return bool
      */
     public function hasOneRole($role)
@@ -107,6 +109,7 @@ trait HasRoleAndPermission
      * Check if the user has all roles.
      *
      * @param int|string|array $role
+     *
      * @return bool
      */
     public function hasAllRoles($role)
@@ -124,6 +127,7 @@ trait HasRoleAndPermission
      * Check if the user has role.
      *
      * @param int|string $role
+     *
      * @return bool
      */
     public function checkRole($role)
@@ -137,6 +141,7 @@ trait HasRoleAndPermission
      * Attach role to a user.
      *
      * @param int|Role $role
+     *
      * @return null|bool
      */
     public function attachRole($role)
@@ -153,6 +158,7 @@ trait HasRoleAndPermission
      * Detach role from a user.
      *
      * @param int|Role $role
+     *
      * @return int
      */
     public function detachRole($role)
@@ -178,6 +184,7 @@ trait HasRoleAndPermission
      * Sync roles for a user.
      *
      * @param array|Role[]|Collection $roles
+     *
      * @return array
      */
     public function syncRoles($roles)
@@ -261,7 +268,15 @@ trait HasRoleAndPermission
      */
     public function getPermissions()
     {
-        return (!$this->permissions) ? $this->permissions = $this->rolePermissions()->get()->merge($this->userPermissions()->get()) : $this->permissions;
+        if ($this->permissions) {
+            return $this->permissions;
+        }
+
+        $userPermissions = $this->relationLoaded('userPermissions')
+            ? $this->getRelation('userPermissions')
+            : $this->userPermissions()->get();
+
+        return $this->permissions = $this->rolePermissions()->get()->merge($userPermissions);
     }
 
     /**
@@ -269,6 +284,7 @@ trait HasRoleAndPermission
      *
      * @param int|string|array $permission
      * @param bool             $all
+     *
      * @return bool
      */
     public function hasPermission($permission, $all = false)
@@ -288,6 +304,7 @@ trait HasRoleAndPermission
      * Check if the user has at least one of the given permissions.
      *
      * @param int|string|array $permission
+     *
      * @return bool
      */
     public function hasOnePermission($permission)
@@ -305,6 +322,7 @@ trait HasRoleAndPermission
      * Check if the user has all permissions.
      *
      * @param int|string|array $permission
+     *
      * @return bool
      */
     public function hasAllPermissions($permission)
@@ -322,6 +340,7 @@ trait HasRoleAndPermission
      * Check if the user has a permission.
      *
      * @param int|string $permission
+     *
      * @return bool
      */
     public function checkPermission($permission)
@@ -337,6 +356,7 @@ trait HasRoleAndPermission
      * @param string $providedPermission
      * @param bool   $owner
      * @param string $ownerColumn
+     *
      * @return bool
      */
     public function allowed($providedPermission, Model $entity, $owner = true, $ownerColumn = 'user_id')
@@ -356,6 +376,7 @@ trait HasRoleAndPermission
      * Check if the user is allowed to manipulate with provided entity.
      *
      * @param string $providedPermission
+     *
      * @return bool
      */
     protected function isAllowed($providedPermission, Model $entity)
@@ -375,6 +396,7 @@ trait HasRoleAndPermission
      * Attach permission to a user.
      *
      * @param int|Permission $permission
+     *
      * @return null|bool
      */
     public function attachPermission($permission)
@@ -382,7 +404,7 @@ trait HasRoleAndPermission
         if ($this->getPermissions()->contains($permission)) {
             return true;
         }
-        $this->permissions = null;
+        $this->resetPermissions();
 
         return $this->userPermissions()->attach($permission);
     }
@@ -391,11 +413,12 @@ trait HasRoleAndPermission
      * Detach permission from a user.
      *
      * @param int|Permission $permission
+     *
      * @return int
      */
     public function detachPermission($permission)
     {
-        $this->permissions = null;
+        $this->resetPermissions();
 
         return $this->userPermissions()->detach($permission);
     }
@@ -407,7 +430,7 @@ trait HasRoleAndPermission
      */
     public function detachAllPermissions()
     {
-        $this->permissions = null;
+        $this->resetPermissions();
 
         return $this->userPermissions()->detach();
     }
@@ -416,11 +439,12 @@ trait HasRoleAndPermission
      * Sync permissions for a user.
      *
      * @param array|Permission[]|Collection $permissions
+     *
      * @return array
      */
     public function syncPermissions($permissions)
     {
-        $this->permissions = null;
+        $this->resetPermissions();
 
         return $this->userPermissions()->sync($permissions);
     }
@@ -439,6 +463,7 @@ trait HasRoleAndPermission
      * Allows to pretend or simulate package behavior.
      *
      * @param string $option
+     *
      * @return bool
      */
     private function pretend($option)
@@ -450,6 +475,7 @@ trait HasRoleAndPermission
      * Get an array from argument.
      *
      * @param int|string|array $argument
+     *
      * @return array
      */
     private function getArrayFrom($argument)
@@ -464,6 +490,16 @@ trait HasRoleAndPermission
             $this->unsetRelation('roles');
         } else {
             unset($this->relations['roles']);
+        }
+    }
+
+    protected function resetPermissions()
+    {
+        $this->permissions = null;
+        if (method_exists($this, 'unsetRelation')) {
+            $this->unsetRelation('userPermissions');
+        } else {
+            unset($this->relations['userPermissions']);
         }
     }
 

@@ -29,6 +29,7 @@ class VerifyRole
      *
      * @param Request    $request
      * @param int|string $role
+     *
      * @return mixed
      *
      * @throws RoleDeniedException
