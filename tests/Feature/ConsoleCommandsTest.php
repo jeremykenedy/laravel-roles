@@ -152,3 +152,102 @@ describe('roles:update', function () {
             ->assertFailed();
     });
 });
+
+describe('the interactive installer', function () {
+    $confirmOptions = [
+        'confirm' => 'Confirm and continue',
+        'restart' => 'Start over',
+        'cancel'  => 'Cancel and exit',
+    ];
+
+    it('installs the framework picked at the prompt', function () use ($confirmOptions): void {
+        $this->scratchPath = useScratchAppPath();
+
+        $this->artisan('roles:install')
+            ->expectsChoice(
+                'Which CSS framework should the roles GUI use?',
+                'tailwind',
+                CssFramework::labels()
+            )
+            ->expectsChoice('Continue with this setting?', 'confirm', $confirmOptions)
+            ->assertSuccessful();
+
+        expect(config('roles.cssFramework'))->toBe('tailwind');
+    });
+
+    it('asks again when the selection is not confirmed', function () use ($confirmOptions): void {
+        $this->scratchPath = useScratchAppPath();
+
+        $this->artisan('roles:install')
+            ->expectsChoice(
+                'Which CSS framework should the roles GUI use?',
+                'tailwind',
+                CssFramework::labels()
+            )
+            ->expectsChoice('Continue with this setting?', 'restart', $confirmOptions)
+            ->expectsChoice(
+                'Which CSS framework should the roles GUI use?',
+                'bootstrap5',
+                CssFramework::labels()
+            )
+            ->expectsChoice('Continue with this setting?', 'confirm', $confirmOptions)
+            ->assertSuccessful();
+
+        expect(config('roles.cssFramework'))->toBe('bootstrap5');
+    });
+
+    it('writes nothing when the selection is cancelled', function () use ($confirmOptions): void {
+        $this->scratchPath = useScratchAppPath();
+
+        $this->artisan('roles:install')
+            ->expectsChoice(
+                'Which CSS framework should the roles GUI use?',
+                'tailwind',
+                CssFramework::labels()
+            )
+            ->expectsChoice('Continue with this setting?', 'cancel', $confirmOptions)
+            ->expectsOutputToContain('Cancelled. No changes were made.')
+            ->assertFailed();
+
+        expect(file_exists($this->scratchPath.'/config/roles.php'))->toBeFalse();
+    });
+
+    it('reinstalls when the confirmation is typed', function () use ($confirmOptions): void {
+        $this->scratchPath = useScratchAppPath();
+        markInstalled($this->scratchPath);
+
+        $this->artisan('roles:install')
+            ->expectsQuestion('Type "yes" to reinstall', 'yes')
+            ->expectsChoice(
+                'Which CSS framework should the roles GUI use?',
+                'bootstrap4',
+                CssFramework::labels()
+            )
+            ->expectsChoice('Continue with this setting?', 'confirm', $confirmOptions)
+            ->assertSuccessful();
+
+        expect(config('roles.cssFramework'))->toBe('bootstrap4');
+    });
+
+    it('keeps the existing install when the confirmation is not typed', function (): void {
+        $this->scratchPath = useScratchAppPath();
+        markInstalled($this->scratchPath);
+
+        $this->artisan('roles:install')
+            ->expectsQuestion('Type "yes" to reinstall', 'no')
+            ->expectsOutputToContain('Cancelled. No changes were made.')
+            ->assertFailed();
+
+        expect(file_get_contents($this->scratchPath.'/config/roles.php'))->toBe('<?php return [];');
+    });
+
+    it('takes the configured framework when there is nobody to ask', function (): void {
+        $this->scratchPath = useScratchAppPath();
+        config(['roles.cssFramework' => 'bootstrap5']);
+
+        $this->artisan('roles:install', ['--no-interaction' => true])
+            ->assertSuccessful();
+
+        expect(config('roles.cssFramework'))->toBe('bootstrap5');
+    });
+});
