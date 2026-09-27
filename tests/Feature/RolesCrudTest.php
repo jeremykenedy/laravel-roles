@@ -279,3 +279,90 @@ it('keeps the deleted roles and reports an error when destroying them fails', fu
 
     Log::shouldHaveReceived('error')->once();
 });
+
+it('restores every soft deleted permission', function (): void {
+    Permission::where('slug', 'view.users')->firstOrFail()->delete();
+    Permission::where('slug', 'edit.users')->firstOrFail()->delete();
+
+    $this->post(route('laravelroles::permissions-deleted-restore-all'))
+        ->assertRedirect(route('laravelroles::roles.index'));
+
+    expect(Permission::onlyTrashed()->count())->toBe(0)
+        ->and(Permission::count())->toBe(4);
+});
+
+it('force deletes every soft deleted permission', function (): void {
+    $permission = Permission::where('slug', 'view.users')->firstOrFail();
+    $role = Role::where('slug', 'admin')->firstOrFail();
+    $user = User::factory()->create();
+
+    $user->attachPermission($permission);
+    $permission->delete();
+
+    $this->delete(route('laravelroles::destroy-all-deleted-permissions'))
+        ->assertRedirect(route('laravelroles::roles.index'));
+
+    expect(Permission::withTrashed()->find($permission->id))->toBeNull()
+        ->and($role->fresh()->permissions()->pluck('permissions.id')->all())->not->toContain($permission->id);
+});
+
+it('restores a single soft deleted permission', function (): void {
+    $permission = Permission::where('slug', 'view.users')->firstOrFail();
+    $permission->delete();
+
+    $this->put(route('laravelroles::permission-restore', $permission->id))
+        ->assertRedirect(route('laravelroles::roles.index'));
+
+    expect(Permission::find($permission->id))->not->toBeNull();
+});
+
+it('shows a soft deleted permission with the users that held it', function (): void {
+    $permission = Permission::where('slug', 'view.users')->firstOrFail();
+    $user = User::factory()->create();
+    $user->attachPermission($permission);
+    $permission->delete();
+
+    $this->get(route('laravelroles::permission-show-deleted', $permission->id))
+        ->assertOk()
+        ->assertSee('View Users');
+});
+
+it('reports an error when there are no deleted permissions to destroy', function (): void {
+    $result = (new LaravelRoles())->destroyAllTheDeletedPermissions();
+
+    expect($result)->toBe(['status' => 'error', 'count' => 0]);
+});
+
+it('reports an error when there are no deleted permissions to restore', function (): void {
+    $result = (new LaravelRoles())->restoreAllTheDeletedPermissions();
+
+    expect($result)->toBe(['status' => 'error', 'count' => 0]);
+});
+
+it('lists the users that hold a permission through their roles', function (): void {
+    $permission = Permission::where('slug', 'view.users')->firstOrFail();
+    $admin = User::factory()->create();
+    $admin->attachRole(Role::where('slug', 'admin')->firstOrFail());
+
+    $users = (new LaravelRoles())->getAllUsersForPermission($permission);
+
+    expect($users->pluck('id')->all())->toContain($admin->id);
+});
+
+it('lists the users that hold a role', function (): void {
+    $role = Role::where('slug', 'admin')->firstOrFail();
+    $admin = User::factory()->create();
+    $admin->attachRole($role);
+
+    $users = (new LaravelRoles())->getRoleUsers($role->id);
+
+    expect(collect($users)->pluck('id')->all())->toContain($admin->id);
+});
+
+it('lists the permissions attached to a role', function (): void {
+    $role = Role::where('slug', 'admin')->firstOrFail();
+
+    $permissions = (new LaravelRoles())->getRolePermissions($role->id);
+
+    expect(collect($permissions)->count())->toBeGreaterThan(0);
+});
