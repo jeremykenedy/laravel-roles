@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use jeremykenedy\LaravelRoles\Database\Seeders\DefaultPermissionsTableSeeder;
 use jeremykenedy\LaravelRoles\Database\Seeders\DefaultRolesTableSeeder;
+use jeremykenedy\LaravelRoles\Database\Seeders\DefaultUsersTableSeeder;
 use jeremykenedy\LaravelRoles\Models\Permission;
 use jeremykenedy\LaravelRoles\Models\Role;
 use jeremykenedy\LaravelRoles\Test\RefreshDatabase;
@@ -44,4 +45,29 @@ it('does not duplicate rows when a seeder runs twice', function (): void {
 
     expect(Role::count())->toBe(3)
         ->and(Permission::count())->toBe(4);
+});
+
+it('seeds the default users with their roles and permissions', function (): void {
+    $userModel = config('roles.models.defaultUser');
+
+    expect($userModel::where('email', 'admin@admin.com')->exists())->toBeFalse();
+
+    $this->seed(DefaultUsersTableSeeder::class);
+
+    $admin = $userModel::where('email', 'admin@admin.com')->firstOrFail();
+    $user = $userModel::where('email', 'user@user.com')->firstOrFail();
+
+    expect($admin->hasRole('admin'))->toBeTrue()
+        ->and($admin->getPermissions())->toHaveCount(Permission::count())
+        ->and($user->hasRole('user'))->toBeTrue();
+});
+
+it('leaves the default users alone when they already exist', function (): void {
+    $userModel = config('roles.models.defaultUser');
+
+    $this->seed(DefaultUsersTableSeeder::class);
+    $this->seed(DefaultUsersTableSeeder::class);
+
+    expect($userModel::where('email', 'admin@admin.com')->count())->toBe(1)
+        ->and($userModel::where('email', 'user@user.com')->count())->toBe(1);
 });
