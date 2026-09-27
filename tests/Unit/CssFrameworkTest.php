@@ -73,3 +73,20 @@ it('labels every supported framework', function (): void {
     expect(array_keys(CssFramework::labels()))
         ->toEqualCanonicalizing(CssFramework::supported());
 });
+
+it('defaults the font awesome cdn to the icon set the framework uses', function (string $framework, string $expected): void {
+    putenv("ROLES_CSS_FRAMEWORK={$framework}");
+
+    try {
+        $config = require __DIR__.'/../../src/config/roles.php';
+    } finally {
+        putenv('ROLES_CSS_FRAMEWORK');
+    }
+
+    expect($config['cssFramework'])->toBe($framework)
+        ->and($config['fontAwesomeCDN'])->toContain($expected);
+})->with([
+    'bootstrap4 keeps Font Awesome 4' => ['bootstrap4', 'font-awesome/4.7.0'],
+    'bootstrap5 moves to Font Awesome 6' => ['bootstrap5', 'fontawesome-free@6.7.2'],
+    'tailwind loads neither, so the default is unused' => ['tailwind', 'fontawesome-free@6.7.2'],
+]);

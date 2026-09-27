@@ -79,6 +79,27 @@ it('updates a role', function (): void {
         ->and($role->fresh()->level)->toBe(2);
 });
 
+it('resyncs the selected permissions when updating a role', function (): void {
+    $role = Role::where('slug', 'user')->firstOrFail();
+    $kept = Permission::where('slug', 'view.users')->firstOrFail();
+    $dropped = Permission::where('slug', 'create.users')->firstOrFail();
+
+    $role->syncPermissions([$dropped->id]);
+
+    $this->patch(route('laravelroles::roles.update', $role->id), [
+        'id'          => $role->id,
+        'name'        => 'Member',
+        'slug'        => 'member',
+        'level'       => 2,
+        'permissions' => [$kept->toJson()],
+    ])->assertRedirect(route('laravelroles::roles.index'));
+
+    $ids = $role->fresh()->permissions()->pluck('permissions.id')->all();
+
+    expect($ids)->toContain($kept->id)
+        ->and($ids)->not->toContain($dropped->id);
+});
+
 it('soft deletes a role', function (): void {
     $role = Role::where('slug', 'user')->firstOrFail();
 

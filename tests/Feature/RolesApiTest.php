@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use jeremykenedy\LaravelRoles\Models\Permission;
 use jeremykenedy\LaravelRoles\Models\Role;
 use jeremykenedy\LaravelRoles\Test\RefreshDatabase;
 use jeremykenedy\LaravelRoles\Test\User;
@@ -71,6 +72,25 @@ it('creates a role over the api', function (): void {
         ->assertJsonPath('role.slug', 'editor');
 
     $this->assertDatabaseHas('roles', ['slug' => 'editor']);
+});
+
+it('attaches the selected permissions over the api', function (): void {
+    $this->enableApi();
+
+    $permission = Permission::where('slug', 'view.users')->firstOrFail();
+
+    $this->actingAs(apiAdmin(), 'api')
+        ->postJson('/api/roles-api', [
+            'name'        => 'Editor',
+            'slug'        => 'editor',
+            'level'       => 3,
+            'permissions' => [$permission->toJson()],
+        ])
+        ->assertCreated();
+
+    $role = Role::where('slug', 'editor')->firstOrFail();
+
+    expect($role->permissions()->pluck('permissions.id')->all())->toContain($permission->id);
 });
 
 it('validates a role created over the api', function (): void {

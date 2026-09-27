@@ -15,6 +15,16 @@ use jeremykenedy\LaravelRoles\Models\Permission;
 use jeremykenedy\LaravelRoles\Models\Role;
 use ReflectionMethod;
 
+/**
+ * Adds the role and permission checks to an Eloquent model, normally the app User.
+ *
+ * @method BelongsToMany belongsToMany($related, $table = null)
+ * @method mixed         getRelation($relation)
+ * @method void          load($relations)
+ * @method void          loadMissing($relations)
+ * @method bool          relationLoaded($key)
+ * @method void          unsetRelation($relation)
+ */
 trait HasRoleAndPermission
 {
     /**
@@ -207,7 +217,7 @@ trait HasRoleAndPermission
     /**
      * Get all permissions from roles.
      *
-     * @return Builder
+     * @return Builder|\Illuminate\Database\Query\Builder
      */
     public function rolePermissions()
     {

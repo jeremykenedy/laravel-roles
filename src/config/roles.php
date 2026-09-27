@@ -3,6 +3,8 @@
 use jeremykenedy\LaravelRoles\Models\Permission;
 use jeremykenedy\LaravelRoles\Models\Role;
 
+$cssFramework = env('ROLES_CSS_FRAMEWORK', 'bootstrap4');
+
 return [
 
     /*
@@ -142,7 +144,7 @@ return [
     |
     */
 
-    'cssFramework'                  => env('ROLES_CSS_FRAMEWORK', 'bootstrap4'),
+    'cssFramework'                  => $cssFramework,
 
     /*
     |--------------------------------------------------------------------------
@@ -231,7 +233,7 @@ return [
     // Bootstrap 5 views use Font Awesome 6 names, so the default follows the
     // selected framework. The Tailwind views use inline SVG and load neither.
     'enableFontAwesomeCDN'          => env('ROLES_GUI_FONT_AWESOME_CDN_ENABLED', true),
-    'fontAwesomeCDN'                => env('ROLES_GUI_FONT_AWESOME_CDN_URL', env('ROLES_CSS_FRAMEWORK', 'bootstrap4') === 'bootstrap4'
+    'fontAwesomeCDN'                => env('ROLES_GUI_FONT_AWESOME_CDN_URL', $cssFramework === 'bootstrap4'
         ? 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
         : 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css'),
 

@@ -49,7 +49,7 @@ class LaravelRolesController extends Controller
     public function store(StoreRoleRequest $request)
     {
         $roleData = $request->roleFillData();
-        $rolePermissions = $request->get('permissions');
+        $rolePermissions = $request->input('permissions');
         $role = $this->storeRoleWithPermissions($roleData, $rolePermissions);
 
         return redirect()->route('laravelroles::roles.index')
@@ -95,7 +95,7 @@ class LaravelRolesController extends Controller
     public function update(UpdateRoleRequest $request, $id)
     {
         $roleData = $request->roleFillData();
-        $rolePermissions = $request->get('permissions');
+        $rolePermissions = $request->input('permissions');
         $role = $this->updateRoleWithPermissions($id, $roleData, $rolePermissions);
 
         return redirect()->route('laravelroles::roles.index')

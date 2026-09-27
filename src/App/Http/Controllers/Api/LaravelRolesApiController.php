@@ -39,7 +39,7 @@ class LaravelRolesApiController extends Controller
     public function store(StoreRoleRequest $request)
     {
         $roleData = $request->roleFillData();
-        $rolePermissions = $request->get('permissions');
+        $rolePermissions = $request->input('permissions');
         $role = $this->storeRoleWithPermissions($roleData, $rolePermissions);
 
         return response()->json([
