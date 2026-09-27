@@ -30,9 +30,9 @@ class VerifyPermission
      * @param Request    $request
      * @param int|string $permission
      *
-     * @return mixed
-     *
      * @throws PermissionDeniedException
+     *
+     * @return mixed
      */
     public function handle($request, Closure $next, ...$permission)
     {

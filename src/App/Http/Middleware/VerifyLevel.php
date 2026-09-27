@@ -30,9 +30,9 @@ class VerifyLevel
      * @param Request $request
      * @param int     $level
      *
-     * @return mixed
-     *
      * @throws LevelDeniedException
+     *
+     * @return mixed
      */
     public function handle($request, Closure $next, $level)
     {

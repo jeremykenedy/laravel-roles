@@ -8,6 +8,7 @@
         "new_with_parentheses": false,
         "phpdoc_align": false,
         "phpdoc_separation": false,
+        "phpdoc_order": false,
         "concat_space": false,
         "class_attributes_separation": false,
         "ordered_imports": false

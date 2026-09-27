@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\View;
 use jeremykenedy\LaravelRoles\RolesFacade;
 use jeremykenedy\LaravelRoles\RolesServiceProvider;
 use jeremykenedy\LaravelRoles\Support\CssFramework;
-use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Jeremykenedy\LaravelSeedster\Handlers\SeedHandler;
+use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchestraTestCase
 {
