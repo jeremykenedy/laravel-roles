@@ -6,7 +6,7 @@
                 {!! trans('laravelroles::laravelroles.flash-messages.close') !!}
             </span>
         </a>
-        {!! session('message') !!}
+        {{ session('message') }}
     </div>
 @endif
 
@@ -22,7 +22,7 @@
             <i class="icon fa fas fa-check fa-fw" aria-hidden="true"></i>
             {!! trans('laravelroles::laravelroles.flash-messages.success') !!}
         </h4>
-        {!! session('success') !!}
+        {{ session('success') }}
     </div>
 @endif
 
@@ -35,7 +35,7 @@
                     {!! trans('laravelroles::laravelroles.flash-messages.close') !!}
                 </span>
             </a>
-            {!! session('message') !!}
+            {{ session('message') }}
         </div>
     @endif
 @endif
@@ -52,7 +52,7 @@
             <i class="icon fa fas fa-warning fa-fw" aria-hidden="true"></i>
             {!! trans('laravelroles::laravelroles.flash-messages.error') !!}
         </h4>
-        {!! session('error') !!}
+        {{ session('error') }}
     </div>
 @endif
 
@@ -74,7 +74,7 @@
         <ul>
             @foreach ($errors->all() as $error)
                 <li>
-                    {!! $error !!}
+                    {{ $error }}
                 </li>
             @endforeach
         </ul>

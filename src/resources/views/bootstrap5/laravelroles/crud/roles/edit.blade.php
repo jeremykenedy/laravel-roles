@@ -1,7 +1,7 @@
 @extends(config('roles.bladeExtended'))
 
 @section(config('roles.titleExtended'))
-    {!! trans('laravelroles::laravelroles.titles.edit-role', ['name' => $name]) !!}
+    {!! trans('laravelroles::laravelroles.titles.edit-role', ['name' => e($name)]) !!}
 @endsection
 
 @php
@@ -41,7 +41,7 @@
             <div class="col-12">
                 <div class="card card-post" id="post_card">
                     <div class="card-header">
-                        {!! trans('laravelroles::laravelroles.titles.edit-role', ['name' => $name]) !!}
+                        {!! trans('laravelroles::laravelroles.titles.edit-role', ['name' => e($name)]) !!}
                         <div class="">
                             <a href="{{ route('laravelroles::roles.index') }}" class="btn btn-outline-secondary btn-sm float-end" data-bs-toggle="tooltip" data-bs-placement="left" title="{{ trans('laravelroles::laravelroles.tooltips.back-roles') }}">
                                 <i class="fa-solid fa-fw fa-reply-all" aria-hidden="true"></i>

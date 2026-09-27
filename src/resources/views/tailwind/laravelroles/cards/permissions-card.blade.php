@@ -44,7 +44,7 @@
                                 @if($item['roles']->count() > 0)
                                     <table class="w-full table-fixed text-xs">
                                         <caption class="pb-1 text-left text-gray-500 dark:text-gray-400">
-                                            {!! trans('laravelroles::laravelroles.cards.permissions-card.permissions-table-roles-caption', ['permission' => $item['permission']->name]) !!}
+                                            {!! trans('laravelroles::laravelroles.cards.permissions-card.permissions-table-roles-caption', ['permission' => e($item['permission']->name)]) !!}
                                         </caption>
                                         <thead>
                                             <tr class="text-left text-gray-600 dark:text-gray-300">
@@ -65,7 +65,7 @@
                                 @if($item['users']->count() > 0)
                                     <table class="mt-3 w-full table-fixed text-xs">
                                         <caption class="pb-1 text-left text-gray-500 dark:text-gray-400">
-                                            {!! trans('laravelroles::laravelroles.cards.permissions-card.permissions-table-users-caption', ['permission' => $item['permission']->name]) !!}
+                                            {!! trans('laravelroles::laravelroles.cards.permissions-card.permissions-table-users-caption', ['permission' => e($item['permission']->name)]) !!}
                                         </caption>
                                         <thead>
                                             <tr class="text-left text-gray-600 dark:text-gray-300">

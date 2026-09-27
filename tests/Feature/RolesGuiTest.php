@@ -83,6 +83,34 @@ it('renders the edit role form with the current values', function (string $frame
         ->assertSee('value="Admin"', false);
 })->with('frameworks');
 
+it('escapes a role name that contains markup', function (string $framework): void {
+    $this->enableGui($framework);
+
+    $role = Role::where('slug', 'admin')->firstOrFail();
+    $role->name = '<script>alert(1)</script>';
+    $role->save();
+
+    $body = $this->actingAs(User::factory()->create())
+        ->get(route('laravelroles::roles.show', $role->id))
+        ->assertOk()
+        ->getContent();
+
+    expect($body)->not->toContain('<script>alert(1)</script>')
+        ->and($body)->toContain('&lt;script&gt;');
+})->with('frameworks');
+
+it('escapes a flash message that contains markup', function (string $framework): void {
+    $this->enableGui($framework);
+
+    $body = $this->actingAs(User::factory()->create())
+        ->withSession(['success' => '<script>alert(2)</script>'])
+        ->get(route('laravelroles::roles.index'))
+        ->assertOk()
+        ->getContent();
+
+    expect($body)->not->toContain('<script>alert(2)</script>');
+})->with('frameworks');
+
 it('renders a role detail page', function (string $framework): void {
     $this->enableGui($framework);
 

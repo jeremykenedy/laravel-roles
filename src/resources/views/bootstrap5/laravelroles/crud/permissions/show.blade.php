@@ -44,9 +44,9 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span id="card_title">
                                 @isset($typeDeleted)
-                                    {!! trans('laravelroles::laravelroles.titles.show-permission-deleted', ['name' => $item->name]) !!}
+                                    {!! trans('laravelroles::laravelroles.titles.show-permission-deleted', ['name' => e($item->name)]) !!}
                                 @else
-                                    {!! trans('laravelroles::laravelroles.titles.show-permission', ['name' => $item['permission']->name]) !!}
+                                    {!! trans('laravelroles::laravelroles.titles.show-permission', ['name' => e($item['permission']->name)]) !!}
                                 @endisset
                             </span>
                             <div class="">
@@ -178,9 +178,9 @@
                                         <table class="table table-striped table-sm mt-3">
                                             <caption>
                                                 @isset($typeDeleted)
-                                                    {!! trans('laravelroles::laravelroles.cards.permissions-card.permissions-table-users-caption', ['permission' => $item->name]) !!}
+                                                    {!! trans('laravelroles::laravelroles.cards.permissions-card.permissions-table-users-caption', ['permission' => e($item->name)]) !!}
                                                 @else
-                                                    {!! trans('laravelroles::laravelroles.cards.permissions-card.permissions-table-users-caption', ['permission' => $item['permission']->name]) !!}
+                                                    {!! trans('laravelroles::laravelroles.cards.permissions-card.permissions-table-users-caption', ['permission' => e($item['permission']->name)]) !!}
                                                 @endisset
                                             </caption>
                                             <thead>

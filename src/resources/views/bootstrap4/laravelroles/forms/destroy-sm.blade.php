@@ -21,7 +21,7 @@
 <form action="{{ $formAction }}" method="POST" accept-charset="utf-8" data-toggle="tooltip" title="{{ $btnTooltip }}" class="{{ $formClass }}" >
     {{ csrf_field() }}
     {{ method_field('DELETE') }}
-    <button class="btn btn-block {{ $btnClass }}" type="button" style="width: 100%;" data-toggle="modal" data-target="{{ $dataTarget }}" data-title="{!! trans('laravelroles::laravelroles.modals.destroy_modal_title', ['type' => $type, 'item' => $item->name]) !!}" data-message="{!! trans('laravelroles::laravelroles.modals.destroy_modal_message', ['type' => $type, 'item' => $item->name]) !!}" >
+    <button class="btn btn-block {{ $btnClass }}" type="button" style="width: 100%;" data-toggle="modal" data-target="{{ $dataTarget }}" data-title="{!! trans('laravelroles::laravelroles.modals.destroy_modal_title', ['type' => e($type), 'item' => e($item->name)]) !!}" data-message="{!! trans('laravelroles::laravelroles.modals.destroy_modal_message', ['type' => e($type), 'item' => e($item->name)]) !!}" >
         {!! $btnText !!}
         <i class="fa fa-trash fa-fw" aria-hidden="true"></i>
     </button>

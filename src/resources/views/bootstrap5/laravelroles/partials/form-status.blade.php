@@ -1,7 +1,7 @@
 @if (session('message'))
     <div class="alert alert-{{ Session::get('status') }} status-box alert-dismissible fade show" role="alert">
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ trans('laravelroles::laravelroles.flash-messages.close') }}"></button>
-        {!! session('message') !!}
+        {{ session('message') }}
     </div>
 @endif
 
@@ -12,7 +12,7 @@
             <i class="fa-solid fa-check fa-fw" aria-hidden="true"></i>
             {!! trans('laravelroles::laravelroles.flash-messages.success') !!}
         </h4>
-        {!! session('success') !!}
+        {{ session('success') }}
     </div>
 @endif
 
@@ -20,7 +20,7 @@
     @if(session()->get('status') == 'wrong')
         <div class="alert alert-danger status-box alert-dismissible fade show" role="alert">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ trans('laravelroles::laravelroles.flash-messages.close') }}"></button>
-            {!! session('message') !!}
+            {{ session('message') }}
         </div>
     @endif
 @endif
@@ -32,7 +32,7 @@
             <i class="fa-solid fa-triangle-exclamation fa-fw" aria-hidden="true"></i>
             {!! trans('laravelroles::laravelroles.flash-messages.error') !!}
         </h4>
-        {!! session('error') !!}
+        {{ session('error') }}
     </div>
 @endif
 
@@ -49,7 +49,7 @@
         <ul>
             @foreach ($errors->all() as $error)
                 <li>
-                    {!! $error !!}
+                    {{ $error }}
                 </li>
             @endforeach
         </ul>

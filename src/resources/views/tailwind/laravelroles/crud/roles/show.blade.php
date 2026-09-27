@@ -26,9 +26,9 @@
                 <div class="flex items-center justify-between gap-2">
                     <span id="card_title" class="font-semibold text-gray-900 dark:text-gray-100">
                         @isset($typeDeleted)
-                            {!! trans('laravelroles::laravelroles.titles.show-role-deleted', ['name' => $item->name]) !!}
+                            {!! trans('laravelroles::laravelroles.titles.show-role-deleted', ['name' => e($item->name)]) !!}
                         @else
-                            {!! trans('laravelroles::laravelroles.titles.show-role', ['name' => $item->name]) !!}
+                            {!! trans('laravelroles::laravelroles.titles.show-role', ['name' => e($item->name)]) !!}
                         @endisset
                     </span>
                     @isset($typeDeleted)
@@ -93,7 +93,7 @@
                                 class="mt-3 overflow-x-auto">
                                 <table class="min-w-full text-xs">
                                     <caption class="pb-1 text-left text-gray-500 dark:text-gray-400">
-                                        {!! trans('laravelroles::laravelroles.cards.role-card.table-users-caption', ['role' => $item->name]) !!}
+                                        {!! trans('laravelroles::laravelroles.cards.role-card.table-users-caption', ['role' => e($item->name)]) !!}
                                     </caption>
                                     <thead>
                                         <tr class="text-left text-gray-600 dark:text-gray-300">
@@ -137,7 +137,7 @@
                                 class="mt-3 overflow-x-auto">
                                 <table class="min-w-full text-xs">
                                     <caption class="pb-1 text-left text-gray-500 dark:text-gray-400">
-                                        {!! trans('laravelroles::laravelroles.cards.role-card.table-permissions-caption', ['role' => $item->name]) !!}
+                                        {!! trans('laravelroles::laravelroles.cards.role-card.table-permissions-caption', ['role' => e($item->name)]) !!}
                                     </caption>
                                     <thead>
                                         <tr class="text-left text-gray-600 dark:text-gray-300">

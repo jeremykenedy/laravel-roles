@@ -36,9 +36,9 @@
                 <div class="flex items-center justify-between gap-2">
                     <span id="card_title" class="font-semibold text-gray-900 dark:text-gray-100">
                         @isset($typeDeleted)
-                            {!! trans('laravelroles::laravelroles.titles.show-permission-deleted', ['name' => $permission->name]) !!}
+                            {!! trans('laravelroles::laravelroles.titles.show-permission-deleted', ['name' => e($permission->name)]) !!}
                         @else
-                            {!! trans('laravelroles::laravelroles.titles.show-permission', ['name' => $permission->name]) !!}
+                            {!! trans('laravelroles::laravelroles.titles.show-permission', ['name' => e($permission->name)]) !!}
                         @endisset
                     </span>
                     @isset($typeDeleted)
@@ -117,7 +117,7 @@
                                 class="mt-3 overflow-x-auto">
                                 <table class="min-w-full text-xs">
                                     <caption class="pb-1 text-left text-gray-500 dark:text-gray-400">
-                                        {!! trans('laravelroles::laravelroles.cards.permissions-card.permissions-table-users-caption', ['permission' => $permission->name]) !!}
+                                        {!! trans('laravelroles::laravelroles.cards.permissions-card.permissions-table-users-caption', ['permission' => e($permission->name)]) !!}
                                     </caption>
                                     <thead>
                                         <tr class="text-left text-gray-600 dark:text-gray-300">

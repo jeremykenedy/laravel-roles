@@ -44,9 +44,9 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span id="card_title">
                                 @isset($typeDeleted)
-                                    {!! trans('laravelroles::laravelroles.titles.show-role-deleted', ['name' => $item->name]) !!}
+                                    {!! trans('laravelroles::laravelroles.titles.show-role-deleted', ['name' => e($item->name)]) !!}
                                 @else
-                                    {!! trans('laravelroles::laravelroles.titles.show-role', ['name' => $item->name]) !!}
+                                    {!! trans('laravelroles::laravelroles.titles.show-role', ['name' => e($item->name)]) !!}
                                 @endisset
                             </span>
                             <div class="">
@@ -134,7 +134,7 @@
                                     <div id="collapse_roles_users" class="collapse" data-bs-parent="#accordion_roles_users" >
                                         <table class="table table-striped table-sm mt-3">
                                             <caption>
-                                                {!! trans('laravelroles::laravelroles.cards.role-card.table-users-caption', ['role' => $item->name]) !!}
+                                                {!! trans('laravelroles::laravelroles.cards.role-card.table-users-caption', ['role' => e($item->name)]) !!}
                                             </caption>
                                             <thead>
                                                 <tr>
@@ -179,7 +179,7 @@
                                     <div id="collapse_roles_permissions" class="collapse" data-bs-parent="#accordion_roles_permissions" >
                                         <table class="table table-striped table-sm mt-3">
                                             <caption>
-                                                {!! trans('laravelroles::laravelroles.cards.role-card.table-permissions-caption', ['role' => $item->name]) !!}
+                                                {!! trans('laravelroles::laravelroles.cards.role-card.table-permissions-caption', ['role' => e($item->name)]) !!}
                                             </caption>
                                             <thead>
                                                 <tr>

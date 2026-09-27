@@ -1,7 +1,7 @@
 @extends(config('roles.bladeExtended'))
 
 @section(config('roles.titleExtended'))
-    {!! trans('laravelroles::laravelroles.titles.edit-permission', ['name' => $name]) !!}
+    {!! trans('laravelroles::laravelroles.titles.edit-permission', ['name' => e($name)]) !!}
 @endsection
 
 @php
@@ -43,7 +43,7 @@
                     <div class="card-header">
 
 
-                        {!! trans('laravelroles::laravelroles.titles.edit-permission', ['name' => $name]) !!}
+                        {!! trans('laravelroles::laravelroles.titles.edit-permission', ['name' => e($name)]) !!}
 
 
                         <div class="">
