@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" role="img" aria-labelledby="title description">
+  <title id="title">Laravel Roles</title>
+  <desc id="description">Roles, permissions, and levels for Laravel. Bootstrap 4, Bootstrap 5, Tailwind CSS, and an optional GUI.</desc>
+  <rect width="800" height="200" rx="16" fill="#fff" stroke="#e5e7eb"/>
+  <g font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+    <text x="40" y="80" font-size="40" font-weight="700" letter-spacing="-.5" fill="#0f172a">Laravel Roles</text>
+    <text x="40" y="110" font-size="14" fill="#64748b">Roles, permissions, and levels for your Laravel application.</text>
+    <rect x="40" y="133" width="90" height="22" rx="11" fill="#f5f3ff" stroke="#6d28d9" stroke-width=".8"/>
+    <text x="85" y="148" font-size="10" font-weight="500" text-anchor="middle" fill="#6d28d9">Bootstrap 4</text>
+    <rect x="140" y="133" width="90" height="22" rx="11" fill="#eff6ff" stroke="#1e40af" stroke-width=".8"/>
+    <text x="185" y="148" font-size="10" font-weight="500" text-anchor="middle" fill="#1e40af">Bootstrap 5</text>
+    <rect x="240" y="133" width="95" height="22" rx="11" fill="#f0fdf4" stroke="#166534" stroke-width=".8"/>
+    <text x="287.5" y="148" font-size="10" font-weight="500" text-anchor="middle" fill="#166534">Tailwind CSS</text>
+    <rect x="345" y="133" width="85" height="22" rx="11" fill="#fffbeb" stroke="#b45309" stroke-width=".8"/>
+    <text x="387.5" y="148" font-size="10" font-weight="500" text-anchor="middle" fill="#b45309">Role levels</text>
+    <rect x="440" y="133" width="90" height="22" rx="11" fill="#fef2f2" stroke="#b91c1c" stroke-width=".8"/>
+    <text x="485" y="148" font-size="10" font-weight="500" text-anchor="middle" fill="#b91c1c">Optional GUI</text>
+  </g>
+  <g transform="translate(570 40)">
+    <rect width="180" height="120" rx="16" fill="#f5f3ff"/>
+    <path d="M 45 22 L 72 32 L 72 62 Q 72 88 45 98 Q 18 88 18 62 L 18 32 Z" fill="#8b5cf6"/>
+    <path d="M 33 58 L 42 68 L 58 46" fill="none" stroke="#f5f3ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="95" y="36" width="62" height="12" rx="6" fill="#a78bfa"/>
+    <rect x="95" y="56" width="48" height="12" rx="6" fill="#60a5fa"/>
+    <rect x="95" y="76" width="34" height="12" rx="6" fill="#22c55e"/>
+  </g>
+</svg>
