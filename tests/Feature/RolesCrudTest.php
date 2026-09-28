@@ -279,3 +279,56 @@ it('keeps the deleted roles and reports an error when destroying them fails', fu
 
     Log::shouldHaveReceived('error')->once();
 });
+
+it('refuses to create a role when the gate type is not one it understands', function (): void {
+    config(['roles.rolesGuiCreateNewRolesMiddlewareType' => 'admins']);
+
+    $this->post(route('laravelroles::roles.store'), [
+        'name'  => 'Editor',
+        'slug'  => 'editor',
+        'level' => 3,
+    ])->assertForbidden();
+
+    expect(Role::where('slug', 'editor')->exists())->toBeFalse();
+});
+
+it('refuses to create a permission when the gate type is not one it understands', function (): void {
+    config(['roles.rolesGuiCreateNewPermissionMiddlewareType' => 'admins']);
+
+    $this->post(route('laravelroles::permissions.store'), [
+        'name'  => 'Can Archive',
+        'slug'  => 'archive.posts',
+        'model' => 'Post',
+    ])->assertForbidden();
+
+    expect(Permission::where('slug', 'archive.posts')->exists())->toBeFalse();
+});
+
+it('accepts the plural gate type the config comment names', function (string $type): void {
+    config([
+        'roles.rolesGuiCreateNewRolesMiddlewareType' => $type,
+        'roles.rolesGuiCreateNewRolesMiddleware'     => $type === 'roles' ? 'admin' : 'create.users',
+    ]);
+
+    $admin = User::factory()->create();
+    $admin->attachRole(Role::where('slug', 'admin')->firstOrFail());
+    $admin->attachPermission(Permission::where('slug', 'create.users')->firstOrFail());
+
+    $this->actingAs($admin)
+        ->post(route('laravelroles::roles.store'), ['name' => 'Editor', 'slug' => 'editor', 'level' => 3])
+        ->assertRedirect(route('laravelroles::roles.index'));
+})->with(['roles', 'permissions']);
+
+it('refuses a user without the configured role', function (): void {
+    $this->actingAs(User::factory()->create())
+        ->post(route('laravelroles::roles.store'), ['name' => 'Editor', 'slug' => 'editor', 'level' => 3])
+        ->assertForbidden();
+});
+
+it('leaves the form open when no gate is configured at all', function (): void {
+    config(['roles.rolesGuiCreateNewRolesMiddlewareType' => '']);
+
+    $this->actingAs(User::factory()->create())
+        ->post(route('laravelroles::roles.store'), ['name' => 'Editor', 'slug' => 'editor', 'level' => 3])
+        ->assertRedirect(route('laravelroles::roles.index'));
+});

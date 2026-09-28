@@ -3,9 +3,12 @@
 namespace jeremykenedy\LaravelRoles\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use jeremykenedy\LaravelRoles\App\Http\Requests\Concerns\ChecksConfiguredAccess;
 
 class StoreRoleRequest extends FormRequest
 {
+    use ChecksConfiguredAccess;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,14 +16,10 @@ class StoreRoleRequest extends FormRequest
      */
     public function authorize()
     {
-        if (config('roles.rolesGuiCreateNewRolesMiddlewareType') == 'role') {
-            return $this->user()->hasRole(config('roles.rolesGuiCreateNewRolesMiddleware'));
-        }
-        if (config('roles.rolesGuiCreateNewRolesMiddlewareType') == 'permissions') {
-            return $this->user()->hasPermission(config('roles.rolesGuiCreateNewRolesMiddleware'));
-        }
-
-        return true;
+        return $this->passesConfiguredGate(
+            config('roles.rolesGuiCreateNewRolesMiddlewareType'),
+            config('roles.rolesGuiCreateNewRolesMiddleware')
+        );
     }
 
     /**
