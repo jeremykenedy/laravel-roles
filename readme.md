@@ -9,9 +9,6 @@
 <p align="center">Role-Based Access Control (RBAC) for Laravel. Roles, permissions and role levels. Supports Laravel 5.3 through 13.</p>
 
 <p align="center">
-    
-    
-    
     <a href="https://github.com/jeremykenedy/laravel-roles/actions/workflows/tests.yml"><img src="https://github.com/jeremykenedy/laravel-roles/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
     <a href="https://packagist.org/packages/jeremykenedy/laravel-roles"><img src="https://poser.pugx.org/jeremykenedy/laravel-roles/d/total.svg" alt="Total Downloads"></a>
     <a href="https://packagist.org/packages/jeremykenedy/laravel-roles"><img src="https://poser.pugx.org/jeremykenedy/laravel-roles/v/stable.svg" alt="Latest Stable Version"></a>
